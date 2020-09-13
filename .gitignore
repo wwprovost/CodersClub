@@ -1,0 +1,5 @@
+*
+!CodersClub/src/
+!CodersClub/WebContent/
+!CodersClubTest/test/
+!.gitignore
