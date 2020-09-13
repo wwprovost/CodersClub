@@ -1,0 +1,1049 @@
+<!--
+Copyright 2014-2017 Will Provost.
+Please direct inquiries to sprout@tiac.net.
+
+This file is part of an educational graphics-programming game entitled Sprout.
+
+Sprout is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Sprout is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Sprout.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="ISO-8859-1">
+    <title>Sprout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/Sprout.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-2.1.1.js" ></script>
+    <script src="js/bootstrap.min.js" ></script>
+    <script src="js/Drawing.js" ></script>
+    <script src="js/Instructions.js" ></script>
+    <script src="js/InstructionUI.js" ></script>
+    <script src="js/Challenge.js" ></script>
+    <script src="js/Gallery.js" ></script>
+    <script src="js/ApplicationUI.js" ></script>
+    <script>
+      window.onload = init;
+    </script>
+  </head>
+
+  <body>
+
+    <div style="position: relative;" >
+
+      <table style="margin-bottom: 0px;" >
+        <tr>
+          <td rowspan="2" >
+            <div style="position: relative; height: 240px" >
+              <canvas id="canvas" class="drawing shadow" ></canvas>
+              <canvas id="glass" class="drawing transparent" ></canvas>
+            </div>
+          </td>
+          <td rowspan="2" style="vertical-align: bottom; width: 1%; padding-left: 16px; padding-right: 16px;" >
+            <div>
+              <canvas id="bearing" class="shadow" width="60" height="60" ></canvas>
+              <canvas id="weight" class="shadow" width="60" height="30" ></canvas>
+              <canvas id="color" class="shadow" width="60" height="30" ></canvas>
+            </div>
+          </td>
+          <td style="width: 1%; " >
+            <h4 id="title" class="right top" >Sprout</h4>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 1%;" >
+            <div>
+              <label
+                class="checkbox-inline"
+                data-toggle="tooltip"
+                title="Check to run your program again, every time you make a change"
+              >
+                <input id="auto" type="checkbox" checked="checked" >Run automatically
+              </label>
+            </div>
+            <div>
+              <label
+                class="checkbox-inline"
+                data-toggle="tooltip"
+                title="Check to see animation of your program when you run it. Use the slider that appears below to control the animation speed."
+              >
+                <input id="animate" type="checkbox" >Animate
+                <span>-- speed:</span>
+              </label>
+            </div>
+            <div>
+              <input
+                id="interval"
+                type="range"
+                min="2"
+                max="5"
+                step="0.05"
+                value="4"
+                data-toggle="tooltip"
+                title="Slide left to slow down, or right to speed up"
+              />
+            </div>
+            <div>
+              <label
+                class="checkbox-inline"
+                data-toggle="tooltip"
+                title="Check to animate only when you click the Step button that appears"
+              >
+                <input id="stepByStep" type="checkbox" ><!-- Run step-by-step -->
+              </label>
+            </div>
+            <div>
+              <button
+                id="stepButton"
+                class="btn btn-primary"
+                data-toggle="tooltip"
+                title="Execute the next instruction in your program"
+              >Step</button>
+            </div>
+            <div>
+              <button
+                id="runButton"
+                class="btn btn-primary"
+                style="width: 10em; height: 30px;"
+                data-toggle="tooltip"
+                title="Run your program"
+              ><strong><em>Run program</em></strong></button>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <hr style="margin: 6px 0px;" />
+
+      <table>
+        <tr>
+          <td class="tableLeft" >
+            <div id="programArea" style="overflow-y: auto;" >
+              <div id="program" ></div>
+            </div>
+          </td>
+          <td class="tableRight" >
+            <div id="tutorialSection" class="inset" >
+              <p>
+                <button
+                  id="tutorial"
+                  class="btn btn-default tutorialButton"
+                >Show me how Sprout works</button>
+              </p>
+              <p>
+                <span class="right" >
+                  <button
+                    id="help"
+                    class="btn btn-default tutorialButton"
+                  >Help</button>
+                </span>
+                <span>
+                  <button
+                    id="gallery"
+                    class="btn btn-default tutorialButton"
+                  >Gallery</button>
+                </span>
+              </p>
+            </div>
+            <div class="inset" >
+              <p>
+                <span class="right" >
+                  <button
+                    id="challenge.notes"
+                    class="btn"
+                    style="display: none;"
+                    data-toggle="tooltip"
+                    title="Show the notes and hints for this challenge"
+                  >Notes</button>
+                </span>
+                <span>
+                  <button
+                    id="challenge.toggle"
+                    class="btn"
+                    data-toggle="tooltip"
+                    title="Try to match an existing drawing exactly by creating the right program"
+                  >Take challenge</button>
+                </span>
+              </p>
+              <div class="dropup" >
+                <span class="btn-group" >
+                  <button
+                    id="levelDropdown"
+                    type="button"
+                    class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown"
+                  >Language level 1</button>
+                  <ul id="levelSelector" class="dropdown-menu" role="menu" ></ul>
+                </span>
+              </div>
+              <p style="margin-top: 10px;" >
+                <button
+                  id="showButton"
+                  class="btn btn-default"
+                  data-toggle="tooltip"
+                  title="Show your program as it would appear as written in JavaScript"
+                >Show as code</button>
+              </p>
+            </div>
+            <div class="inset" >
+              <p>
+                <button
+                  id="storage.clear"
+                  class="btn"
+                  data-toggle="tooltip"
+                  title="Erase your program and start over"
+                >Clear</button>
+                <button
+                  id="storage.save"
+                  class="btn"
+                  data-toggle="tooltip"
+                  title="Save your program for later"
+                >Save</button>
+                <button
+                  id="storage.load"
+                  class="btn"
+                  data-toggle="tooltip"
+                  title="Load a program you saved earlier"
+                >Load</button>
+              </p>
+              <p>
+                Drawing name:
+                <span id="storage.filename" ></span>
+              </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <div id="templates" hidden="hidden" >
+        <div id="instruction" class="instruction" >
+          <p
+            class="insertBar"
+            data-toggle="tooltip"
+            title="Click to insert an instruction here"
+          ></p>
+          <p
+            class="instruction"
+            draggable="true"
+            data-toggle="tooltip"
+            title="Click and drag to move this instruction before another instruction"
+          >
+            <select
+              id="selector"
+              class="instruction"
+              data-toggle="tooltip"
+              title="Select your instruction. Once you've selected an instruction, select (Remove) to delete the instruction from the program."
+            ></select>
+            <span id="holder" ></span>
+            <span
+              id="remover"
+              class="right glyphicon glyphicon-remove"
+              style="color: #ccc; cursor: pointer;"
+              data-toggle="tooltip"
+              title="Click to remove this instruction"
+            ></span>
+          </p>
+        </div>
+        <span id="move1" >in this direction.</span>
+        <span id="move" >
+          a
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="It's usually best to keep your lines to under 100 pixels"
+          />
+          -pixel line in this direction.
+        </span>
+        <span id="skip1" >in this direction, without drawing.</span>
+        <span id="skip" >
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="It's usually best to keep your lines to under 100 pixels"
+          />
+          pixels (without drawing).
+        </span>
+        <span id="turnLeft" ></span>
+        <span id="turnRight" ></span>
+        <span id="turn8" >
+          <select
+            data-toggle="tooltip"
+            title="Be sure to pick a direction, or you'll 'turn' zero degrees, which means you won't turn at all."
+          >
+            <option value="0" >(Choose)</option>
+            <option value="-1" >Left</option>
+            <option value="1" >Right</option>
+            <option value="180" >Reverse</option>
+          </select>
+          <select
+            r
+            data-toggle="tooltip"
+            title="How little or how much do you want to turn?"
+          >
+            <option value="45" >A little (45 degrees)</option>
+            <option value="90" selected="selected" >Normal (90 degrees)</option>
+            <option value="135" >A lot (135 degrees)</option>
+          </select>
+          <span class="glyphicon glyphicon-arrow-left" ></span>
+          <span>Be sure to pick a direction!</span>
+        </span>
+        <span id="turn16" >
+          <select
+            data-toggle="tooltip"
+            title="Be sure to pick a direction, or you'll 'turn' zero degrees, which means you won't turn at all."
+          >
+            <option value="0" >(Choose)</option>
+            <option value="-1" >Left</option>
+            <option value="1" >Right</option>
+            <option value="180" >Reverse</option>
+          </select>
+          <select
+            display="none"
+            data-toggle="tooltip"
+            title="How little or how much do you want to turn?"
+          >
+          </select>
+          <span class="glyphicon glyphicon-arrow-left" ></span>
+          <select
+            display="none"
+            data-toggle="tooltip"
+            title="Choose how many possible directions your lines can go: for example 5 is good for a star; 6 for triangles and hexagons; etc."
+          >
+            <option value="72" >Give me 5 choices</option>
+            <option value="60" >Give me 6 choices</option>
+            <option value="45" >Give me 8 choices</option>
+            <option value="30" >Give me 12 choices</option>
+            <option value="22.5" selected="selected" >Give me 16 choices</option>
+          </select>
+          <span>Be sure to pick a direction!</span>
+        </span>
+        <span id="turn36" >
+          <select
+            data-toggle="tooltip"
+            title="Be sure to pick a direction, or you'll 'turn' zero degrees, which means you won't turn at all."
+          >
+            <option value="0" >(Choose)</option>
+            <option value="-1" >Left</option>
+            <option value="1" >Right</option>
+            <option value="180" >Reverse</option>
+          </select>
+          <select
+            display="none"
+            data-toggle="tooltip"
+            title="How little or how much do you want to turn?"
+          >
+          </select>
+          <span class="glyphicon glyphicon-arrow-left" ></span>
+          <select
+            display="none"
+            data-toggle="tooltip"
+            title="Choose how many possible directions your lines can go: for example 5 is good for a star; 6 for triangles and hexagons; etc."
+          >
+            <option value="72" >Give me 5 choices</option>
+            <option value="60" >Give me 6 choices</option>
+            <option value="45" >Give me 8 choices</option>
+            <option value="30" >Give me 12 choices</option>
+            <option value="22.5" >Give me 16 choices</option>
+            <option value="15" >Give me 24 choices</option>
+            <option value="10" selected="selected" >Give me 36 choices</option>
+          </select>
+          <span>Be sure to pick a direction!</span>
+        </span>
+        <span id="setColorSelect" >
+          <!-- color panel and chooser -->
+          <select
+            data-toggle="tooltip"
+            title="Choose the color of line that you draw from this point forward in the program"
+          >
+            <option value="#000000" >Black</option>
+            <option value="#a00000" >Red</option>
+            <option value="#ff9900" >Orange</option>
+            <option value="#ffff00" >Yellow</option>
+            <option value="#00c000" >Green</option>
+            <option value="#0000ff" >Blue</option>
+            <option value="#cc00cc" >Purple</option>
+            <option value="#ffffff" >White</option>
+          </select>
+        </span>
+        <span id="setWidth" >
+          <select
+            data-toggle="tooltip"
+            title="Choose the width of line that you draw from this point forward in the program"
+          >
+            <option value="1" >1 pixel</option>
+            <option value="2" >2 pixels</option>
+            <option value="3" >3 pixels</option>
+            <option value="4" >4 pixels</option>
+            <option value="5" >5 pixels</option>
+            <option value="6" >6 pixels</option>
+            <option value="5" >7 pixels</option>
+            <option value="6" >8 pixels</option>
+          </select>
+          <input style="margin-left: 1em; width: 4em; height: 1px; border: 0px; border-top: 1px solid black;" ></span>
+        </span>
+        <span id="setColorRGB" >
+          to ... red
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of red to mix into your color -- must be between 0 and 255"
+          />
+          -- green
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of green to mix into your color -- must be between 0 and 255"
+          />
+          -- blue
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of blue to mix into your color -- must be between 0 and 255"
+          />
+          <input
+            type="text"
+            style="width: 3em;"
+            disabled="disabled"
+            style="margin-left: 1em;"
+            data-toggle="tooltip"
+            title="This is the color you've mixed."
+          />
+        </span>
+        <span id="adjustWidth" >
+          by
+          <input
+            type="text"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount to add to the width -- usually a very small number, and can be a decimal, and can be negative"
+          />
+          pixels
+        </span>
+        <span id="adjustColor" >
+          by ... red
+          <input
+            type="text"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of red to add to your color -- usually a very small number, and can be a decimal, and can be negative"
+          />
+          -- green
+          <input
+            type="text"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of green to add to your color -- usually a very small number, and can be a decimal, and can be negative"
+          />
+          -- blue
+          <input
+            type="text"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of blue to add to your color -- usually a very small number, and can be a decimal, and can be negative"
+          />
+        </span>
+        <span id="loop" >
+          the following instructions
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 2.5em; text-align: right;"
+            data-toggle="tooltip"
+            title="All the instructions shown below and indented between the repeat symbols will run this many times"
+          />
+          times:
+        </span>
+        <span id="sprout" >-- mark where we are, run these instructions ...</span>
+        <table id="loopBlock" class="block" >
+          <tr>
+            <td class="loopBlockTop" >||:</td>
+            <td rowspan="2" ></td>
+          </tr>
+          <tr>
+            <td class="loopBlockBottom" >:||</td>
+          </tr>
+        </table>
+        <table id="sproutBlock" class="block" >
+          <tr>
+            <td class="sproutBlockTop" ><span class="glyphicon glyphicon-arrow-right" ></span></td>
+            <td rowspan="2" ></td>
+          </tr>
+          <tr>
+            <td class="sproutBlockBottom" ></td>
+          </tr>
+        </table>
+        <div id="reset" class="instruction" >
+          <p class="instruction" ><span class="glyphicon glyphicon-arrow-left" style="color: #696;" ></span> ... and then return to where we started.</p>
+        </div>
+      </div>
+
+      <div id="splash" >
+        <div id="splash-main" class="main opacityZero" style="width: 500px; padding: 14px 0;" >
+          <table>
+            <tr>
+              <td style="padding: 8px 12px 0px;" >
+                <canvas id="web" class="transparent" width="120" height="120" />
+              </td>
+              <td>
+                <div style="margin: 0">
+                  <canvas id="border1" class="transparent" width="180" height="12" style="margin: 0"/>
+                </div>
+                <h1 id="splash-title" class="opacityZero" >Sprout</h1>
+                <div style="margin: 0">
+                  <canvas id="border2" class="transparent" width="180" height="12"  style="margin: 0"/>
+                </div>
+                <p>
+                  <button
+                    id="splash-show-me"
+                    class="btn btn-default tutorialButton"
+                    style="font-size: 16px; margin: 8px 0;"
+                  >Show me how Sprout works</button>
+                </p>
+              </td>
+              <td class="right" style="padding: 8px 12px 0px;" >
+                <canvas id="squares" class="transparent opacityZero" width="120" height="120" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" >
+                <canvas id="vine" class="transparent opacityZero" width="480" height="40" />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+    <!-- Dialogs -->
+
+      <div id="saveDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <h3 class="modal-title" >Save your drawing</h3>
+            </div>
+            <div class="modal-body" >
+              <div id="save.destination" class="btn-group" >
+                <label class="btn btn-primary" >
+                  <input type="radio" id="save.local" checked="checked" data-toggle="saveLocalOrRemote" >On this computer
+                </label>
+                <label class="btn btn-primary" >
+                  <input type="radio" id="save.remote" data-toggle="saveLocalOrRemote" >On the network
+                </label>
+              </div>
+              <div style="margin-top: 1em;" >
+                <label>Drawing name:</label>
+                <input id="save.filename" class="form-control" />
+                <output id="save.error" class="error" >Error!</output>
+              </div>
+            </div>
+            <div class="modal-footer" >
+              <button
+                class="btn btn-default"
+                id="save.save"
+                data-dismiss="modal"
+              >Save</button>
+              <button
+                class="btn btn-default"
+                id="save.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="loadDialog"
+        class="modal fade"
+        data-keyboard="true"
+      >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <h3 class="modal-title" >Load a drawing</h3>
+            </div>
+            <div class="modal-body" >
+              <div id="load.source" class="btn-group" >
+                <label class="btn btn-primary" >
+                  <input type="radio" id="load.local" name="source" checked="checked" data-toggle="loadLocalOrRemote" >From this computer
+                </label>
+                <label class="btn btn-primary" >
+                  <input type="radio" id="load.remote" name="source" data-toggle="loadLocalOrRemote" >From the network
+                </label>
+              </div>
+              <select
+                id="load.filename"
+                class="form-control"
+                multiple
+              ></select>
+            </div>
+            <div class="modal-footer" >
+              <button
+                class="btn btn-default"
+                id="load.load"
+                data-dismiss="modal"
+              >Load</button>
+              <button
+                class="btn btn-default"
+                id="load.remove"
+              >Remove</button>
+              <button
+                class="btn btn-default"
+                id="load.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="loadChallengeDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header" >
+              <h3 class="modal-title" >Select a challenge</h3>
+            </div>
+            <div class="modal-body" >
+              <table>
+                <tr>
+                  <td>
+                    <select id="loadChallenge.level" class="form-control" multiple style="height: 15em; width: 10em;" ></select>
+                  </td>
+                  <td style="padding-left: 12px;" >
+                    <select id="loadChallenge.name" class="form-control" multiple style="height: 15em; width: 20em;" ></select>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer" >
+              <label id="loadChallenge.message" ></label>
+              <button
+                class="btn btn-default"
+                id="loadChallenge.select"
+                data-dismiss="modal"
+              >Select</button>
+              <button
+                class="btn btn-default"
+                id="loadChallenge.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="galleryDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header" >
+              <h3 class="modal-title" >Select a drawing</h3>
+            </div>
+            <div class="modal-body" >
+              <table>
+                <tr>
+                  <td>
+                    <select id="gallery.level" class="form-control" multiple style="height: 15em; width: 10em;" ></select>
+                  </td>
+                  <td style="padding-left: 12px;" >
+                    <select id="gallery.name" class="form-control" multiple style="height: 15em; width: 20em;" ></select>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer" >
+              <label id="gallery.message" ></label>
+              <button
+                class="btn btn-default"
+                id="gallery.select"
+                data-dismiss="modal"
+              >Select</button>
+              <button
+                class="btn btn-default"
+                id="gallery.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="OKCancelDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <h3 id="OKCancel.title" class="modal-title" ></h3>
+            </div>
+            <div class="modal-body" >
+              <p id="OKCancel.message" ></p>
+            </div>
+            <div class="modal-footer" >
+              <button
+                class="btn btn-default"
+                id="OKCancel.OK"
+                data-dismiss="modal"
+              >OK</button>
+              <button
+                class="btn btn-default"
+                id="OKCancel.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="showCodeDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <h3 class="modal-title" >In JavaScript syntax ...</h3>
+            </div>
+            <div class="modal-body" >
+              <p>This is what your current drawing program would look like in JavaScript syntax, as a series of calls to a drawing API (application programming interface):</p>
+              <p id="showCode.code" class="code" ></p>
+            </div>
+            <div class="modal-footer" >
+              <button
+                class="btn btn-default"
+                data-dismiss="modal"
+              >OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tutorialDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <h3 id="tutorial.title" class="modal-title" ></h3>
+            </div>
+            <div class="modal-body" >
+              <p id="tutorial.intro" ></p>
+            </div>
+            <div class="modal-footer" >
+              <label id="tutorial.message" ></label>
+              <button
+                class="btn btn-default tutorialButton"
+                id="tutorial.OK"
+                data-dismiss="modal"
+              >Start Tutorial</button>
+              <button
+                class="btn btn-default tutorialButton"
+                id="tutorial.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tutorials -->
+
+      <div id="tutorial1Step1" class="tutorial" >
+        <p>Click the box next to "Automatically".</p>
+      </div>
+      <div id="tutorial1Step2" class="tutorial" >
+        <p class="explainer" >This makes Sprout run your program every time you change it, so it's easy to see what you're doing. The blue arrowhead shows you where you're ready to draw next, and in what direction.</p>
+        <p>Click anywhere in this balloon to continue.</p>
+      </div>
+      <div id="tutorial1Step3" class="tutorial" >
+        <p>Click the selector, and then click "Draw".</p>
+      </div>
+      <div id="tutorial1Step4" class="tutorial" >
+        <p class="explainer" >See that you've drawn a line in the drawing area. Also notice that a new instruction selector appears under the one you clicked: you always get another blank instruction at the bottom of your program, so you can just keep picking new instructions.</p>
+        <p>Now, click the second selector, and this time choose "Turn right".</p>
+      </div>
+      <div id="tutorial1Step5" class="tutorial" >
+        <p class="explainer" >See that the arrowhead turns to the right.</p>
+        <p>Now add a third instruction: "Draw" once again ...</p>
+      </div>
+      <div id="tutorial1Step6" class="tutorial" >
+        <p>"Draw" one more time.</p>
+      </div>
+      <div id="tutorial1Step7" class="tutorial" >
+        <p class="explainer" >So you have an "L" shape, but on its side, because your program starts drawing upwards, turns right, and draws some more. Let's say you now want the whole "L" to stand up, instead. You need to <strong>insert</strong> an instruction at the beginning, to turn left.</p>
+        <p>Click anywhere in this balloon to continue.</p>
+      </div>
+      <div id="tutorial1Step8" class="tutorial" >
+        <p class="explainer" >You may have noticed that, as you move your mouse over the instructions, green bars light up between the instructions.</p>
+        <p>Move your mouse over the area just above your first instruction (right below this text) until that "insert bar" lights up, and when it does, click it.</p>
+      </div>
+      <div id="tutorial1Step9" class="tutorial" >
+        <p class="explainer" >See how you get a new instruction at the top? You can insert instructions at any point in your program in this way.</p>
+        <p>Click this new selector, and pick "Turn left".</p>
+      </div>
+      <div id="tutorial1Step10" class="tutorial" >
+        <p class="explainer" >Now the "L" looks more like an "L". Do you see how your program works, and why that initial left turn changed the orientation of the whole drawing? As your program gets more complicated, you may want to be able to watch it work. We'll try a couple of ways to do this.</p>
+        <p>Click anywhere in this balloon to continue.</p>
+      </div>
+      <div id="tutorial1Step11" class="tutorial" >
+        <p>Click the box next to "Animate".</p>
+      </div>
+      <div id="tutorial1Step12" class="tutorial" >
+        <p class="explainer" >This slider lets you control the speed of the animation: left for slow, right for fast.</p>
+        <p>For now, click the slider button and drag it all the way to the left.</p>
+      </div>
+      <div id="tutorial1Step13" class="tutorial" >
+        <p>Click the "Run program" button.</p>
+      </div>
+      <div id="tutorial1Step14" class="tutorial" >
+        <p class="explainer" >See how your program runs, one step at a time? As each instruction runs, you see it happen in the canvas, and the instruction itself flashes for a second.</p>
+        <p>Wait for the drawing to complete, and then click anywhere in this balloon to continue.</p>
+      </div>
+      <div id="tutorial1Step15" class="tutorial" >
+        <p>Move the slider back to the right -- about a fourth of the way over.</p>
+      </div>
+      <div id="tutorial1Step16" class="tutorial" >
+        <p>Click "Run program" again.</p>
+      </div>
+      <div id="tutorial1Step17" class="tutorial" >
+        <p class="explainer" >Now the animation runs a little faster. For a very short program, the fastest animations will happen so quickly you almost won't see them.</p>
+        <p class="explainer" >You can also adjust the speed while the program is running.</p>
+        <p>Click anywhere in this balloon to continue.</p>
+      </div>
+      <div id="tutorial1Step18" class="tutorial" >
+        <p class="explainer" >So you know how to build a program by adding instructions at the end, and by inserting before or in-between existing instructions. The last thing we'll try is removing an instruction. What do you think would happen to the drawing if you removed the third instruction, where you say "Turn Right?"</p>
+        <p>Click on the X to remove the instruction ...</p>
+      </div>
+      <div id="tutorial1Step19" class="tutorial" >
+        <p class="explainer" >Whoops! There it went, and without that turn you have a straight line going off to the left.</p>
+        <p class="explainer" >Are you getting the hang of it? Okay -- next steps:</p>
+        <ul class="explainer" >
+          <li>You can <strong>experiment</strong> a bit with building drawings of your own. Try inserting a "Skip" in the current program, and add more instructions of your own. Click the "Clear" button if you want to erase your program and start fresh.</li>
+          <li>Click <strong>"Gallery"</strong> and choose any of the drawings there, to see what you can do and how some other programs work. There's a spiral, a tic-tac-toe board, and even a written message.</li>
+          <li>When you're ready, click <strong>"Take Challenge"</strong> to see if you've mastered Level 1. Choose one of the challenges listed for Level 1. You'll be shown a drawing, and you can build a program that makes that specific drawing.</li>
+          <li>When you can do the challenges listed for Level 1, then move on to <strong>Level 2</strong>. Click "Language Level 1" and choose "Level 2" from the options that appear. Then click "Show me how to do loops" to learn more.</li>
+        </ul>
+        <p>Click this balloon or the "Stop Tutorial" button now.</p>
+      </div>
+
+      <div id="tutorial2Step1" class="tutorial" >
+        <p>Make sure you're drawing automatically, so you can see all of your work as you go through the tutorial.</p>
+      </div>
+      <div id="tutorial2Step2" class="tutorial" >
+        <p>Start by selecting the "Repeat" as your first instruction.</p>
+      </div>
+      <div id="tutorial2Step3" class="tutorial" >
+        <p class="explainer" >Now you see a new, empty instruction at the bottom of the program, as usual. But you also see a new, empty instruction "inside the loop." All the instructions you place inside the loop can be repeated several times.</p>
+        <p>Select "Draw" as the first instruction in your loop.</p>
+      </div>
+      <div id="tutorial2Step4" class="tutorial" >
+        <p>"Draw" a second time.</p>
+      </div>
+      <div id="tutorial2Step5" class="tutorial" >
+        <p>Now choose "Turn".</p>
+      </div>
+      <div id="tutorial2Step6" class="tutorial" >
+        <p class="explainer" >Notice that you have more options for turning now, too. You have to say which way you want to turn, and also how much. We also start to describe turns in "degrees:" for example your left and right turns from the last level are all 90-degree turns.</p>
+        <p>Choose to turn "Right", and you'll leave the amount of the turn at "Normal."</p>
+      </div>
+      <div id="tutorial2Step7" class="tutorial" >
+        <p class="explainer" >So far your drawing is behaving just the way your previous ones have done, even though you're using a Repeat. That's because, so far, you're only repeating one time.</p>
+        <p>Click in the box and replace the number 1 with the number 2.</p>
+      </div>
+      <div id="tutorial2Step8" class="tutorial" >
+        <p class="explainer" >Aha! See how your three instructions are run twice, in sequence? Draw, draw, turn; draw, draw, turn.</p>
+        <p>Try setting the repeat count to 4.</p>
+      </div>
+      <div id="tutorial2Step9" class="tutorial" >
+        <p class="explainer" >Loops can get tricky to control. But, the good news is, just about anything repeated in a drawing winds up looking cool!</p>
+        <p>Try inserting an instruction here ...</p>
+      </div>
+      <div id="tutorial2Step10" class="tutorial" >
+        <p>Select "Turn".</p>
+      </div>
+      <div id="tutorial2Step11" class="tutorial" >
+        <p>Now choose to turn "Left".</p>
+      </div>
+      <div id="tutorial2Step12" class="tutorial" >
+        <p class="explainer" >Well, that sure changed things! Do you see how that happened? When your repeated instructions start pointing one way and end pointing another way, you get a drawing that closes up, or curls around itself. When you end each pass pointing in the same direction, the drawing "diverges" -- it heads off in a consistent direction.</p>
+        <p>Click anywhere in this balloon to continue.</p>
+      </div>
+      <div id="tutorial2Step12.5" class="tutorial" >
+        <p class="explainer" >Now, you'll get as many steps in your staircase as you want, based on the repeat count.</p>
+        <p>Change the repeat count to 20.</p>
+      </div>
+      <div id="tutorial2Step13" class="tutorial" >
+        <p class="explainer" >Notice that the steps get smaller. Sprout always "scales" your drawing to fit in the visible area. The lines get thinner in the process -- as if you were looking at the drawing from farther away.</p>
+        <p>Put the repeat count back to 4.</p>
+      </div>
+      <div id="tutorial2Step14" class="tutorial" >
+        <p>Now try changing that new "Turn" instruction to a "Skip".</p>
+      </div>
+      <div id="tutorial2Step14.5" class="tutorial" >
+        <p class="explainer" >Surprised? You just did two things at once:</p>
+        <ul class="explainer" >
+          <li>You took out the left turn, which made things square again.</li>
+          <li>You turned it into a skip between the two draw instructions, so there's a gap in each of the four sides of the square.</li>
+        </ul>
+        <p>Click anywhere in this balloon to continue.</p>
+      </div>
+      <div id="tutorial2Step15" class="tutorial" >
+        <p class="explainer" >Now let's look at a new feature of Sprout itself. One thing that happens a lot when you're writing a program is that you realize that some instructions should be in different places -- earlier or later in the program, or inside a loop when they weren't before.</p>
+        <p class="explainer" >When you move your mouse over the body of one of your instructions, the mouse cursor stops being an arrow and shows instead as a cross of arrows, pointing up, down, right and left. This tells you that you can click on the instruction, hold down the mouse button to "drag" the instruction somewhere else, and "drop" it in the new location. This takes a little practice ...</p>
+        <p>Try this now: click on the first of your Draw instructions, drag it toward the top of your program, and let go of the mouse button when you see the green insert bar above the Repeat instruction.</p>
+      </div>
+      <div id="tutorial2Step16" class="tutorial" >
+        <p class="explainer" >Now, the first draw instruction happens only once, and then you draw a sort of patchy square above it.</p>
+        <p>Drag the "Skip" instruction and drop it in between the Draw and the Repeat at the top.</p>
+      </div>
+      <div id="tutorial2Step17" class="tutorial" >
+        <p class="explainer" >Now the skip is gone from the square, so it's solid, and smaller than it was; and the skip happens after the first line is drawn and the square itself.</p>
+        <p>One other feature of Sprout might be worth a look now ...</p>
+        <p>Click the Show as code button.</p>
+      </div>
+      <div id="tutorial2Step18" class="tutorial" >
+        <p>Click OK in the dialog, and click this balloon to continue.</p>
+      </div>
+      <div id="tutorial2Step19" class="tutorial" >
+        <p class="explainer" >This wraps up the Level-2 tutorial. Next steps:</p>
+        <ul class="explainer" >
+          <li>Try different instructions in your loop -- and try changing the turn from normal to "a little" or "a lot".</li>
+          <li>Click <strong>"Gallery"</strong> and look at Level-2 drawings: a cube, a star, a fan ...</li>
+          <li>When you're ready, click <strong>"Take Challenge"</strong> to see if you've mastered Level 2.</li>
+          <li>When you can do the challenges listed for Level 2, then move on to <strong>Level 3</strong>.</li>
+        </ul>
+        <p>Click this balloon or the "Stop Tutorial" button now.</p>
+      </div>
+
+      <!--  16 stars would be a fun nested-loops tutorial -->
+
+      <p id="tutorial2StepNNN" class="tutorial" >
+        <span class="tutorial2" >For this instruction you have to be more specific: which way to turn?</span><br>
+        Click the selector that has appeared next to "Turn" and choose "Right".
+      </p>
+      <p id="tutorial2Step18" class="tutorial" >
+        Click the "Step-by-step" checkbox.
+      </p>
+      <p id="tutorial2Step19" class="tutorial" >Click "Run program".</p>
+      <div id="tutorial1Step20" class="tutorial" >
+        <p>Nothing happens ... but see that one button has become two, Step and Cancel.</p>
+        <p>Click "Step", and watch for the first instruction to flash:</p>
+      </div>
+      <p id="tutorial2Step21" class="tutorial" >
+        <span class="tutorial2" >You don't see any drawing yet, but see that the arrowhead has turned left as instructed.</span><br>
+        <span class="tutorial2" >Notice also the indicator arrow in the upper right has turned as well.</span><br>
+        Click "Step" again ...
+      </p>
+      <p id="tutorial2Step22" class="tutorial" >
+        <span class="tutorial2" >The second instruction flashes, and it is run, which draws your first line.</span><br>
+        Click the "Cancel" at the left to get out of this step-by-step mode.
+      </p>
+
+      <p id="tutorialLeftArrow" class="tutorialArrow" ><span class="glyphicon glyphicon-arrow-left" ></span></p>
+      <p id="tutorialRightArrow" class="tutorialArrow" ><span class="glyphicon glyphicon-arrow-right" ></span></p>
+      <p id="tutorialUpArrow" class="tutorialArrow" ><span class="glyphicon glyphicon-arrow-up" ></span></p>
+      <p id="tutorialDownArrow" class="tutorialArrow" ><span class="glyphicon glyphicon-arrow-down" ></span></p>
+
+      <!-- Challenges -->
+
+      <div id="challengeLevel1.square" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 1 Challenge: A Square</h4>
+        <p>The drawing you need to create is shown in light grey. Write a program that makes the same drawing, in black, tracing over the existing one.</p>
+        <p>You can hide this balloon by clicking the <span class="glyphicon glyphicon-remove" ></span> in the upper-right corner, and show it again by clicking the "Notes" button.</p>
+      </div>
+
+      <div id="challengeLevel1.steps" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 1 Challenge: Steps</h4>
+        <p>The drawing you need to create is shown in light grey. Write a program that makes the same drawing, in black, tracing over the existing one.</p>
+        <p>You can hide this balloon by clicking the <span class="glyphicon glyphicon-remove" ></span> in the upper-right corner, and show it again by clicking the "Notes" button.</p>
+      </div>
+
+      <div id="challengeLevel1.twoSquares" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 1 Challenge: Two Squares</h4>
+        <p>The drawing you need to create is shown in light grey. Write a program that makes the same drawing, in black, tracing over the existing one.</p>
+        <p>For this challenge, you'll need to Skip in order to create two separate shapes.</p>
+        <p>You can hide this balloon by clicking the <span class="glyphicon glyphicon-remove" ></span> in the upper-right corner, and show it again by clicking the "Notes" button.</p>
+      </div>
+
+      <div id="challengeLevel1.threeSquares" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 1 Challenge: Steps</h4>
+        <p>The drawing you need to create is shown in light grey. Write a program that makes the same drawing, in black, tracing over the existing one.</p>
+        <p>For this challenge, you'll need to Skip in order to create two separate shapes. Also, think about the most efficient way to move your drawing arrow around, so that you don't have to spent a lot of time back-tracking.</p>
+        <p>You can hide this balloon by clicking the <span class="glyphicon glyphicon-remove" ></span> in the upper-right corner, and show it again by clicking the "Notes" button.</p>
+      </div>
+
+      <div id="challengeLevel2.octagon" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 2 Challenge: Octagon</h4>
+        <p>You could make this drawing with a long series of alternating steps: move, turn a little, move, etc. Or, you could make it very simply with a single loop.</p>
+      </div>
+
+      <div id="challengeLevel2.border" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 2 Challenge: Decorative Border</h4>
+        <p>This is another drawing that all happens inside one big Repeat instruction. Start by repeating just one time, and draw out the shape until you see that you're in the right starting position and will be doing the same steps again. Then try increasing the number of repeats ...</p>
+      </div>
+
+      <div id="challengeLevel2.sawblade" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 2 Challenge: Saw Blade</h4>
+        <p>This is another drawing that all happens inside one big Repeat instruction -- but now, the tricky part is to see what piece of the drawing is the repeating pattern. Experiment with it, and you can try turning the number of repeats up and down to get a sense of what you'll get.</p>
+      </div>
+
+      <div id="challengeLevel2.threeDiamonds" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 2 Challenge: Three Diamonds</h4>
+        <p>You will want to use repeats to make the diamond shapes. But then you will need to turn a little, then skip, then turn back, to do another Repeat for the next diamond.</p>
+      </div>
+
+      <div id="challengeLevel4.diamondChain" class="challenge" >
+        <span class="right glyphicon glyphicon-remove challengeCloser" ></span>
+        <h4>Level 2 Challenge: Diamond Chain</h4>
+        <p>Have one Repeat that runs three times, and inside it put a second repeat that draws the diamond and then does the turning and skipping to set up for the next one.</p>
+      </div>
+
+      <div id="challenge.tooManyInstructions" class="challenge tooMany" >
+        <h4>Too Many Instructions</h4>
+        <p>This challenge can be solved in fewer instructions. Think about it: could you be doing this more simply ... maybe with a <strong>Repeat</strong> instruction?</p>
+        <p>You must remove at least one instruction before you can add any new ones.</p>
+      </div>
+
+    </div>
+
+  </body>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Storage, AutoSaver } from "../js/save.js";
+    import {
+        getShadowingStatement,
+        pollAndFollow,
+        requestParams
+      } from "../js/utility.js";
+
+    window.Storage = Storage;
+    window.AutoSaver = AutoSaver;
+    window.getShadowingStatement = getShadowingStatement;
+    window.pollAndFollow = pollAndFollow;
+    window.requestParams = requestParams;
+  </script>
+
+</html>

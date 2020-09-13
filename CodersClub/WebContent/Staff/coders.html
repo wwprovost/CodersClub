@@ -1,0 +1,389 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <title>Club Membership</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+  <link rel="stylesheet" type="text/css" href="../css/admin.css" />
+<style>
+p {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+#codersTable {
+  margin-left: 240px;
+}
+
+.dialog table
+{
+  margin: 10px 0;
+  border: none;
+}
+
+.dialog td
+{
+  padding: 6px 8px 6px 0;
+  border: none;
+}
+
+.dialog input[type="text"]
+{
+  width: 160px;
+}
+</style>
+</head>
+
+<body>
+<div class="main" >
+
+  <div id="navigation" class="nav" >
+    <h2>Club Membership</h2>
+    <p><input type="button" id="sorting" value="Sorting by name only" /></p>
+    <p><input type="button" id="filtering" value="Showing all members" /></p>
+    <p><input type="button" id="email" value="Showing e-mail addresses" /></p>
+    <h3>Groups</h3>
+    <table id="groupsTable" >
+      <tbody>
+      </tbody>
+    </table>
+    <h3>Views</h3>
+    <p><input type="button" id="viewAttendance" value="Attendance" /></p>
+    <p><input type="button" id="viewProgress" value="Progress" /></p>
+    <p><input type="button" id="certificates" value="Certificates" /></p>
+    <h3 class="RoleEnabled Admin" >Administration</h3>
+    <p><input type="button" id="registerCoders" class="RoleEnabled Admin" value="Register coder(s)" /></p>
+    <p><input type="button" id="assign" class="RoleEnabled Admin" value="Assign coders to groups" /></p>
+    <p><input type="button" id="viewStaff" class="RoleEnabled Admin" value="View staff" /></p>
+    <p><input type="button" id="sendEMail" class="RoleEnabled Admin" value="Send e-mail" /></p>
+    <h3 class="RoleEnabled Coach" ><a href="../Coach/Coach.do" >Go be a coach</a></h3>
+  </div>
+
+  <table id="codersTable" >
+    <thead>
+      <tr>
+        <th colspan="2" >Name</th>
+        <th id="emailHeader" style="display: none;" >Parent E-Mail</th>
+        <th>Group</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <div id="confirmRemove" class="dialog" >
+    <p>Remove <span id="coderToRemove" ></span> from the club?</p>
+    <p>All of this coder's records will be removed, and this cannot be undone.</p>
+    <p>
+      <input id="removeOK" type="button" value="OK" />
+      <input id="removeCancel" type="button" value="Cancel" />
+    </p>
+  </div>
+
+  <div id="coderDetails" class="dialog" >
+    <p>Edit the coder's name or parent e-mail address below, and click <strong>OK</strong> to save changes:</p>
+    <table>
+      <tbody>
+        <tr>
+          <td>First name:</td>
+          <td><input id="firstName" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+        <tr>
+          <td>Last name:</td>
+          <td><input id="lastName" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+        <tr>
+          <td>Parent e-mail:</td>
+          <td><input id="parentEMail" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <input id="updateOK" type="button" value="OK" />
+      <input id="updateCancel" type="button" value="Cancel" />
+    </p>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        AdminPage,
+        checkFor200,
+        checkHTTPStatus,
+        colorTable,
+        showDialog
+      } from "../js/utility.js";
+
+    let coders = [];
+    let groups = [];
+    let colors = new Map();
+
+    let sortByGroup = false;
+    let showActiveOnly = false;
+    let showEMail = false;
+
+    function toggleSorting(ev) {
+      sortByGroup = !sortByGroup;
+      ev.target.value = sortByGroup
+        ? "Sorting by group first"
+        : "Sorting by name only";
+      refreshTable();
+    }
+
+    function toggleFiltering(ev) {
+      showActiveOnly = !showActiveOnly;
+      ev.target.value = showActiveOnly
+        ? "Showing group members"
+        : "Showing all members";
+      refreshTable();
+    }
+
+    function toggleEMail(ev) {
+      showEMail = !showEMail;
+      ev.target.value = showEMail
+        ? "Showing e-mail addresses"
+        : "Hiding e-mail addresses";
+      document.getElementById("emailHeader").style.display =
+        showEMail ? "table-cell" : "none";
+      refreshTable();
+    }
+
+    function updateCounts() {
+      groups.forEach((group, index) => {
+          document.getElementById("count" + index).textContent =
+            coders.filter(coder => coder.group == group).length;
+        });
+    }
+
+    function listGroups() {
+      let groupsTable = document.querySelector("#groupsTable tbody");
+      groupsTable.innerHTML = "";
+      groups.forEach((group, index) => {
+          let row = groupsTable.insertRow();
+          row.insertCell().textContent = group;
+
+          let countCell = row.insertCell();
+          countCell.id = "count" + index;
+          countCell.style.textAlign = "right";
+
+          row.style.backgroundColor = colors.get(group);
+        });
+
+      updateCounts();
+    }
+
+    function handleGroupChange(ev) {
+      let coderID = ev.target.name.replace("coder", "").replace("group", "");
+      let coder = coders.filter(coder => coder.id == coderID)[0];
+
+      fetch("../REST/Admin/Coders/" + coderID + "/Group", {
+          method: "PATCH",
+          credentials: "same-origin",
+          headers: {
+              "Content-Type": "text/plain",
+              "Accept": "application/json"
+            },
+          body: ev.target.value ? ev.target.value : "null"
+        })
+        .then(checkFor200)
+        .then(response => response.json())
+        .then(confirmed => {
+            coder.group = confirmed.group;
+            updateCounts();
+
+            document.getElementById("coder" + coder.id).style.backgroundColor =
+              colors.get(coder.group);
+            if (sortByGroup || showActiveOnly) {
+              refreshTable();
+            }
+          })
+        .catch(console.log);
+    }
+
+    function editCoder(ev) {
+      let row = ev.target.parentNode;
+      let coderID = row.id.replace("coder", "");
+      let coder = coders.filter(coder => coder.id == coderID)[0];
+
+      document.getElementById("firstName").value = coder.firstName;
+      document.getElementById("lastName").value = coder.lastName;
+      document.getElementById("parentEMail").value = coder.parentEMail;
+
+      showDialog("coderDetails", [ { ID: "updateOK", handler: () => {
+          fetch("../REST/Admin/Coders/" + coder.id, {
+                method: "PATCH",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                  },
+                body: JSON.stringify({
+                    id: coder.id,
+                    firstName: document.getElementById("firstName").value,
+                    lastName: document.getElementById("lastName").value,
+                    parentEMail: document.getElementById("parentEMail").value
+                  })
+              })
+            .then(checkFor200)
+            .then(response => response.json())
+            .then(response => {
+                coder.firstName = response.firstName;
+                coder.lastName = response.lastName;
+                coder.parentEMail = response.parentEMail;
+
+                refreshTable();
+              })
+            .catch(console.log);
+        } }, { ID: "updateCancel" } ]);
+    }
+
+    function addRB(cell, coder, value, label) {
+      let rb = document.createElement("input");
+      rb.type = "radio"
+      rb.name = "coder" + coder.id + "group";
+      rb.value = value;
+
+      if (value == coder.group) {
+        rb.checked = true;
+      }
+      rb.onclick = handleGroupChange;
+
+      cell.appendChild(rb);
+      cell.appendChild(document.createTextNode(label));
+    }
+
+    function buildRows(tbody, coders) {
+
+      function addClickableText(row, text) {
+        let cell = row.insertCell();
+        cell.textContent = text;
+        cell.onclick = editCoder;
+        cell.style.cursor = "pointer";
+        return cell;
+      }
+
+      let index = 0;
+      for (let coder of coders) {
+        let row = tbody.insertRow();
+        row.id = "coder" + coder.id;
+        addClickableText(row, coder.firstName);
+        addClickableText(row, coder.lastName);
+
+        if (showEMail) {
+          addClickableText(row, coder.parentEMail);
+        }
+
+        let groupCell = row.insertCell();
+        groups.forEach((group, index) => {
+            addRB(groupCell, coder, group, "" + (index + 1));
+          });
+        addRB(groupCell, coder, null, "None");
+
+        let deleteButton = document.createElement("input");
+        deleteButton.type = "button";
+        deleteButton.value = "Remove";
+        deleteButton.onclick = ev => {
+            document.getElementById("coderToRemove").textContent =
+                coder.firstName + " " + coder.lastName;
+            showDialog("confirmRemove", [ { ID: "removeOK", handler: ev => {
+                fetch("../REST/Admin/Coders/" + coder.id, { method: "DELETE" })
+                  .then(response => checkHTTPStatus(204, response))
+                  .then(response => {
+                      row.remove();
+                      coders.splice(index, 1);
+                      updateCounts();
+                    })
+                  .catch(console.log);
+              } }, { ID: "removeCancel" } ]);
+          };
+
+        row.insertCell().appendChild(deleteButton);
+
+        row.style.backgroundColor = colors.get(coder.group);
+        ++index;
+      }
+    }
+
+    function refreshTable() {
+      let tbody = document.querySelector("#codersTable tbody");
+      tbody.innerHTML = "";
+
+      if (sortByGroup) {
+        for (let group of groups) {
+          buildRows(tbody, coders.filter(coder => coder.group == group));
+        }
+        if (!showActiveOnly) {
+          buildRows(tbody, coders.filter(coder => coder.group == null));
+        }
+      } else {
+        if (showActiveOnly) {
+          buildRows(tbody, coders.filter(coder => coder.group != null));
+        } else {
+          buildRows(tbody, coders);
+        }
+      }
+
+      window.onresize();
+    }
+
+    function refreshWithData(listOfCoders) {
+      coders = listOfCoders;
+      groups = []
+
+      for (let coder of coders) {
+        if (coder.group && !groups.includes(coder.group)) {
+          groups.push(coder.group)
+        }
+      }
+      groups.sort();
+
+      for (let index in groups) {
+        colors.set(groups[index],
+          index < colorTable.length ? colorTable[index] : "white");
+      }
+      colors.set(null, "white");
+
+      listGroups();
+      refreshTable();
+    }
+
+    window.onload = function() {
+      new AdminPage("navigation",
+          document.querySelector("p.footer"), "..");
+
+      document.getElementById("sorting").onclick = toggleSorting;
+      document.getElementById("filtering").onclick = toggleFiltering;
+      document.getElementById("email").onclick = toggleEMail;
+
+      document.getElementById("viewAttendance").onclick =
+        ev => { window.location = "attendance.html"; };
+      document.getElementById("viewProgress").onclick =
+        ev => { window.location = "belts.html"; };
+      document.getElementById("certificates").onclick =
+        ev => { window.location = "certificates.html"; };
+
+      document.getElementById("registerCoders").onclick =
+        ev => { window.location = "../Admin/registerCoders.html"; };
+      document.getElementById("assign").onclick =
+        ev => { window.location = "../Admin/groups.html"; };
+      document.getElementById("viewStaff").onclick =
+        ev => { window.location = "../Admin/staff.html"; };
+      document.getElementById("sendEMail").onclick =
+        ev => { window.location = "../Admin/email.html"; };
+
+      fetch("../REST/Staff/Coders")
+        .then(checkFor200)
+        .then(response => response.json())
+        .then(refreshWithData)
+        .catch(console.log);
+    }
+  </script>
+
+</div>
+<p class="footer" ></p>
+</body>
+
+</html>
+

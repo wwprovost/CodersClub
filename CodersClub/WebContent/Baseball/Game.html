@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Baseball</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/baseball.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Now, simulate a three-inning game between two opposing teams. Of course, this will use all of the logic you've already written -- and then, you'll need to expand your model to run the inning for each team, alternating, three times. You'll need to keep separate counts of runs for team 1 and team 2. You'll also need to know who batted last for a given team in each inning, so that you pick up at the right place in the lineup on the next inning. Print the final score of the game when it's all over.</p>
+      <p>This i a more free-form activity, and there are a few ways to solve it. See what you can come up with, and talk with your coach about your ideas.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+roster1 = [ 333, 321, 311, 300, 280, 280, 260, 240, 180 ]
+roster2 = [ 303, 301, 318, 325, 261, 268, 241, 222, 195 ]
+
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Simulation } from "./js/baseball.js";
+    new Simulation("Challenge 6: simulate a Game", true);
+  </script>
+
+</body>
+
+</html>
+

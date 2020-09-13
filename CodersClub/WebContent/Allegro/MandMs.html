@@ -1,0 +1,148 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Allegro</title>
+  <link rel="stylesheet" type="text/css" href="css/allegro.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="../blockly/blockly_compressed.js" ></script>
+  <script src="../blockly/blocks_compressed.js" ></script>
+  <script src="../blockly/acorn_interpreter.js" ></script>
+  <script src="../blockly/javascript_compressed.js" ></script>
+  <script src="../blockly/msg/js/en.js" ></script>
+</head>
+
+<body>
+
+  <div id="controls" >
+    <div style="margin-top: 8px;" >
+      <span style="float: right;" >
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+        onclick="window.location.href=previousPage();"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+        onclick="window.location.href=nextPage();"
+      />
+      </span>
+    </div>
+    <div class="inset" >
+      <div id="allegro" ><em>allegro</em></div>
+      <p style="margin-bottom: 0;" >Today's musical selection:</p>
+      <p style="margin-top: 0; padding-left: 1em;" ><strong id="title" ></strong></p>
+      <p>
+        <input
+          type="button"
+          class="button"
+          style="width: 100%";
+          id="sample"
+          value="Play sample"
+        />
+      </p>
+    </div>
+    <div>
+      <input
+        type="range"
+        id="volume"
+        min="0"
+        max="100"
+        value="75"
+      />
+    </div>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="start"
+        value="Run program"
+      />
+    </p>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="stop"
+        value="Stop"
+      />
+    </p>
+    <div class="explainer" >
+      <p>Can you write a program that plays a semi-scale, up from 1 to 5 and then back down? Click <strong>Play Sample</strong> to hear the melody, and then see if you can make it yourself with code blocks.</p>
+    </div>
+  </div>
+
+  <div id="code" >
+  </div>
+  <div id="error" >
+  </div>
+
+  <div id="toolboxBase" style="display: none">
+    <xml>
+      <block type="duration_quarter"></block>
+      <block type="duration_eighth"></block>
+      <block type="allegro_play"></block>
+      <block type="allegro_rest"></block>
+      <block type="allegro_up"></block>
+      <block type="allegro_down"></block>
+      <block type="allegro_play_and_up"></block>
+      <block type="allegro_play_and_down"></block>
+      <block type="controls_repeat"></block>
+    </xml>
+  </div>
+
+  <div id="sampleBlocks" style="display: none" >
+  </div>
+
+  <div id="sampleCode" style="display: none;" >
+
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+
+    play(.25);
+    up(4);
+    play(.25);
+    down(4);
+    play(.5);
+
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Allegro } from "./js/allegro.js";
+
+    $(document).ready(function()
+      {
+        new Allegro("Mommy Made Me Mash My M&Ms", true);
+      });
+  </script>
+
+</body>
+
+</html>
+

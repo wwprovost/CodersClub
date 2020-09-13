@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Tetris</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/tetris.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Copy your program from the previous level, and try it here. You will probably find that it starts to fail more quickly. There are fewer "ones" and "twos" in the mix of blocks now, which makes completing rows harder. You will also encounter "overhangs," where a row of, say, 7 blocks is covered by a row of 9 blocks. Now, neither row can be completed, and your logic will place blocks incorrectly so that they stack up in awkward structures, and the game ends quickly from there.</p>
+      <p>You can improve your program to minimize overhangs: before placing a lock, double-check that the resulting row length would not be greater than the row below it. If it would overhang, don't place on that row: go up to the next one and keep looking.</p>
+      <p>You'll get a taller, left-leaning structure, but you'll lasts longer and clear more rows.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <div id="prelude" style="display: none;" >
+__blocks = [];
+__over = False;
+__block_ready = False
+
+def new_block():
+    global __blocks, __block_ready
+
+    if __over:
+        raise Exception('The game is over.')
+    if __block_ready:
+        raise Exception('You must position the current block.')
+
+    n = randint(1,100)
+    if n &lt; 10:
+      size = 1
+    elif n &lt; 25:
+      size = 2
+    elif n &lt; 55:
+      size = 3
+    elif n &lt; 85:
+      size = 4
+    else:
+      size = 5
+
+    __blocks.append(size);
+    __block_ready = True
+
+def block_size():
+    return __blocks[-1];
+
+def position(col):
+    global __position, __block_ready
+
+    if __over:
+        raise Exception('The game is over.')
+    if not __block_ready:
+        raise Exception('You must get a new block.')
+    if col &lt; 1 or col + __blocks[-1] > 11:
+        raise Exception('Out of bounds: ' + str(col))
+
+    __position = col;
+    __block_ready = False
+
+def game_over():
+    return __over
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Game } from "./js/tetris.js";
+    new Game("Level 2", true);
+  </script>
+
+</body>
+
+</html>
+

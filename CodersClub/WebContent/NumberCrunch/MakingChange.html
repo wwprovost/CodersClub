@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Write a program to make change for a purchase. The starting code sets up a random price of up to 60 cents, and the customer gives you a dollar bill. Your program needs to figure out how many quarters, dimes, nickels, and pennies to give back to the customer.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        print line "The customer has one dollar.";
+        number price = random 1 to 60;
+        print line "The price is " + price + " cents.";
+      </div>
+      <div id="Python" >
+        print "The customer has one dollar."
+        price = randint(1,60)
+        print "The price is", price, "cents."
+      </div>
+      <div id="JavaScript" >
+        print("The customer has one dollar.");
+        let price = random(1,60);
+        print("The price is " + price + " cents.");
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #12: Making Change", true);
+  </script>
+
+</body>
+
+</html>
+

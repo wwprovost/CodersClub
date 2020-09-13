@@ -1,0 +1,120 @@
+body
+{
+  margin: 16px;
+  overflow: hidden;
+}
+
+h1
+{
+  font-size: 16pt;
+}
+
+h2
+{
+  margin-top: 0;
+}
+
+#subtitle input[type="text"]
+{
+  margin-left: 8px;
+  margin-right: 20px;
+  width: 120px;
+}
+
+div.dialog
+{
+  display: none;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0,0);
+}
+
+div.dialog div
+{
+  margin: 60px 5% 60px 45%;
+  padding: 16px;
+  background: white;
+  border: 1px solid black;
+  box-shadow: 4px 5px 2px grey;
+}
+
+div.dialog div h3
+{
+  margin-top: 0;
+}
+
+div.dialog div select
+{
+  padding: 4px;
+  margin-bottom: 8px;
+}
+
+div.dialog div select option
+{
+  padding: 1px 4px;
+}
+
+#talking
+{
+  overflow: hidden;
+}
+
+#code, #output
+{
+  border: inset 3px;
+  margin: 0;
+  background: #fff;
+  float: left;
+}
+
+#output
+{
+  float: right;
+  padding: 6px;
+  font-family: Lucida Console,Courier New,Courier,Consolas,monospace,sans-serif;
+  white-space: pre-wrap;
+  overflow: scroll;
+}
+
+.vsplitter
+{
+  cursor: ns-resize;
+  margin: 2px;
+  padding: 0;
+  height: 3px;
+  border: none;
+}
+
+.hsplitter
+{
+  cursor: ew-resize;
+  margin: 0;
+  padding: 4px;
+  width: 3px;
+}
+
+.code
+{
+  font-family: Lucida Console,Courier New,Courier,Consolas,monospace,sans-serif;
+  white-space: pre-wrap;
+}
+
+.skipOneLine
+{
+  margin-top: -1em;
+}
+
+
+.visualization
+{
+  font-family: Lucida Console,Courier New,Courier,Consolas,monospace,sans-serif;
+  color: blue;
+  font-size: large;
+  margin: 0 0 6px;
+  padding: 0;
+}

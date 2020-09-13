@@ -1,0 +1,32 @@
+html
+{
+  font-family: Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+  background-color: #bdd1ff;
+}
+
+input.CCButton
+{
+  color: white;
+  background-color: #888;
+  padding: 3px 8px;
+}
+
+input.CCButton:disabled
+{
+  background-color: #ccc;
+  padding: 3px 8px;
+}
+
+.visualization
+{
+  color: black;
+}
+
+#gameBoard
+{
+  background-color: #eee;
+  padding: 1px;
+  border: 5px double #003aaa;
+  margin-bottom: 8px;
+}
+

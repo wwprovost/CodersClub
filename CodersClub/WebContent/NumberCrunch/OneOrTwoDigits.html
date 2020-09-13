@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Another challenge: first, declare a variable that has a random value from 1 to 99. Then, can you write conditional code that tells you whether the number has one or two digits?</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #3: One or Two Digits?", true);
+  </script>
+
+</body>
+
+</html>
+

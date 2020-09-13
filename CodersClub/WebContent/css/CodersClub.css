@@ -1,0 +1,226 @@
+body
+{
+  font-family: Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+  font-size: 12pt;
+  margin: 0;
+  background: #eee;
+}
+
+.main
+{
+  margin: 12px;
+  padding: 12px;
+  min-height: 500px;
+  background: #fefefe;
+  border: ridge #090 4px;
+}
+
+.dialog
+{
+  position: fixed;
+  display: none;
+  top: 60px;
+  left: 60px;
+  margin-right: 60px;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: white;
+  border: 1px solid black;
+  box-shadow: 6px 4px 5px grey;
+}
+
+.dialog input[type="button"]
+{
+  width: 80px;
+}
+
+.bigDialog {
+  top: 40px;
+  left: 40px;
+  margin-right: 40px;
+  margin-bottom: 20px;
+}
+
+a
+{
+  color: 363;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a.absent
+{
+  color: grey;
+}
+
+a.logout
+{
+  float: right;
+  padding: 0 6px 0 0;
+  font-size: 10pt;
+}
+
+h2
+{
+  margin-top: 4px;
+}
+
+th
+{
+  text-align: left;
+}
+
+table.bordered
+{
+  border: solid 3px;
+  border-collapse: collapse;
+}
+
+table.bordered th
+{
+  padding: .3em .6em;
+  border: solid 1px;
+  border-bottom: solid 2px;
+}
+
+table.bordered td
+{
+  padding: .3em .6em;
+  border: solid 1px;
+}
+
+table.bordered table td
+{
+  padding: 0;
+  border: none;
+}
+
+tr.white, td.white
+{
+  background: #fff;
+}
+
+tr.yellow, td.yellow
+{
+  background: #ffc;
+}
+
+tr.orange, td.orange
+{
+  background: #fc8;
+}
+
+tr.brown, td.brown
+{
+  color: white;
+  background: #c60;
+}
+
+tr.red, td.red
+{
+  color: #800;
+  background: #faa;
+}
+
+tr.purple, td.purple
+{
+  color: #808;
+  background: #faf;
+}
+
+tr.blue, td.blue
+{
+  color: #008;
+  background: #bcf;
+}
+
+tr.black, td.black
+{
+  color: white;
+  background: black;
+}
+
+tr.notInUse, td.notInUse
+{
+  color: black;
+  background: #aaa;
+}
+
+td
+{
+  vertical-align: top;
+  padding: 3px 10px 3px 0;
+}
+
+input.button, input[type=submit]
+{
+  color: #fff;
+  background: #487;
+  font-weight: bold;
+  padding: 3px 12px;
+}
+
+textarea
+{
+  height: 16em;
+  width: 100%;
+}
+
+.code
+{
+  font-family: Courier,"Courier New",monospace;
+  font-size: 11pt;
+  white-space: pre;
+}
+
+.skipOneLine
+{
+  margin-top: -1em;
+}
+
+.errorMessage
+{
+  color: red;
+}
+
+.footer
+{
+  margin-left: 12px;
+  margin-bottom: 12px;
+  font-size: 10pt;
+}
+
+.overdue {
+    position:relative;
+    font-weight: bold;
+    color: red;
+}
+  
+.overdue:after{
+  position: fixed;
+  top: 21px;
+  right: 108px;
+  padding: 8px;
+  color: red;
+  background-color: white;
+  border: 1px solid red;
+  border-radius:6px;
+  box-shadow: 3px 3px 4px rgba(0,0,0, .65);
+  display:none;
+}
+
+.overdue:hover:after{
+  display:block;
+}
+
+.overdueSummary:after {
+  content: "This coder has earned anough points to complete at least one level.";
+  width: 300px;
+}
+
+.overdueDetail:after {
+  content: "This coder has earned enough points to complete this level.";
+  width: 240px;
+}
+
+

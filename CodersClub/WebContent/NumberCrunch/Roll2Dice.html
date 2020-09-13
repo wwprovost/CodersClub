@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Modify your previous program so that it rolls two dice, and counts the number of times that each sum-of-2 comes up. Note that you will need an array of 12 counts, but the value 1 can't ever appear, so you will manage counts for the values 2 through 12.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #20: Counting Two Dice", true);
+  </script>
+
+</body>
+
+</html>
+

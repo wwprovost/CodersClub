@@ -1,0 +1,278 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <title>Staff</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+  <link rel="stylesheet" type="text/css" href="../css/admin.css" />
+<style>
+p {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+#staffTable {
+  margin-left: 240px;
+
+.dialog table
+{
+  margin: 10px 0;
+  border: none;
+}
+
+.dialog td
+{
+  padding: 6px 8px 6px 0;
+  border: none;
+}
+
+.dialog input[type="text"]
+{
+  width: 160px;
+}
+}
+</style>
+</head>
+
+<body>
+<div class="main" >
+
+  <div id="navigation" class="nav" >
+    <h2>Staff</h2>
+    <p><input type="button" id="email" value="Hiding e-mail addresses" /></p>
+    <h3>Actions</h3>
+    <p><input type="button" id="register" value="Register staff" /></p>
+  </div>
+
+  <table id="staffTable" >
+    <thead>
+      <tr>
+        <th colspan="2" >Name</th>
+        <th id="emailHeader" style="display: none;" >E-Mail</th>
+        <th>Coach</th>
+        <th>Admin</th>
+        <th>Senior</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <div id="details" class="dialog" >
+    <p>Edit name or e-mail address below, and click <strong>OK</strong> to save changes:</p>
+    <table>
+      <tbody>
+        <tr>
+          <td>First name:</td>
+          <td><input id="firstName" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+        <tr>
+          <td>Last name:</td>
+          <td><input id="lastName" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+        <tr>
+          <td>E-mail:</td>
+          <td><input id="emailAddress" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <input id="updateOK" type="button" value="OK" />
+      <input id="updateCancel" type="button" value="Cancel" />
+    </p>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        AdminPage,
+        checkFor200,
+        checkHTTPStatus,
+        showDialog
+      } from "../js/utility.js";
+
+    let staff = [];
+
+    let showEMail = false;
+
+    function toggleEMail(ev) {
+      showEMail = !showEMail;
+      ev.target.value = showEMail
+        ? "Showing e-mail addresses"
+        : "Hiding e-mail addresses";
+      document.getElementById("emailHeader").style.display =
+        showEMail ? "table-cell" : "none";
+      refreshTable();
+    }
+
+    function editStaffer(ev) {
+      let row = ev.target.parentNode;
+      let stafferID = row.id.replace("staffer", "");
+      let staffer = staff.filter(staffer => staffer.id == stafferID)[0];
+
+      let oldFirstName = staffer.firstName;
+      let oldLastName = staffer.lastName;
+      let oldEMail = staffer.email;
+
+      document.getElementById("firstName").value = staffer.firstName;
+      document.getElementById("lastName").value = staffer.lastName;
+      document.getElementById("emailAddress").value = staffer.email;
+
+      showDialog("details", [ { ID: "updateOK", handler: () => {
+          staffer.firstName = document.getElementById("firstName").value;
+          staffer.lastName = document.getElementById("lastName").value;
+          staffer.email = document.getElementById("emailAddress").value;
+
+          fetch("../REST/Admin/Staff/" + staffer.id, {
+                method: "PUT",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                  },
+                body: JSON.stringify(staffer)
+              })
+            .then(checkFor200)
+            .then(refreshTable)
+            .catch(err => {
+                console.log(err);
+
+                staffer.firstName = oldFirstName;
+                staffer.lastName = oldLastName;
+                staffer.email = oldEMail;
+              });
+        } }, { ID: "updateCancel" } ]);
+    }
+
+    function handleRoleChange(role, index, ev) {
+      let staffer = staff[index];
+      let setting = ev.target.checked
+      staffer[role] = setting;
+
+      fetch("../REST/Admin/Staff/" + staffer.id, {
+          method: "PUT",
+          credentials: "same-origin",
+          headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+          body: JSON.stringify(staffer)
+        })
+        .then(checkFor200)
+        .catch(err => {
+            console.log(err);
+            staffer[role] = !setting;
+            ev.target.checked = !setting;
+          });
+    }
+
+    function addRoleCheckbox(row, index, role, staffer) {
+        let check = document.createElement("input");
+        check.type = "checkbox";
+        check.checked = staffer[role];
+
+        // Can't adjust admin roles for self,
+        // or for a senior admin if you are not a senior admin
+        if (myProfile.id == staffer.id ||
+            (staffer.senior && !myProfile.senior)) {
+          check.disabled = true;
+        }
+
+        check.onchange = handleRoleChange.bind(null, role, index);
+        row.insertCell().appendChild(check);
+    }
+
+    function buildRows(tbody, staff) {
+
+      function addClickableText(row, text) {
+        let cell = row.insertCell();
+        cell.textContent = text;
+        cell.onclick = editStaffer;
+        cell.style.cursor = "pointer";
+        return cell;
+      }
+
+      let index = 0;
+      for (let staffer of staff) {
+        let row = tbody.insertRow();
+        row.id = "staffer" + staffer.id;
+
+        addClickableText(row, staffer.firstName);
+        addClickableText(row, staffer.lastName);
+
+        if (showEMail) {
+          addClickableText(row, staffer.email);
+        }
+
+        addRoleCheckbox(row, index, "coach", staffer);
+        addRoleCheckbox(row, index, "admin", staffer);
+        addRoleCheckbox(row, index, "senior", staffer);
+
+        let deleteButton = document.createElement("input");
+        deleteButton.type = "button";
+        deleteButton.value = "Remove";
+
+        // Can't remove self, nor a senior admin if you are not a senior admin
+        if (myProfile.id == staffer.id ||
+            (staffer.senior && !myProfile.senior)) {
+          deleteButton.disabled = true;
+        }
+
+        deleteButton.onclick = ev => {
+            if (confirm("Remove " + staffer.firstName + " " + staffer.lastName +
+                " from the club? All of this staff member's records will be removed, and this cannot be undone.")) {
+              fetch("../REST/Admin/Staff/" + staffer.id, {
+                  method: "DELETE"
+                })
+              .then(response => checkHTTPStatus(204, response))
+              .then(response => {
+                  row.remove();
+                  staff.splice(index, 1);
+                  updateCounts();
+                })
+              .catch(console.log);
+            }
+          };
+        row.insertCell().appendChild(deleteButton);
+
+        ++index;
+      }
+    }
+
+    function refreshTable() {
+      let tbody = document.querySelector("#staffTable tbody");
+      tbody.innerHTML = "";
+      buildRows(tbody, staff);
+    }
+
+    function refreshWithData(listOfStaff) {
+      staff = listOfStaff;
+      refreshTable();
+    }
+
+    window.onload = function() {
+      document.getElementById("email").onclick = toggleEMail;
+      document.getElementById("register").onclick =
+        ev => { window.location = "registerStaff.html"; };
+
+      new AdminPage("navigation", document.querySelector("p.footer"), "..",
+        profile => {
+          window.myProfile = profile;
+          fetch("../REST/Admin/Staff")
+            .then(checkFor200)
+            .then(response => response.json())
+            .then(refreshWithData)
+            .catch(console.log);
+          });
+    }
+  </script>
+
+</div>
+<p class="footer" ></p>
+
+</body>
+
+</html>
+

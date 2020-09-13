@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Chutes &amp; Ladders Playground</title>
+  <link rel="stylesheet" type="text/css" href="css/chutes.css" />
+  <script src="../../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <h2>
+    <span style="float: right" >Chutes &amp; Ladders Playground</span>
+    <input type="button" id="run" value="Run" />
+    <input type="button" id="cancel" value="Cancel" />
+    <input type="button" id="reset" value="Reset" style="margin-right: 20px;" />
+  </h2>
+
+  <div id="program1" class="program" >
+    <div id="code1" class="codeplace" ></div>
+    <div class="error balloon" >error</div>
+    <div class="status balloon" >status</div>
+  </div>
+
+  <div id="puzzle" ></div>
+
+</body>
+
+<script type="module" crossorigin="use-credentials" >
+  import { Page } from "./js/chutes.js";
+  new Page();
+</script>
+
+</html>
+

@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <img src="img/Honeycomb.png" alt="Honeycomb" style="float: right; margin: 0; padding: 0;" />
+      <p>How many hexagons are found in the figure at the right? You can calculate this as 1 + 6 + 12 + 18 = <strong>37</strong>, so it's really starting with one in the center, and then adding 6 and then the next multiple of 6 each time you add a ring.</p>
+      <p>There are three rings so far. What if there were 20 rings? Then how many hexagons would there be?</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #10: Honeycomb", true, 1261);
+  </script>
+
+</body>
+
+</html>
+

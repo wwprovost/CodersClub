@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence 
+  version="2.1" 
+  xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence 
+    http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+>
+  <persistence-unit name="CodersClub" transaction-type="RESOURCE_LOCAL" >
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property
+        name="javax.persistence.jdbc.driver"
+        value="org.apache.derby.jdbc.ClientDriver"
+      />
+      <property
+        name="javax.persistence.jdbc.url"
+        value="jdbc:derby://localhost/CodersClub"
+      />
+      <property
+        name="javax.persistence.jdbc.user"
+        value="CodersClub"
+      />
+      <property
+        name="javax.persistence.jdbc.password"
+        value="CodersClub"
+      />
+      <property name="eclipselink.logging.level" value="WARNING" />
+    </properties>
+  </persistence-unit>
+  
+  <persistence-unit name="CodersClubTest" transaction-type="RESOURCE_LOCAL" >
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property
+        name="javax.persistence.jdbc.driver"
+        value="org.apache.derby.jdbc.EmbeddedDriver"
+      />
+      <property
+        name="javax.persistence.jdbc.url"
+        value="jdbc:derby:memory:CodersClub;create=true"
+      /> <!-- Would be nice not to create this empty, in-memory DB when running the application as it's just meant for testing ... -->
+      <property
+        name="javax.persistence.jdbc.user"
+        value="CodersClub"
+      />
+      <property
+        name="javax.persistence.jdbc.password"
+        value="CodersClub"
+      />
+      <property name="eclipselink.logging.level" value="WARNING" />
+    </properties>
+  </persistence-unit>
+
+</persistence>

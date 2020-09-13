@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Write a program that finds the first 20 prime numbers. A prime is a positive whole number, or "counting number," for which there are no numbers other than one and the number itself that you can multiply to get the number. So, 2 is prime; 3 is prime; 4 is not prime because 2 * 2 = 4; 5 is prime, 6 is not (and all even numbers over 2 are not); 7 is prime, etc.</p>
+      <p>Finding primes requires nested loops. First, your outer loop sets the number to be tested, starting from 1, or 2, something like that. Then, to test, you have to run from 2 up to, say, half of the number itself, and then see if the one number is a multiple of the other. If the loop "falls through," then the number must be prime, so you print it and count it as one of your 20.</p>
+      <p>When you get this one, be sure to show your coach. In fact, show several coaches, because that's some serious coding!</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+   <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #14: Finding Primes", true);
+  </script>
+
+</body>
+
+</html>
+

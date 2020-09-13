@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Now we'll add an operator to the language: the <strong>%</strong> operator, also called the <strong>modulus</strong>. For positive numbers, this gives the remainder resulting from dividing one number by the other -- but just the remainder, where we don't care about the quotient, or get the quotient elsewhere.</p>
+      <p>So 13-modulus-5 is 3, 11-modulus-2 is 1. And now, there is an easier way to tell if one number is a factor of another, because if it is, then the bigger number modulus the smaller one will be zero.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        print line 13 % 5;
+        print line 11 % 2;
+        print line 95 % 5;
+
+        if 51 % 3 == 0
+        {
+          print line "51 is a multiple of 3.";
+        }
+        if 52 % 3 == 0
+        {
+          print line "52 is a multiple of 3.";
+        }
+      </div>
+      <div id="Python" >
+        print 13 % 5
+        print 11 % 2
+        print 95 % 5
+
+        if 6 % 2 == 0:
+            print "6 is even."
+        if 11 % 2 == 0:
+            print "11 is even."
+
+        if 51 % 3 == 0:
+            print "51 is a multiple of 3."
+        if 52 % 3 == 0:
+            print " 52 is a multiple of 3."
+      </div>
+      <div id="JavaScript" >
+        print(13 % 5);
+        print(11 % 2);
+        print(95 % 5);
+
+        if(51 % 3 == 0)
+        {
+          print("3 is a factor of 51.");
+        }
+        if(52 % 3 == 0)
+        {
+          print("3 is a factor of 52.");
+        }
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("The Modulus Operator", false);
+  </script>
+
+</body>
+
+</html>
+

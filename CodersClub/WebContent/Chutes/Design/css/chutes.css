@@ -1,0 +1,192 @@
+html
+{
+  background-image: url("../img/Puzzle/BG.png");
+  font-family: Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+}
+
+h2
+{
+  margin: 8px;
+}
+
+#program, #program1
+{
+  float: left;
+}
+
+#program2, #designArea
+{
+  float: right;
+  margin-left: 5px;
+}
+
+.program
+{
+  background: #0000;
+}
+
+.program p
+{
+  margin: 0;
+}
+
+#teamUp {
+  display: none;
+  float: right;
+  margin-left: 5px;
+  width: 230px;
+  background: white;
+  padding: 12px;
+  border: 1px solid black;
+  box-shadow: 5px 5px 4px #8888;
+}
+
+#code, .codeplace
+{
+  height: 100%;
+  width: 250px;
+  background: white;
+  border: 1px solid black;
+  box-shadow: 5px 5px 4px #8888;
+}
+
+.balloon
+{
+  display: none;
+  position: relative;
+  z-index: 100;
+  width: 210px;
+  margin: 12px;
+  padding: 8px;
+  border-radius: 5px;
+  font-family: Lucida Console,Courier New,Courier,Consolas,monospace,sans-serif;
+}
+
+.error
+{
+  top: -102px;
+  height: 60px;
+  border: 1px solid red;
+  background: #ffe;
+  color: red;
+}
+
+.status
+{
+  top: -60px;
+  height: 18px;
+  border: 1px solid blue;
+  background: #eff;
+  color: blue;
+  text-align: center;
+}
+
+#puzzle
+{
+  margin-left: 260px;
+}
+
+#title
+{
+  float: right;
+}
+
+#programHelp
+{
+  position: absolute;
+  bottom: 8px;
+  z-index: 99;
+  margin: 0;
+  padding: 6px;
+  background: #fff0;
+  font-family: Lucida Console,Courier New,Courier,Consolas,monospace,sans-serif;
+  font-size: 12pt;
+  white-space: pre;
+}
+
+#designHelp
+{
+  position: absolute;
+  bottom: 8px;
+  right: 264px;
+  z-index: 99;
+  margin: 0;
+  padding: 6px;
+  background: #fff0;
+  font-family: Lucida Console,Courier New,Courier,Consolas,monospace,sans-serif;
+  font-size: 12pt;
+  white-space: pre;
+}
+
+.fixture
+{
+  position: absolute;
+}
+
+.platform
+{
+  position: absolute;
+  width: 80px;
+  height: 8px;
+  background-image: url("../img/Puzzle/Brick.png");
+  background-size: 20px 8px;
+  z-index: 0;
+}
+
+.chute
+{
+  width: 30px;
+  background-repeat: no-repeat;
+  z-index: 10;
+}
+
+.chute1
+{
+  height: 68px;
+  background-image: url("../img/Puzzle/Chute1.png");
+  background-size: 30px 68px;
+}
+
+.chute2
+{
+  height: 136px;
+  background-image: url("../img/Puzzle/Chute2.png");
+  background-size: 30px 136px;
+}
+
+.chute3
+{
+  height: 204px;
+  background-image: url("../img/Puzzle/Chute3.png");
+  background-size: 30px 204px;
+}
+
+.ladder
+{
+  width: 24px;
+  height: 80px;
+  background-image: url("../img/Puzzle/Ladder.png");
+  background-size: 24px 24px;
+  z-index: 11;
+}
+
+.goal
+{
+  width: 40px;
+  height: 72px;
+  background-image: url("../img/Puzzle/Goal/Clover.png");
+  background-size: 40px 72px;
+  background-repeat: no-repeat;
+  z-index: 1;
+  transition: top 2s;
+}
+
+.player
+{
+  position: absolute;
+  width: 30px;
+  height: 50px;
+  padding: 0;
+  z-index: 2;
+}
+

@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p></p>
+      <p class="language NCL" >NCL lets you define number <em>variables</em>, which represent values that you can change during the program. You declare variables by stating its type (a "number"), name, and starting value.</p>
+      <p class="language Python" >Python lets you define <em>variables</em>, which represent values that you can change during the program. You declare variables by stating the variable name and setting it to a equal starting value.
+      <p class="language JavaScript" >JavaScript lets you define number <em>variables</em>, which represent values that you can change during the program. You declare variables with the keyword <strong>let</strong>, followed by the variable name and starting value.</p>
+      <p>Then, you can change the value of a variable over time -- just by giving it a new value, or by using arithmetic. Variable names are "case-sensitive," which means that however you write the variable name initially, you have to write it that way after that. So you can't call it "count" and then later call it "COUNT" or "Count" (or "cOuNt" -- but why would you do that?).</p>
+      <p class="language Python" >You can also print a few things on one line, just by separating them with commas:</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number count = 1;
+        print line "Count is " + count;
+
+        count = 2;
+        print line "Count is " + count;
+      </div>
+      <div id="Python" >
+        count = 1
+        print "Count is", count
+
+        count = 2
+        print "Count is", count
+
+        count = 3
+        print "Now, there are", count, "things."
+      </div>
+      <div id="JavaScript" >
+        let count = 1;
+        print("Count is " + count);
+
+        count = 2;
+        print("Count is " + count);
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Variables", false);
+  </script>
+
+</body>
+
+</html>
+

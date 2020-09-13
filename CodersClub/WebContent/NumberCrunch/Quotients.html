@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p class="language NCL JavaScript" >The modulus operator is also the gateway to finding a whole-number quotient when a number is not evenly divisible by another. The trick is to take the modulus as the remainder, subtract it, and then divide the remaining value, which now must be a multiple of the divisor.</p>
+      <p class="language Python" >The modulus operator is also pairs up nicely with a whole-number quotient. Remember that, in Python, the <strong>/</strong> operator gives you the whole-number quotient, and loses the remainder.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        // As a decimal:
+        number result = 35 / 8;
+        print line "35 divided by 8 is " + result;
+
+        // As quotient and remainder, or mixed number:
+        number remainder = 35 % 8;
+        number evenMultiple = 35 - remainder;
+        number quotient = evenMultiple / 8;
+        print line "... or " + quotient +
+          " and " + remainder + " eighths.";
+      </div>
+      <div id="Python" >
+        # As a decimal:
+        print "35 divided by 8 is", 35.0 / 8.0
+
+        # As quotient and remainder, or mixed number:
+        remainder = 35 % 8
+        quotient = 35 / 8
+        print "... or", quotient, "and", remainder, " eighths."
+      </div>
+      <div id="JavaScript" >
+        // As a decimal:
+        let result = 35 / 8;
+        print("35 divided by 8 is " + result);
+
+        // As quotient and remainder, or mixed number:
+        let remainder = 35 % 8;
+        let evenMultiple = 35 - remainder;
+        let quotient = evenMultiple / 8;
+        print("... or " + quotient +
+          " and " + remainder + " eighths.");
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Quotient and Remainder", false);
+  </script>
+
+</body>
+
+</html>
+

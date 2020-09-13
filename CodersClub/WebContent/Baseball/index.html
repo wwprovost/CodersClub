@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Baseball</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/baseball.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>In this activity you will write programs that simulate the game of baseball, in terms of different kinds of base hits, runners on bases, outs, and runs scored. Your program must set variables <strong>hits</strong>, <strong>runs</strong>, and <strong>outs</strong>, all of which are numbers; and <strong>on_base</strong>, which is a list of boolean (True or False) values. For example [ False, True, True ] means that there's no one on first base, but runners on second and third.</p>
+      <p>The example program below runs through an inning, with all of the hits and outs known in advance. Run it by clicking <strong>Animate</strong>, and see how the scoreboard updates as the program progresses.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+on_base = [ False, False, False ]
+runs = 0
+hits = 0
+outs = 0
+
+hits += 1
+on_base[0] = True
+print "Single"
+
+outs += 1
+print "Out ", outs
+
+hits += 1
+on_base = [ False, True, True ]
+print "Double"
+
+outs += 1
+print "Out ", outs
+
+hits += 1
+runs += 2
+on_base = [ False, True, False ]
+print "Double"
+
+outs += 1
+print "Out ", outs
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Simulation } from "./js/baseball.js";
+    new Simulation("", false);
+  </script>
+
+</body>
+
+</html>
+

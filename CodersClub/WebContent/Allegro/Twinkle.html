@@ -1,0 +1,216 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Allegro</title>
+  <link rel="stylesheet" type="text/css" href="css/allegro.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="../blockly/blockly_compressed.js" ></script>
+  <script src="../blockly/blocks_compressed.js" ></script>
+  <script src="../blockly/acorn_interpreter.js" ></script>
+  <script src="../blockly/javascript_compressed.js" ></script>
+  <script src="../blockly/msg/js/en.js" ></script>
+</head>
+
+<body>
+
+  <div id="controls" >
+    <div style="margin-top: 8px;" >
+      <span style="float: right;" >
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+        onclick="window.location.href=previousPage();"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+        onclick="window.location.href=nextPage();"
+      />
+      </span>
+    </div>
+    <div class="inset" >
+      <div id="allegro" ><em>allegro</em></div>
+      <p style="margin-bottom: 0;" >Today's musical selection:</p>
+      <p style="margin-top: 0; padding-left: 1em;" ><strong id="title" ></strong></p>
+      <p>
+        <input
+          type="button"
+          class="button"
+          style="width: 100%";
+          id="sample"
+          value="Play sample"
+        />
+      </p>
+    </div>
+    <div>
+      <input
+        type="range"
+        id="volume"
+        min="0"
+        max="100"
+        value="75"
+      />
+    </div>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="start"
+        value="Run program"
+      />
+    </p>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="stop"
+        value="Stop"
+      />
+    </p>
+    <div class="explainer" >
+      <p>Now try writing a program to play "Twinkle, Twinkle, Little Star," re-using musical phrases as much as you can. The first phrase is filled in, and the main program plays it to start the song. What happens next?</p>
+    </div>
+    <p>
+      <input type="button" id="reset" value="Reset" />
+    </p>
+  </div>
+
+  <div id="code" >
+  </div>
+  <div id="error" >
+  </div>
+
+  <div id="toolboxBase" style="display: none">
+    <xml>
+      <block type="duration_quarter"></block>
+      <block type="duration_eighth"></block>
+      <block type="allegro_play"></block>
+      <block type="allegro_rest"></block>
+      <block type="allegro_up"></block>
+      <block type="allegro_down"></block>
+      <block type="allegro_play_and_up"></block>
+      <block type="allegro_play_and_down"></block>
+      <block type="procedures_defnoreturn"></block>
+      <more_blocks></more_blocks>
+    </xml>
+  </div>
+
+  <div id="callBlockTemplate" style="display: none">
+    <block type="procedures_callnoreturn">
+      <mutation name="PROCEDURE_NAME"></mutation>
+    </block>
+  </div>
+
+  <div id="sampleCode" style="display: none;" >
+
+    play(.25);
+    play(.25);
+    up(4);
+    play(.25);
+    play(.25);
+    up(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    up(4);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    up(3);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    down(1);
+
+    play(.25);
+    play(.25);
+    up(4);
+    play(.25);
+    play(.25);
+    up(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.5);
+
+  </div>
+
+  <div id="sampleBlocks" style="display: none;" >
+    <xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables><block type="procedures_defnoreturn" id="-YPr`1UGf9+r8l]rIvUi" x="50" y="30"><field name="NAME">twinkle twinkle</field><statement name="STACK"><block type="allegro_play" id="*r,4qpKnn-hGL6ziUP9F"><value name="duration"><block type="duration_quarter" id="=XIMN47Dsg}@Z%.}5?04"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_up" id="T)_7fZ_IZ-P[?7ux~jmv"><field name="steps">4</field><value name="duration"><block type="duration_quarter" id="lWt{7t$fini]::cxOJ1z"><field name="value">0.25</field></block></value><next><block type="allegro_play" id="Jg.8q%Z$?Pf),4/tasss"><value name="duration"><block type="duration_quarter" id="X{Ct:wiDyQVtWa-{,XtJ"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_up" id="h0V)O)$otMIa._NeyS6)"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="NF;)!3?C3onm%}5x!HoR"><field name="value">0.25</field></block></value><next><block type="allegro_play" id="bI7.PGEV,{G_?e^6|!Ku"><value name="duration"><block type="duration_quarter" id="P[Uhy_O.P-FrvDfkowwF"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_down" id="L{04X4KnArgQA3/[+s,|"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="pL{_FK%e4fu(]f%8yqCb"><field name="value">0.25</field></block></value><next><block type="allegro_play" id="F,HK2olVza{%h4v7z,lL"><value name="duration"><block type="duration_quarter" id="tkivrY.-c)6cRLvtiE^}"><field name="value">0.25</field></block></value><next><block type="allegro_rest" id="bXEB[}k|`cNTmyv^2X57"><value name="duration"><block type="duration_quarter" id="U3$E8=~oMg;Lue%XhSJk"><field name="value">0.25</field></block></value></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></statement></block><block type="procedures_defnoreturn" id=")|)Muaa.e:dM_kkC|:UG" x="389" y="27"><field name="NAME">how I wonder</field></block><block type="procedures_callnoreturn" id="sC/1+]v,,MJlwYKI$u,l" x="59" y="362"><mutation name="twinkle twinkle"></mutation><next><block type="procedures_callnoreturn" id="@t}OMX3gE*u4d:ne+Bw!"><mutation name="how I wonder"></mutation><next><block type="procedures_callnoreturn" id=")FDjezF-P-=?XMgc1bOt"><mutation name="up above"></mutation></block></next></block></next></block><block type="procedures_defnoreturn" id="^meinw2rU-+N`_Jag7~[" x="392" y="364"><field name="NAME">up above</field></block></xml>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Allegro } from "./js/allegro.js";
+
+    $(document).ready(function()
+      {
+        var allegro = new Allegro("Twinkle, Twinkle", true).showSample();
+
+        $("#reset").click(function(ev)
+          {
+            allegro.showSample();
+          });
+      });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Allegro</title>
+  <link rel="stylesheet" type="text/css" href="css/allegro.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="../blockly/blockly_compressed.js" ></script>
+  <script src="../blockly/blocks_compressed.js" ></script>
+  <script src="../blockly/acorn_interpreter.js" ></script>
+  <script src="../blockly/javascript_compressed.js" ></script>
+  <script src="../blockly/msg/js/en.js" ></script>
+</head>
+
+<body>
+
+  <div id="controls" >
+    <div style="margin-top: 8px;" >
+      <span style="float: right;" >
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+        onclick="window.location.href=previousPage();"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+        onclick="window.location.href=nextPage();"
+      />
+      </span>
+    </div>
+    <div class="inset" >
+      <div id="allegro" ><em>allegro</em></div>
+      <p style="margin-bottom: 0;" >Today's musical selection:</p>
+      <p style="margin-top: 0; padding-left: 1em;" ><strong id="title" ></strong></p>
+      <p>
+        <input
+          type="button"
+          class="button"
+          style="width: 100%";
+          id="sample"
+          value="Play sample"
+        />
+      </p>
+    </div>
+    <div>
+      <input
+        type="range"
+        id="volume"
+        min="0"
+        max="100"
+        value="75"
+      />
+    </div>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="start"
+        value="Run program"
+      />
+    </p>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="stop"
+        value="Stop"
+      />
+    </p>
+    <div class="explainer" >
+      <p>You can define your own musical phrases, and give each one a name. Then you can play a given phrase whenever you like.</p>
+      <p>So here is "Hot Cross Buns" once again, but now the recurring three-note melody is defined just once, in the phrase "hot cross buns," and played from the main program.</p>
+    </div>
+  </div>
+
+  <div id="code" >
+  </div>
+  <div id="error" >
+  </div>
+
+  <div id="toolboxBase" style="display: none">
+    <xml>
+      <block type="duration_quarter"></block>
+      <block type="duration_eighth"></block>
+      <block type="allegro_play"></block>
+      <block type="allegro_rest"></block>
+      <block type="allegro_up"></block>
+      <block type="allegro_down"></block>
+      <block type="allegro_play_and_up"></block>
+      <block type="allegro_play_and_down"></block>
+      <block type="controls_repeat"></block>
+      <block type="procedures_defnoreturn"></block>
+      <block type="procedures_callnoreturn">
+        <mutation name="hot cross buns"></mutation>
+      </block>
+      <more_blocks></more_blocks>
+    </xml>
+  </div>
+
+  <div id="sampleBlocks" style="display: none" >
+    <xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables><block type="procedures_defnoreturn" id="0dm-f4uD`et]bnMiiUZ{" x="18" y="16"><field name="NAME">hot cross buns</field><statement name="STACK"><block type="allegro_play_and_down" id="Dc3^|(EuRe0xn5E7+5;_"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="zsGX2qE3jG_(e6PD{NST"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_down" id="jVN1x2;r8[Q.+Z{_XS;T"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="ak:IVF4gF|Z0X0Jp3G4N"><field name="value">0.25</field></block></value><next><block type="allegro_play" id="Ns4EIl}b-:!J$CO9S13y"><value name="duration"><block type="duration_quarter" id="@(~I^9p||x,zq7XjLR2A"><field name="value">0.25</field></block></value><next><block type="allegro_rest" id=".?sI*KV(;){A]iqlh]Rd"><value name="duration"><block type="duration_quarter" id="_x|^F9Rqi+Gj1cMG!x$a"><field name="value">0.25</field></block></value></block></next></block></next></block></next></block></statement></block><block type="allegro_up" id="pi6,]u0VxH7W*IK_Pak|" x="21" y="208"><field name="steps">2</field><next><block type="procedures_callnoreturn" id="Rs}MAA26!)bnQ|yzUXJT"><mutation name="hot cross buns"></mutation><next><block type="allegro_up" id="TdGLt@0scX!dJ@01I0eN"><field name="steps">2</field><next><block type="procedures_callnoreturn" id=",ujdc8Q~,iD:nhDCU,F="><mutation name="hot cross buns"></mutation><next><block type="controls_repeat" id="_t?mGFZG1!x~Zau0YQ8p"><field name="TIMES">2</field><statement name="DO"><block type="controls_repeat" id="g4kAp3:@(V51HtYx%x=c"><field name="TIMES">4</field><statement name="DO"><block type="allegro_play" id="6,IO[;9QH#9w]6LXR)k?"><value name="duration"><block type="duration_eighth" id=")i)2H1_Fy/oNY+HoNF*i"><field name="value">0.125</field></block></value></block></statement><next><block type="allegro_up" id="ir*Eg;U%0hA/}gQh|`?Z"><field name="steps">1</field></block></next></block></statement><next><block type="procedures_callnoreturn" id="6*6HOIEu)Pu2v%!,7omj"><mutation name="hot cross buns"></mutation></block></next></block></next></block></next></block></next></block></next></block></xml>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Allegro } from "./js/allegro.js";
+
+    $(document).ready(function()
+      {
+        new Allegro("Hot Cross Buns").showSample();
+      });
+  </script>
+
+</body>
+
+</html>
+

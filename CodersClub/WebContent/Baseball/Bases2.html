@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Baseball</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/baseball.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Copy both of your <strong>runs_scored()</strong> and <strong>bases_occupied()</strong> function and paste it in here, above the starter code. Then, write a loop through the list of at-bats: each time, count up <strong>hits</strong> and any <strong>runs</strong> scored, and set <strong>on_base</strong> to the new list of bases occupied.</p>
+      <p>Click <strong>Animate</strong> and you should see a hypothetical inning played out. At the end, you should see 4 hits, 2 runs, and runners stranded on 1st and 3rd base.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+# Paste in your functions here
+
+hits = 0
+runs = 0
+on_base = [ False, False, False ]
+results = [ 1, 0, 2, 0, 2, 1, 0 ]
+
+# Write your loop here
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Simulation } from "./js/baseball.js";
+    new Simulation("Several hits in a row", true);
+  </script>
+
+</body>
+
+</html>
+

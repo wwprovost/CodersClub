@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+</head>
+
+<body>
+
+  <h2 id="title">
+    <span style="float: right;">
+      <input type="button" value="Back" class="CCButton" onclick="window.location.href='Roll2Dice.html'" >
+      <input type="button" value="Next" class="CCButton" onclick="window.location.href='Yahtzee1.html'" >
+    </span>
+    Number Crunch
+  </h2>
+
+  <h3 id="subtitle">Final Challenges: Yahtzee!</h3>
+
+  <p>Okay! It appears that you are ready for the final Number-Crunch challenges, in which you simulate the rolling of 5 dice as in the game of Yahtzee. This two-part challenge is more complicated, and it will take some time to develop the programs.</p>
+  <p>The rules of the game are that the values of the 5 dice can score in various ways -- from best to worst:</p>
+  <ul>
+    <li><strong>Five of a kind</strong></li>
+    <li><strong>Four of a kind</strong></li>
+    <li><strong>Full straight</strong> -- either 1-2-3-4-5 or 2-3-4-5-6, but the order doesn't matter</li>
+    <li><strong>Full house</strong> -- three of one number and two of another</li>
+    <li><strong>Short straight</strong> -- 1-2-3-4, 2-3-4-5, or 3-4-5-6, and again the order doesn't matter, and neither does the fifth value</li>
+    <li><strong>Three of a kind</strong></li>
+    <li><strong>Two pair</strong></li>
+    <li><strong>One pair</strong></li>
+  </ul>
+  <p>Your first program will roll those 5 dice, and then determine if the result is one of the 8 scoring combinations shown above. To do this, you will need first to count up the occurrences of each of the 6 possible values. Then, you'll build functions to check for matches (5, 4, 3, or 2, all can be checked with one function, if you're careful how you write it), for full houses, straights, etc. You'll call these functions and print out the one and only one correct label for the hand -- one of the 8 names above, or "non-scoring" if none apply.</p>
+  <p>Click <strong>Next</strong> to start writing your program.</p>
+
+</body>
+
+</html>
+

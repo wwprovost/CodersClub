@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p class="language NCL Python" >Here's a big new idea: you can define a <strong>procedure</strong> as a body of code that you can then call from sonewhere else in your program. And procedures can have <strong>parameters</strong>, so that the callers can supply different inputs to the procedure's logic.</p>
+      <p class="language JavaScript" >Here's a big new idea: you can define a <strong>procedure</strong> as a body of code that you can then call from sonewhere else in your program. And procedures can have <strong>parameters</strong>, so that the callers can supply different inputs to the procedure's logic. In JavaScript, a procedure is really just a <strong>function</strong> that doesn't return a value.</p>
+      <p>In this program the <strong>printXs</strong> procedure takes a parameter <strong>howMany</strong>, and will print a line of 'x' characters of whatever length the caller requests.</p>
+      <p>Once you've defined a procedure, you <strong>call</strong> it by name, and pass values for the parameters in parentheses.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        procedure printXs(howMany)
+        {
+          repeat howMany times
+          {
+            print "x";
+          }
+          new line;
+        }
+
+        call printXs(10);
+        call printXs(2);
+        call printXs(32);
+      </div>
+      <div id="Python" >
+        def printXs(howMany):
+            line = ""
+            for x in range(howMany):
+                line = line + "X"
+            print line
+
+        printXs(10)
+        printXs(2)
+        printXs(32)
+      </div>
+      <div id="JavaScript" >
+        function printXs(howMany)
+        {
+          let line = "";
+          for (let x = 0; x < howMany; ++x)
+          {
+            line = line + "X";
+          }
+          print(line);
+        }
+
+        printXs(10);
+        printXs(2);
+        printXs(32);
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Procedures", false);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Baseball</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/baseball.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Now write a function <strong>bases_occupied</strong>. Just like <strong>runs_scored()</strong>, this will take a <strong>hits</strong> and a <strong>bases</strong> parameter. But this function will modify <strong>bases</strong> and return the updated list.</p>
+      <p>You'll need to loop through the list of bases, and for each occupied base (value is True), "move" that runner ahead. A few tricks to this:</p>
+      <ul>
+        <li>Some runners will move off the end of the list: those are the ones who cross home plate and score runs, and so we don't track them in this list anymore. In other words, they're no longer on base.</li>
+        <li>You'll have an easier time if you work <strong>backwards</strong> from 3rd base to 1st. If you loop forwards, you might move a runner onto a base already occupied by another runner -- or move the same runner forward, over and over.</li>
+      </ul>
+      <p>Remember to put the batter who got the hit on base, too.</p>
+      <p>Un-comment the starter code to test your function.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+# You should see runners at all 3 bases:
+#on_base = bases_occupied(1, [ True, True, False ])
+
+# You should see runners at 1st and 2nd base:
+#on_base = bases_occupied(1, [ True, False, True ])
+
+# You should see a runner at 3rd:
+#on_base = bases_occupied(3, [ True, False, True ])
+
+# No runners at any bases after a home run:
+#on_base = bases_occupied(4, [ False, True, False ])
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Simulation } from "./js/baseball.js";
+    new Simulation("Challenge 2: a bases_occupied() function", true);
+  </script>
+
+</body>
+
+</html>
+

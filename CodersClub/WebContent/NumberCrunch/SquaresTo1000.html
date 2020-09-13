@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Write a program, like your previous one that printed the first ten squares. But this one should keep going until the square (not the root number, but the number times itself) is over 1000.</p>
+      <p>What's the largest square that's smaller than 1000? When you've got it, type it next to "What's the answer?" above, and hit Enter or Return.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #7: Squares Up To 1000", true, 961);
+  </script>
+
+</body>
+
+</html>
+

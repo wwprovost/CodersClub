@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>You can put any statements in a block that you could put in your program generally. That means that you can "nest" conditionals and loops.</p>
+      <p>This program makes a grid of 5 rows and 5 columns. Try running it. Then, try replacing the "5" in the second loop with the variable <strong>count</strong>. See how, because count varies each time, the rectangular shape turns into a triangle?</p>
+      <p class="language NCL" ></p>
+      <p class="language Python" ></p>
+      <p class="language JavaScript" ></p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number count = 1;
+        repeat 5 times
+        {
+          repeat 5 times
+          {
+            print "x";
+          }
+          new line;
+          count = count + 1;
+        }
+      </div>
+      <div id="Python" >
+        for row in range(5):
+            line = ""
+            for column in range(5):
+                line = line + "x"
+            print line
+      </div>
+      <div id="JavaScript" >
+        for (let count1 = 0; count1 < 5; ++count1)
+        {
+            let line = "";
+            for (let count2 = 0; count2 < 5; ++count2)
+            {
+                line = line + "x";
+            }
+            print(line);
+        }
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Nesting Loops", false);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,432 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <title>Coders' Progress</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+  <link rel="stylesheet" type="text/css" href="../css/admin.css" />
+<style>
+p {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+#beltsTable {
+  margin-top: 16px;
+}
+
+#since {
+  width: 80px;
+  margin-top: 12px;
+}
+
+#codersTable {
+  margin-left: 240px;
+}
+
+.earnedWhite {
+  background: #ddd;
+}
+
+.earnedYellow {
+  background: #f8f800;
+}
+
+.earnedOrange {
+  background: #fb6;
+}
+
+.earnedBrown {
+  color: white;
+  background: #c70;
+}
+
+.earnedRed {
+  color: white;
+  background: #e44;
+}
+
+.earnedPurple {
+  color: white;
+  background: #c6c;
+}
+
+.earnedBlue {
+  color: white;
+  background: #66c;
+}
+
+.earnedBlack {
+  color: white;
+  background: black;
+}
+
+.notEarned {
+  color: #444;
+  background: white;
+}
+
+#emailDialog table, #emailDialog table tr td {
+  border: none;
+}
+
+#emailSubject {
+  width: 300px;
+}
+
+#emailBody {
+  width: 600px;
+  height: 250px;
+  margin-top: 12px;
+  margin-bottom: 24px;
+}
+
+.tightDialog {
+  left: 80px;
+  width: 500px;
+}
+</style>
+</head>
+
+<body>
+<div class="main" >
+
+  <div id="navigation" class="nav" >
+    <h2>Coders' Progress</h2>
+    <p><input type="button" id="sorting" value="Sorting by name only" /></p>
+    <p><input type="button" id="filtering" value="Showing all members" /></p>
+    <p><input type="button" id="email" value="Showing e-mail addresses" /></p>
+    <p>On or after <input type="text" id="since" placeholder="m/d/yy" /></p>
+    <p><input type="button" id="send" value="Send award e-mails" /></p>
+    <table id="beltsTable" >
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+
+  <table id="codersTable" >
+    <thead>
+      <tr>
+        <th colspan="2" >Name</th>
+        <th id="emailHeader" style="display: none;" >Parent E-Mail</th>
+        <th colspan="8" >Belts</th> <!-- Set this based on belts array -->
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <div id="emailDialog" class="dialog bigDialog" >
+    <table>
+      <tbody>
+        <tr>
+          <td>Send to:</td>
+          <td id="emailRecipient" ></td>
+        </tr>
+        <tr>
+          <td>Subject:</td>
+          <td><input id="emailSubject" type="text" /></td>
+        </tr>
+      </tbody>
+    </table>
+    <textarea id="emailBody" ></textarea>
+    <p>
+      <input id="emailSend" type="button" value="Send" default />
+      <input id="emailSkip" type="button" value="Skip" />
+      <input id="emailCancel" type="button" value="Cancel" />
+      <input id="emailBCC" type="checkbox" checked="checked" />
+      <span id="emailBCCAddress" >BCC</span>
+      <img id="emailBusy" src="../img/Working.gif" alt="Sending ..." height="20" />
+    </p>
+  </div>
+
+  <div id="passwordDialog" class="dialog tightDialog" >
+    <h2>E-Mail Authentication</h2>
+    <p>Your mail server requires a password for authentication. The configured username is <span id="passwordUsername" ></span>. Please enter your password below, and click <strong>Submit</strong>.</p>
+    <p>Password: <input id="password" type="password" /></p>
+    <p>
+      <input id="passwordOK" type="button" value="Submit" default />
+      <input id="passwordCancel" type="button" value="Cancel" />
+    </p>
+  </div>
+
+  <div id="errorDialog" class="dialog tightDialog" >
+    <p>The server was unable to send this message. <span id="errorMessage" ></span></p>
+    <p>
+      <input id="errorOK" type="button" value="OK" default />
+    </p>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        AdminPage,
+        checkFor200,
+        EMailDialog,
+        EMailToParent
+      } from "../js/utility.js";
+
+    let coders = [];
+    let belts = [
+          { name: "White" },
+          { name: "Yellow" },
+          { name: "Orange" },
+          { name: "Brown" },
+          { name: "Red" },
+          { name: "Purple" },
+          { name: "Blue" },
+          { name: "Black" }
+      ];
+
+    let sortByBelt = false;
+    let showActiveOnly = false;
+    let showEMail = false;
+    let sinceWhen = null;
+
+    function toggleSorting(ev) {
+      sortByBelt = !sortByBelt;
+      ev.target.value = sortByBelt
+        ? "Sorting by belt first"
+        : "Sorting by name only";
+      refreshTable();
+    }
+
+    function toggleFiltering(ev) {
+      showActiveOnly = !showActiveOnly;
+      ev.target.value = showActiveOnly
+        ? "Showing active members"
+        : "Showing all members";
+      listBelts();
+      refreshTable();
+    }
+
+    function toggleEMail(ev) {
+      showEMail = !showEMail;
+      ev.target.value = showEMail
+        ? "Showing e-mail addresses"
+        : "Hiding e-mail addresses";
+      document.getElementById("emailHeader").style.display =
+        showEMail ? "table-cell" : "none";
+      refreshTable();
+    }
+
+    function filterByDate() {
+      let text = document.getElementById("since").value;
+      if (text != "") {
+        let parts = text.split("/");
+        if (parts.length > 2)  {
+          try {
+            let year = parseInt(parts[2]);
+            if (year < 100) {
+              year += 2000;
+            }
+            let month = parseInt(parts[0]);
+            let day = parseInt(parts[1]);
+
+            sinceWhen = year * 10000 + month * 100 + day;
+            listBelts();
+            refreshTable();
+            return true;
+          } catch (err) {
+            showError("Please enter a date in the format mm/dd/yy.");
+            return false;
+          }
+        } else {
+          showError("Please enter a date in the format mm/dd/yy.");
+          return false;
+        }
+      }
+
+      sinceWhen = null;
+      listBelts();
+      refreshTable();
+      return true;
+    }
+
+    function handleSince(ev) {
+      if (ev.keyCode == 13) {
+        filterByDate();
+      }
+    }
+
+    function sendAwardEMails() {
+        if (filterByDate()) {
+          let since = "";
+          if (sinceWhen) {
+            let year = Math.floor(sinceWhen / 10000);
+            let month = Math.floor(sinceWhen % 10000 / 100);
+            let day = sinceWhen % 100;
+            since = "?since=" + year + "-";
+            if (month < 10) {
+              since += "0";
+            }
+            since += month + "-";
+            if (day < 10) {
+              since += "0";
+            }
+            since += day;
+          }
+
+          fetch("../REST/Staff/BeltAwards" + since)
+            .then(checkFor200)
+            .then(response => response.json())
+            .then(body => {
+                if (body.length != 0) {
+                  let messages = body.map(award => new EMailToParent
+                    (award.coder, award.subject, award.body));
+                  new EMailDialog("emailDialog", messages).show();
+                } else {
+                  showError("No belts have been earned" +
+                    (since
+                      ? " since " + document.getElementById("since").value
+                      : "")
+                    + ".");
+                }
+              })
+            .catch(console.log);
+      }
+    }
+
+    function getCodersToShow() {
+      let codersToShow = coders;
+      if (showActiveOnly) {
+        codersToShow = codersToShow.filter(coder => coder.group != null);
+      }
+      if (sinceWhen) {
+        codersToShow = codersToShow.filter(coder => coder.latest >= sinceWhen);
+      }
+
+      return codersToShow;
+    }
+
+    function listBelts() {
+      let codersToShow = getCodersToShow();
+      let beltsTable = document.querySelector("#beltsTable tbody");
+      beltsTable.innerHTML = "";
+      belts.forEach((belt, index) => {
+          let row = beltsTable.insertRow();
+          row.insertCell().textContent = belt.name;
+
+          let countCell = row.insertCell();
+          countCell.id = "count" + index;
+          countCell.style.textAlign = "right";
+          countCell.textContent = "" +
+            codersToShow.filter(coder => coder.belts[index].earned).length;
+
+          row.classList.add(belt.css);
+        });
+    }
+
+    function showChecklist(ev) {
+      let row = ev.target.parentNode;
+      let coderID = row.id.replace("coder", "");
+      window.location = "../Coach/History.do?coder=" + coderID;
+    }
+
+    function addClickableText(row, text) {
+      let cell = row.insertCell();
+      cell.textContent = text;
+      cell.onclick = showChecklist;
+      cell.style.cursor = "pointer";
+      return cell;
+    }
+
+    function buildRows(tbody, coders) {
+      fetch("https://random-word-api.herokuapp.com/word?swear=0&number=" +
+          (coders.length * 2))
+        .then(checkFor200)
+        .then(response => response.json())
+        .then(words => {
+            let w = 0;
+            for (let coder of coders) {
+              let row = tbody.insertRow();
+              row.id = "coder" + coder.ID;
+              addClickableText(row, words[w++]);
+              addClickableText(row, words[w++]);
+
+              if (showEMail) {
+                row.insertCell().textContent = coder.parentEMail;
+              }
+
+              belts.forEach((belt, index) => {
+                  let cell = row.insertCell();
+                  cell.classList.add(coder.belts[index].earned ? belt.css : "notEarned");
+                  cell.textContent = "" + coder.belts[index].points;
+                });
+            }
+          })
+        .catch(console.log);
+    }
+
+    function refreshTable() {
+      let tbody = document.querySelector("#codersTable tbody");
+      tbody.innerHTML = "";
+
+      let codersToShow = getCodersToShow();
+      if (sortByBelt) {
+        for (let index = -1; index < belts.length; ++index) {
+          buildRows(tbody, codersToShow.filter(coder => coder.highest == index));
+        }
+      } else {
+        buildRows(tbody, codersToShow);
+      }
+    }
+
+    function refreshWithData(listOfCoders) {
+      coders = listOfCoders;
+
+      for (let coder of coders) {
+        coder.highest = -1;
+        coder.latest = -1;
+        coder.belts.forEach((belt, index) => {
+            if (belt.earned) {
+              coder.highest = index;
+              coder.latest = belt.earned;
+            }
+            belt.points = belt.points || "";
+          });
+
+        // Just in case we're out of synch:
+        for (let i = coder.belts.length; i < belts.length; ++i) {
+          coder.belts.push({ earned: false, points: "" });
+        }
+      }
+
+      for (let belt of belts) {
+        belt.css = "earned" + belt.name;
+      }
+
+      listBelts();
+      refreshTable();
+    }
+
+    window.onload = function() {
+      document.getElementById("sorting").onclick = toggleSorting;
+      document.getElementById("filtering").onclick = toggleFiltering;
+      document.getElementById("email").onclick = toggleEMail;
+      document.getElementById("since").onkeyup = handleSince;
+
+      new AdminPage("navigation", document.querySelector("p.footer"), "..",
+        user => {
+            window.user = user;
+
+            if (user.admin) {
+              document.getElementById("send").onclick = sendAwardEMails;
+            } else {
+              document.getElementById("send").remove();
+            }
+
+          fetch("../REST/Staff/Progress")
+            .then(checkFor200)
+            .then(response => response.json())
+            .then(refreshWithData)
+            .catch(console.log);
+          });
+    }
+  </script>
+
+</div>
+<p class="footer" ></p>
+
+</body>
+
+</html>
+

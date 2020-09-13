@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Chutes &amp; Ladders</title>
+  <link rel="stylesheet" type="text/css" href="css/chutes.css" />
+  <script src="../../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <h2 style="text-align: center;" >
+    <span>Chutes &amp; Ladders Puzzle Design 1</span>
+    <span style="float: left; width: 240px;" >
+      <input type="button" id="run" value="Run" />
+      <input type="button" id="cancel" value="Cancel" />
+      <input type="button" id="reset" value="Reset" />
+    </span>
+    <span style="float: right; width: 240px; text-align: right;" >
+      <input type="button" id="build" value="Build" style="margin-right: 20px;" />
+      <input type="button" id="back" value="Back" />
+      <input type="button" id="next" value="Next" />
+    </span>
+  </h2>
+
+  <div id="program" class="program" >
+    <div id="code" class="codeplace" ></div>
+    <div class="error balloon" >error</div>
+    <div class="status balloon" >status</div>
+  </div>
+
+  <div id="designArea" class="program" >
+    <div id="design" class="codeplace" ></div>
+    <div class="error balloon" >error</div>
+    <div class="status balloon" >status</div>
+  </div>
+  <div id="teamUp" >
+    <p>You'll need a partner for this team-coding activity. The coder who creates the team will be the puzzle designer, and the coder who joins the team will code for the player.</p>
+    <p>To start a team, with yourself as the designer, click this button to ...</p>
+    <input id="createTeam" type="button" class="btn" value="Create your team" ></input>
+    <p id="teamCreated" ></p>
+    <br/>
+    <p>To join a team as the player, enter the team code here, and click to ...</p>
+    <input id="teamToJoin" type="text" size="8" ></input>
+    <input id="joinTeam" type="button" class="btn" value="Join team" ></input>
+  </div>
+
+  <div id="puzzle" >
+    <div id="title" ></div>
+    <div id="limit" ></div>
+    <div id="programHelp" >
+go
+go until [thing]
+turn
+jump up
+jump down
+repeat [N] times
+repeat until [thing]</div>
+    <div id="designHelp" >
+platform [x y length]
+chute [x y depth]
+ladder [x y height]
+goal [x y]
+start [x y]
+limit [N]</div>
+    <div id="pieces" ></div>
+  </div>
+
+</body>
+
+<script type="module" crossorigin="use-credentials" >
+  import { Page } from "./js/chutes.js";
+  new Page();
+</script>
+
+</html>
+

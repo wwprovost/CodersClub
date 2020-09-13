@@ -1,0 +1,100 @@
+html
+{
+  font-family: Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+}
+
+body
+{
+  margin: 0;
+}
+
+#controls
+{
+  float: right;
+  height: 100%;
+  width: 15em;
+  color: white;
+  background-color: #5ca55c;
+  border-left: 1px solid black;
+  padding: 0 8px;
+}
+
+.inset
+{
+  color: #030;
+  background: white;
+  border: 2px inset #5ca55c;
+  margin: 3.5em 0 1.2em;
+  padding: 1em 1.2em;
+}
+
+#allegro
+{
+  font-size: 14pt;
+  color: #ffc;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+#shadow
+{
+  font-size: 14pt;
+  font-style: italic;
+  position: fixed;
+  bottom: 10px;
+  right: 16em;
+  z-index: 999;
+}
+
+#controls p
+{
+  margin: .35em 0;
+}
+
+input[type=button]
+{
+  color: #030;
+  background-color: #ffc;
+  font-size: 14pt;
+  padding: 2px .5em;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+input[type=button][disabled]
+{
+  color: lightgrey;
+}
+
+input[type=range]
+{
+  width: 100%;
+  margin: 0;
+}
+
+#explainer
+{
+  background: white;
+  border: 1px solid #039;
+  border-radius: 8px;
+  position: absolute;
+  top: 4em;
+  left: 4em;
+  right: 300px;
+  padding: .5em 1em;
+  box-shadow: 8px 8px 4px grey;
+  display: none;
+}
+
+#error
+{
+  color: #800;
+  background: #fee;
+  border: 1px solid #800;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 2em;
+  left: 2em;
+  padding: .5em 1em;
+  display: none;
+}

@@ -1,0 +1,115 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Dicey</title>
+  <link rel="stylesheet" type="text/css" href="css/dicey.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="js/dicey.js" ></script>
+</head>
+
+<body>
+
+  <div id="top" >
+    <span class="top" >Dicey</span>
+    <span></span>
+    <span></span>
+    <span style="float: right; margin-right: 1em; " >
+      <input
+        type="button"
+        class="button"
+        id="start"
+        value="Start"
+      />
+      <input
+        type="button"
+        class="button"
+        id="stop"
+        value="Stop"
+      />
+      &nbsp;
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+        onclick="window.location.href='Game4.html';"
+      />
+    </span>
+  </div>
+
+  <div class="oneTurn" style="display: none;" >
+    <img></img>
+    <img></img>
+    <span style="margin-left: 15px;" ></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div id="left" >
+    <div id="gameView" >
+    </div>
+    <div id="gameController" style="width: 100%;" >
+      <div id="form" >
+        <h3>Game #4</h3>
+        <p>Now, you'll roll two dice. Again trying to get exactly <strong>10</strong>, on each turn, you can either <strong>add the sum</strong> or the <strong>subtract the difference</strong> of the numbers on the dice (the higher one minus the lower one).</p>
+        <p>For example, if you roll <img src="img/4.png" alt="4" width="35" /> <img src="img/3.png" alt="3" width="35" />, you can do any of the following:</p>
+        <ul>
+          <li>Add 7</li>
+          <li>Subtract 1</li>
+        </ul>
+        <p>Try it!</p>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <input type="button" id="roll" value="Roll dice" ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="button" id="add" value="Add" ></input>
+              </td>
+              <td>
+                <input type="text" id="valueToAdd" size="4" ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="button" id="subtract" value="Subtract" ></input>
+              </td>
+              <td>
+                <input type="text" id="valueToSubtract" size="4" ></input>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="error" >test
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossOrigin="use-credentials" >
+    import { Dicey, GoalGameView } from "./js/dicey-ui.js";
+    $(document).ready(function()
+      {
+        Dicey.init(4, () => new Game4(), new GoalGameView(), true);
+      });
+  </script>
+
+</body>
+
+</html>
+

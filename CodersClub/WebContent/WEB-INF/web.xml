@@ -1,0 +1,193 @@
+
+<web-app
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0"
+>
+
+  <display-name>Coders' Club</display-name>
+
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <servlet>
+    <servlet-name>WebPages</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WebPages</servlet-name>
+    <url-pattern>*.do</url-pattern>
+    <url-pattern>/SignUp</url-pattern>
+    <url-pattern>/Signup</url-pattern>
+    <url-pattern>/signUp</url-pattern>
+    <url-pattern>/signup</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>Services</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Services</servlet-name>
+    <url-pattern>/REST/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ACMEChallenge</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ACMEChallenge</servlet-name>
+    <url-pattern>/.well-known/acme-challenge/*</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>/EntryPoint.do</welcome-file>
+  </welcome-file-list>
+
+  <mime-mapping>
+    <extension>js</extension>
+    <mime-type>text/javascript;charset=UTF-8</mime-type>
+  </mime-mapping>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Coders</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>*</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Public</web-resource-name>
+      <url-pattern>/REST/Clubs</url-pattern>
+      <url-pattern>/css/*</url-pattern>
+      <url-pattern>/img/*</url-pattern>
+      <url-pattern>/jquery/*</url-pattern>
+      <url-pattern>/js/*</url-pattern>
+      <url-pattern>/.well-known/acme-challenge/*</url-pattern>
+      <url-pattern>/favicon.ico</url-pattern>
+      <url-pattern>/guest.html</url-pattern>
+      <url-pattern>/Allegro/*</url-pattern>
+      <url-pattern>/Baseball/*</url-pattern>
+      <url-pattern>/blockly/*</url-pattern>
+      <url-pattern>/BlocklyMaze/*</url-pattern>
+      <url-pattern>/Chutes/*</url-pattern>
+      <url-pattern>/Docs/*</url-pattern>
+      <url-pattern>/Dicey/*</url-pattern>
+      <url-pattern>/NumberCrunch/*</url-pattern>
+      <url-pattern>/SignUp</url-pattern>
+      <url-pattern>/Signup</url-pattern>
+      <url-pattern>/signUp</url-pattern>
+      <url-pattern>/signup</url-pattern>
+      <url-pattern>/Secret/*</url-pattern>
+      <url-pattern>/Sprout/*</url-pattern>
+      <url-pattern>/Tetris/*</url-pattern>
+    </web-resource-collection>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Staff</web-resource-name>
+      <url-pattern>/Staff/*</url-pattern>
+      <url-pattern>/REST/Staff/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Coach</role-name>
+      <role-name>Admin</role-name>
+      <role-name>Senior</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Coaches</web-resource-name>
+      <url-pattern>/Coach/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Coach</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Administrators</web-resource-name>
+      <url-pattern>/Admin/*</url-pattern>
+      <url-pattern>/REST/Admin/*</url-pattern>
+      <url-pattern>/REST/EMail/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Admin</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>EMail settings page</web-resource-name>
+      <url-pattern>/REST/Admin/emailSettings.html</url-pattern>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>EMail settings operation</web-resource-name>
+      <url-pattern>/REST/EMail/</url-pattern>
+      <http-method>PUT</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Senior</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/login.jsp</form-login-page>
+      <form-error-page>/loginAgain.jsp</form-error-page>
+    </form-login-config>
+  </login-config>
+
+  <security-role>
+    <role-name>Coder</role-name>
+  </security-role>
+  <security-role>
+    <role-name>Coach</role-name>
+  </security-role>
+  <security-role>
+    <role-name>Admin</role-name>
+  </security-role>
+  <security-role>
+    <role-name>Senior</role-name>
+  </security-role>
+
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+
+  <error-page>
+    <error-code>403</error-code>
+    <location>/403.jsp</location>
+  </error-page>
+
+</web-app>

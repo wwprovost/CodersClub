@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Baseball</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/baseball.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Now, develop a function <strong>at_bat()</strong> that can decide what happens on a single at-bat. Generate a random number and return 0, meaning the batter is out, 2/3 of the time. For the other 1/3 of the time, generate a second random number and return 1-4 to represent four possible base hits:</p>
+      <ul>
+        <li>50% of hits are singles: return 1</li>
+        <li>25% of hits are doubles: return 2</li>
+        <li>10% of hits are triples: return 3</li>
+        <li>15% of hits are home runs: return 4</li>
+      </ul>
+      <p>Call your function a few times and print the names of the outcomes. (You can use a list for this, with the strings for out, single, double, triple, and home run. This is better than a long chain of if/elif/else statements.)</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Simulation } from "./js/baseball.js";
+    new Simulation("Challenge 3: an at_bat() Function", true);
+  </script>
+
+</body>
+
+</html>
+

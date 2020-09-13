@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Now, can you modify your program, so that rather than generating one random hand, it loops through all possible hands? This is a nesting of 5 loops, each from 1 to 6. For each possible hand, analyze it, and count how many of each type of hand can occur. And of course you'll use a lot of your code from the previous challenge for this.</p>
+      <p>When you've counted it all up, you can divide each count by the total possible hands (which is 6 to the 5th power, or 7776) to get a probability. Multiply that by 100 and you have a percentage. Print the results!</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #22: Probabilities in Yahtzee", true);
+  </script>
+
+</body>
+
+</html>
+

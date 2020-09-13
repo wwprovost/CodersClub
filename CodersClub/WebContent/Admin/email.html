@@ -1,0 +1,279 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <title>E-Mail Messaging</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+<style>
+table, td
+{
+  padding: 6px 24px 6px 0;
+  border: none;
+}
+
+input[type="button"]
+{
+  font-size: 100%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 200px;
+}
+
+.dialog table
+{
+  margin: 10px 0;
+  border: none;
+}
+
+.dialog td
+{
+  padding: 6px 8px 6px 0;
+  border: none;
+}
+
+.dialog input[type="text"]
+{
+  width: 160px;
+}
+
+#emailDialog table, #emailDialog table tr td {
+  border: none;
+}
+
+#emailSubject {
+  width: 300px;
+}
+
+#emailBody {
+  width: 600px;
+  height: 250px;
+  margin-top: 12px;
+  margin-bottom: 24px;
+}
+
+.tightDialog {
+  left: 80px;
+  width: 500px;
+}
+</style>
+</head>
+
+<body>
+<div class="main" >
+
+  <h2>Communications</h2>
+
+  <table>
+    <tr>
+      <td>
+        <h3>Send to coders:</h3>
+        <p><input type="button" id="sendToAllCoders" class="bigButton" value="All coders" /></p>
+        <p><input type="button" id="sendToActiveCoders" value="All active coders" /></p>
+        <p>To a group:</p>
+        <blockquote id="groups" >
+          <p><input type="button" id="sendToActiveCoders" value="All active coders" /></p>
+        </blockquote>
+      </td>
+      <td>
+        <h3>Send to coaches and admins:</h3>
+        <p><input type="button" id="sendToAllStaff" value="Everyone" /></p>
+        <p><input type="button" id="sendToAllCoaches" value="Coaches" /></p>
+        <p><input type="button" id="sendToAllAdmins" value="Administrators" /></p>
+        <h3>Server settings:</h3>
+        <p><input type="button" id="config" value="Edit settings" /></p>
+      </td>
+    </tr>
+  </table>
+
+  <div id="emailConfig" class="dialog" >
+    <p>Adjust the SMTP-server settings for your club:</p>
+    <table>
+      <tbody>
+        <tr>
+          <td>Server's name or IP address:</td>
+          <td><input id="host" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+        <tr>
+          <td>Server's SMTP port:</td>
+          <td><input id="port" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+        <tr>
+          <td>Sender's e-mail address:</td>
+          <td><input id="sender" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+        <tr>
+          <td>Username:</td>
+          <td><input id="username" type="text" /></td>
+          <td class="error" ></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <input id="configOK" type="button" value="OK" />
+      <input id="configCancel" type="button" value="Cancel" />
+    </p>
+  </div>
+
+  <div id="emailDialog" class="dialog bigDialog" >
+    <table>
+      <tbody>
+        <tr>
+          <td>Send to:</td>
+          <td id="emailRecipient" ></td>
+        </tr>
+        <tr>
+          <td>Subject:</td>
+          <td><input id="emailSubject" type="text" /></td>
+        </tr>
+      </tbody>
+    </table>
+    <textarea id="emailBody" ></textarea>
+    <p>
+      <input id="emailSend" type="button" value="Send" default />
+      <input id="emailCancel" type="button" value="Cancel" />
+      <input id="emailBCC" type="checkbox" checked="checked" />
+      <span id="emailBCCAddress" >BCC</span>
+      <img id="emailBusy" src="../img/Working.gif" alt="Sending ..." height="20" />
+    </p>
+  </div>
+
+  <div id="passwordDialog" class="dialog tightDialog" >
+    <h2>E-Mail Authentication</h2>
+    <p>Your mail server requires a password for authentication. The configured username is <span id="passwordUsername" ></span>. Please enter your password below, and click <strong>Submit</strong>.</p>
+    <p>Password: <input id="password" type="password" /></p>
+    <p>
+      <input id="passwordOK" type="button" value="Submit" default />
+      <input id="passwordCancel" type="button" value="Cancel" />
+    </p>
+  </div>
+
+  <div id="errorDialog" class="dialog tightDialog" >
+    <p id="errorMessage" ></p>
+    <p>
+      <input id="errorOK" type="button" value="OK" default />
+    </p>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        checkFor200,
+        colorTable,
+        EMailToGroup,
+        EMailToActiveCoders,
+        EMailToAllCoders,
+        EMailToAllStaff,
+        EMailToAllCoaches,
+        EMailToAllAdmins,
+        EMailDialog,
+        selfDiscover,
+        showDialog
+      } from "../js/utility.js";
+
+    function listGroups(groups) {
+      let groupsContainer = document.getElementById("groups");
+      groupsContainer.innerHTML = "";
+      let index = 0;
+      for (let group of groups) {
+        let button = document.createElement("input");
+        button.type = "button";
+        button.value = group;
+        button.onclick = sendToGroup.bind(null, group);
+        if (colorTable.length) {
+          button.style.backgroundColor = colorTable[index];
+        }
+
+        let para = document.createElement("p");
+        para.appendChild(button);
+        groupsContainer.appendChild(para);
+
+        ++index;
+      }
+    }
+
+    window.editConfig = function(ev) {
+
+      fetch("../REST/EMail/Config")
+        .then(checkFor200)
+        .then(response => response.json())
+        .then(body => {
+            let configID = body.id;
+            document.getElementById("host").value = body.host;
+            document.getElementById("port").value = body.port;
+            document.getElementById("sender").value = body.sender;
+            document.getElementById("username").value = body.username;
+
+            showDialog("emailConfig", [ { ID: "configOK", handler: () => {
+                fetch("../REST/EMail/Config", {
+                      method: "PUT",
+                      credentials: "same-origin",
+                      headers: {
+                          "Content-Type": "application/json",
+                          "Accept": "application/json"
+                        },
+                      body: JSON.stringify({
+                          id: configID,
+                          host: document.getElementById("host").value,
+                          port: document.getElementById("port").value,
+                          sender: document.getElementById("sender").value,
+                          username: document.getElementById("username").value
+                        })
+                    })
+                  .then(checkFor200)
+                  .catch(console.log);
+              } }, { ID: "configCancel" } ]);
+        })
+      .catch(console.log);
+    }
+
+    function sendToGroup(group) {
+      new EMailDialog("emailDialog", [ new EMailToGroup(group, "", "") ]).show();
+    }
+
+    function sendToActiveCoders() {
+      new EMailDialog("emailDialog", [ new EMailToActiveCoders("", "") ]).show();
+    }
+
+    function sendToAllCoders() {
+      new EMailDialog("emailDialog", [ new EMailToAllCoders("", "") ]).show();
+    }
+
+    function sendToAllStaff() {
+      new EMailDialog("emailDialog", [ new EMailToAllStaff("", "") ]).show();
+    }
+
+    function sendToAllCoaches() {
+      new EMailDialog("emailDialog", [ new EMailToAllCoaches("", "") ]).show();
+    }
+
+    function sendToAllAdmins() {
+      new EMailDialog("emailDialog", [ new EMailToAllAdmins("", "") ]).show();
+    }
+
+    window.onload = function() {
+      selfDiscover(document.querySelector("p.footer"), "..")
+        .then(user => { window.user = user; });
+
+      document.getElementById("config").onclick = editConfig;
+      document.getElementById("sendToActiveCoders").onclick = sendToActiveCoders;
+      document.getElementById("sendToAllCoders").onclick = sendToAllCoders;
+
+      document.getElementById("sendToAllStaff").onclick = sendToAllStaff;
+      document.getElementById("sendToAllCoaches").onclick = sendToAllCoaches;
+      document.getElementById("sendToAllAdmins").onclick = sendToAllAdmins;
+
+      fetch("../REST/Admin/GroupNames")
+        .then(checkFor200)
+        .then(response => response.json())
+        .then(listGroups)
+        .catch(console.log);
+    }
+  </script>
+
+</div>
+<p class="footer" ></p>
+</body>
+
+</html>
+

@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Number Crunch is a series of coding activities focused on math, and especially on getting the computer to do more complex math for you. We'll write programs in the <strong>Python</strong> language -- or, if you already know JavaScript and would prefer to use that, choose it from the dropdown above.</p>
+      <p class="language NCL" >In NCL, every instruction ends with a semicolon. The simplest instruction is to "print" information so that it shows in the output area, as shown below. Click the <strong>Run</strong> button, or when typing code click <strong>Ctrl-Enter</strong> to run the code.</p>
+      <p class="language Python" >In Python, each statement must go on a separate line. The simplest instruction is to "print" information so that it shows in the output area, as shown below. Click the <strong>Run</strong> button, or when typing code click <strong>Ctrl-Enter</strong> to run the code.</p>
+      <p class="language JavaScript" >In JavaScript, every statement ends with a semicolon. The simplest instruction is to "print" information so that it shows int he output area, as shown below. Click <strong>Run</strong> button, or when typing code click <strong>Ctrl-Enter</strong> to run the code.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        print line "Hello.";
+        print "Hello ";
+        print "there!";
+        new line;
+        print line "How are you?";
+        new line;
+        print "Goodbye.";
+      </div>
+      <div id="Python" >
+        print "Hello."
+        print "Hello " + "there!"
+        print "How are you?"
+        print
+        print "Goodbye."
+      </div>
+      <div id="JavaScript" >
+        f"Hello.");
+        print("Hello " + "there!");
+        print("How are you?");
+        print("");
+        print("Godbye.");
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Welcome!", false);
+  </script>
+
+</body>
+
+</html>
+

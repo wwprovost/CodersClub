@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>You may be familiar with the Fibonacci sequence: we start with the number one, twice. Then, each number after that is the sum of the prevous two numbers: 1, 1, 2, 3, 5, 8, and so on.</p>
+      <p>Can you write a program that produces the first ten numbers in the Fibonacci sequence? Naturally, you'll need to write a loop. The tricky part is managing the numbers: the current one, but also the previous two. You'll need a few variables, and to assign values from one to the other as you go ... give it a try! Once you get it working .. if 1 and 1 are the first and second numbers in the sequence, what is the 60th number in the sequence?</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #11: The Fibonacci Sequence", true, 1548008755920);
+  </script>
+
+</body>
+
+</html>
+

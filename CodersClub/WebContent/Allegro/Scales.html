@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Allegro</title>
+  <link rel="stylesheet" type="text/css" href="css/allegro.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="../blockly/blockly_compressed.js" ></script>
+  <script src="../blockly/blocks_compressed.js" ></script>
+  <script src="../blockly/acorn_interpreter.js" ></script>
+  <script src="../blockly/javascript_compressed.js" ></script>
+  <script src="../blockly/msg/js/en.js" ></script>
+</head>
+
+<body>
+
+  <div id="controls" >
+    <div style="margin-top: 8px;" >
+      <span style="float: right;" >
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+        onclick="window.location.href=previousPage();"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+        onclick="window.location.href=nextPage();"
+      />
+      </span>
+    </div>
+    <div class="inset" >
+      <div id="allegro" ><em>allegro</em></div>
+      <p style="margin-bottom: 0;" >Today's musical selection:</p>
+      <p style="margin-top: 0; padding-left: 1em;" ><strong id="title" ></strong></p>
+      <p>
+        <input
+          type="button"
+          class="button"
+          style="width: 100%";
+          id="sample"
+          value="Play sample"
+        />
+      </p>
+    </div>
+    <div>
+      <input
+        type="range"
+        id="volume"
+        min="0"
+        max="100"
+        value="75"
+      />
+    </div>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="start"
+        value="Run program"
+      />
+    </p>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="stop"
+        value="Stop"
+      />
+    </p>
+    <div class="explainer" >
+      <p>Now, here's that same C-major scale, done a bit more simply, and then even more simply. We take advantage of composite instructions, "play and up" and "play and down", and then we use a simple "repeat" loop.</p>
+    </div>
+  </div>
+
+  <div id="code" >
+  </div>
+  <div id="error" >
+  </div>
+
+  <div id="toolboxBase" style="display: none">
+    <xml>
+      <block type="duration_quarter"></block>
+      <block type="allegro_play"></block>
+      <block type="allegro_rest"></block>
+      <block type="allegro_up"></block>
+      <block type="allegro_down"></block>
+      <block type="allegro_play_and_up"></block>
+      <block type="allegro_play_and_down"></block>
+      <block type="controls_repeat"></block>
+      <more_blocks></more_blocks>
+    </xml>
+  </div>
+
+  <div id="sampleBlocks" style="display: none" >
+    <xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables><block type="allegro_play_and_up" id="A{,q6DcXwqT|#ty*[:=|" x="26" y="15"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="kgw8QF%9=rPs@mrM[-,D"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_up" id="P7Wo5}p.6U6lNBmKV%fp"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="!9OV$qqvat0K^fu98vst"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_up" id="/UCB6#j@ad)iT8b%{g[t"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="9%oz!czmkZLO#BUy/KOo"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_up" id="+~Iwf;rutC[xhNmx3+Wd"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="V2jT@Izljiz@ETuZ]]!r"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_up" id="Bta9IOuBlaxE7n|H~#9t"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="}owo]?HT5gX~Ml0PVh;~"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_up" id="+5lNR0XP=ZzKw7B19v}^"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="bW75-r*trQ,CsvE|bpaD"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_up" id="VEkilels}D2S8MZC]qKi"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id="W%=Mk=,;_[45Aj^2R6{L"><field name="value">0.25</field></block></value><next><block type="allegro_play_and_down" id="R.V-14%6UPP[=p2zK*6v"><field name="steps">7</field><value name="duration"><block type="duration_quarter" id="dWC6}Llw-mQzse0jkRX@"><field name="value">0.25</field></block></value><next><block type="allegro_rest" id="U5BSlC}mmx(DHsjvK@^,"><value name="duration"><block type="duration_quarter" id="./j2T1#DyNpN-P%iQSlV"><field name="value">0.5</field></block></value><next><block type="controls_repeat" id="DGb31NCTW+e*M3Ex!q=p"><field name="TIMES">8</field><statement name="DO"><block type="allegro_play_and_up" id="d;mcR4.[Vo5^*OVWXIEL"><field name="steps">1</field><value name="duration"><block type="duration_quarter" id=",CQ7,b;NnO)fng[hvu%?"><field name="value">0.25</field></block></value></block></statement></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Allegro } from "./js/allegro.js";
+
+    $(document).ready(function()
+      {
+        new Allegro("Two C-Major Scales").showSample();
+      });
+  </script>
+
+</body>
+
+</html>
+

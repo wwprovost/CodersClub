@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Learning the syntax of a new language can be tricky. Number Crunch has a "code assistant" that can help. When you hold down the <strong>Ctrl</strong> key and hit the <strong>Space</strong> key, a window will pop up with common phrases. Try this now: click in the program area, and then hit <strong>Ctrl-Space</strong>. Then double-click any of the statements in the list that pops up -- or use arrow keys to select it and hit <strong>Enter</strong>. That example is copied and pasted into your program code.</p>
+      <p>Often, some part of the statement will be highlighted -- so, the next thing you type will replace that highlighted part. You may still have to edit some other part of the example to get what you want.</p>
+      <p>Be sure you have the editing cursor (the spot in the code where you're typing) in the right place before starting the assistant, because that's where it will paste in the code.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Code Assistant", false);
+  </script>
+
+</body>
+
+</html>
+

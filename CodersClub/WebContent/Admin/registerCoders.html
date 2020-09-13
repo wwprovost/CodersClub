@@ -1,0 +1,369 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <title>Register Coders</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+  <link rel="stylesheet" type="text/css" href="../css/admin.css" />
+</head>
+
+<body>
+<div class="main" >
+
+  <h2>Register Coders</h2>
+
+  <div id="raw" >
+    <p>Type or paste in information for new coders below. Each line of text must include first name, last name, parent e-mail address, and current grade (3-8) for one coder. Values can be separated by spaces or, if a first name has multiple tokens, use commas. Please don't include e-mail appositives: e.g. don't enter "Doe, John <jdoe@me.com>" for an e-mail address, but instead just "jdoe@me.com".</p>
+    <textarea>John Smith jsmith@gmail.com
+Maria de la Cruz maria@mail.com
+Wei Jin,Cai,wjc@school.edu</textarea>
+    <p>
+      <input id="parse" type="button" value="Check names" />
+    </p>
+  </div>
+  <div id="fetching" >
+    <p>Checking names ...</p>
+  </div>
+
+  <div id="parsed" >
+    <p>Please confirm the data below, and click <strong>Submit</strong> when ready. If the box in the <strong>Submit</strong>column is checked, a coder marked <strong>New coder</strong> will be registered, and a coder marked <strong>New e-mail</strong> will have their parent e-mail addressed updated to match the value shown. Other rows will be ignored.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>First</th>
+          <th>Last</th>
+          <th>Parent e-mail</th>
+          <th>Grade</th>
+          <th>Status</th>
+          <th>Submit</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <p>
+      <input id="back" type="button" value="Back to raw text" />
+      <input id="submit" type="button" value="Submit" />
+      <input id="assign" type="button" value="Assign coders" />
+      <input id="home" type="button" value="Back to main page" />
+    </p>
+  </div>
+  <div id="confirmation" >
+    <p><span id="countRegistered" ></span> coders have ben registered.</p>
+    <p><span id="countUpdated" ></span> e-mails were updated.</p>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        checkFor200,
+        checkHTTPStatus,
+        selfDiscover
+      } from "../js/utility.js";
+
+    const COL_FIRST = 0;
+    const COL_LAST = 1;
+    const COL_EMAIL = 2;
+    const COL_GRADE = 3;
+    const COL_STATUS = 4;
+    const COL_SUBMIT = 5;
+
+    const Status = {
+        OK: { text: "New coder", class: "OK" },
+        CONFLICT: { text: "Current", class: "Conflict" },
+        NEW_EMAIL: { text: "New e-mail", class: "OK" },
+        MISSING_FIRST_NAME: { text: "Missing first name" },
+        MISSING_LAST_NAME: { text: "Missing last name" },
+        INVALID_EMAIL: { text: "Invalid e-mail", class: "Error" },
+        INVALID_GRADE: { text: "Grade must be 3-8", class: "Error" },
+        ERROR: { text: "Parsing error", class: "Error" }
+      };
+
+    let coders = [];
+
+    function check(candidate) {
+      candidate.status = Status.OK;
+
+      for (let coder of coders) {
+        if (candidate.first == coder.firstName &&
+            candidate.last == coder.lastName) {
+          candidate.status = candidate.email == coder.parentEMail
+              ? Status.CONFLICT : Status.NEW_EMAIL;
+          break;
+        }
+      }
+
+      if (!candidate.first) {
+        candidate.status = Status.MISSING_FIRST_NAME;
+      } else if (!candidate.last) {
+        candidate.status = Status.MISSING_LAST_NAME;
+      } else if (candidate.email && !candidate.email.match(/\w+([\.-]?\w+)*@\w+([\.-]?\w+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))/)) {
+        candidate.status = Status.INVALID_EMAIL;
+      } else if (candidate.grade < 3 || candidate.grade > 8) {
+        candidate.status = Status.INVALID_GRADE;
+      }
+    }
+
+    function fetchCoders() {
+      let priorState = document.getElementById("parse").disabled;
+      document.getElementById("parse").disabled = true;
+      return fetch("../REST/Staff/Coders")
+        .then(checkFor200)
+        .then(response => response.json())
+        .then(fetchedCoders => {
+            coders = fetchedCoders;
+            document.getElementById("parse").disabled = priorState;
+            return fetchedCoders;
+          })
+      .catch(console.log);
+    }
+
+    function addStatusCell(row, status, width, updateButton) {
+      let tdStatus = row.insertCell();
+      tdStatus.colSpan = width || 1;
+
+      let result = null;
+
+      if (updateButton) {
+        let bnUpdate = document.createElement("input");
+        bnUpdate.type = "button";
+        bnUpdate.value = "Update";
+        bnUpdate.style.marginRight = "8px";
+        tdStatus.appendChild(bnUpdate);
+
+        result = bnUpdate;
+      }
+
+      let span = document.createElement("span");
+      span.textContent = status.text;
+      span.classList.add(status.class);
+      tdStatus.appendChild(span);
+
+      return result;
+    }
+
+    function buildTable(candidates) {
+      let table = document.querySelector("table");
+      let columns = document.querySelectorAll("table thead th").length;
+      let tbody = table.querySelector("tbody");
+
+      tbody.innerHTML = "";
+
+      let rowNum = 0;
+      for (let candidate of candidates) {
+        ++rowNum;
+        let row = tbody.insertRow();
+
+        if (!("error" in candidate)) {
+          let tdFirst = row.insertCell();
+          let tdLast = row.insertCell();
+          let tdEMail = row.insertCell();
+          let tdGrade = row.insertCell();
+
+          let inputFirst = document.createElement("input");
+          inputFirst.type = "text";
+          inputFirst.value = candidate.first;
+          tdFirst.append(inputFirst);
+
+          let inputLast = document.createElement("input");
+          inputLast.type = "text";
+          inputLast.value = candidate.last;
+          tdLast.append(inputLast);
+
+          let inputEMail = document.createElement("input");
+          inputEMail.type = "text";
+          inputEMail.value = candidate.email;
+          tdEMail.append(inputEMail);
+
+          let inputGrade = document.createElement("input");
+          inputGrade.type = "number";
+          inputGrade.value = candidate.grade;
+          tdGrade.append(inputGrade);
+
+          addStatusCell(row, candidate.status, 1, true).onclick =
+              fix.bind(null, rowNum);
+
+          let tdSubmit = row.insertCell();
+          let checkSubmit = document.createElement("input");
+          checkSubmit.type = "checkbox";
+          checkSubmit.checked = candidate.status == Status.OK
+              || candidate.status == Status.NEW_EMAIL;
+          tdSubmit.appendChild(checkSubmit);
+
+        } else {
+          let td = row.insertCell();
+          td.colSpan = COL_STATUS;
+          td.classList.add("Error");
+          td.textContent = candidate.error;
+
+          addStatusCell(row, Status.ERROR, COL_SUBMIT - COL_EMAIL);
+        }
+      }
+
+      document.getElementById("raw").style.display = "none";
+      document.getElementById("fetching").style.display = "none";
+      document.getElementById("parsed").style.display = "block";
+    }
+
+    function pushCandidate(candidates, first, last, email, gradeString) {
+      let grade = (gradeString.length == 1 && gradeString.charCodeAt(0) > 47
+            && gradeString.charCodeAt(0) < 58)
+          ? parseInt(gradeString.charAt(0))
+          : 0;
+      candidates.push({ first: first, last: last, email: email, grade: grade });
+    }
+
+    function parse() {
+      let rows = document.querySelector("textarea").value
+          .trim().split("\n").map(s => s.trim());
+      let candidates = [];
+      for (let row of rows) {
+        let byCommas = row.split(",").map(s => s.trim());
+        if (row.length != 0) {
+          if (byCommas.length == 4) {
+            let [ first, last, email, gradeString ] = byCommas;
+            pushCandidate(candidates, first, last, email, gradeString);
+          } else if (byCommas.length == 1) {
+            let byWhitespace = row.split(/[ \t]+/).map(s => s.trim());
+            if (byWhitespace.length > 3) {
+              let first = byWhitespace.shift();
+              let gradeString = byWhitespace.pop();
+              let email = byWhitespace.pop();
+              let last = byWhitespace.join(" ");
+              pushCandidate(candidates, first, last, email, gradeString);
+            } else {
+              candidates.push({error: "For '" + row +
+                  "' ... if separating with whitespace, there must be at least four fields." });
+            }
+          } else {
+            candidates.push({ error: "For '" + row +
+                "' ... if separating with commas, there must be exactly four fields." });
+          }
+        }
+      }
+
+      document.getElementById("fetching").style.display = "block";
+      candidates.filter(c => !("error" in c)).forEach(check);
+
+      buildTable(candidates);
+    }
+
+    function fix(rowNum, ev) {
+      let row = document.querySelector
+          ("table tbody tr:nth-of-type(" + rowNum + ")");
+      let fixed = {
+          first: row.cells[COL_FIRST].firstChild.value,
+          last: row.cells[COL_LAST].firstChild.value,
+          email: row.cells[COL_EMAIL].firstChild.value,
+          grade: parseInt(row.cells[COL_GRADE].firstChild.value.charAt(0))
+        };
+      check(fixed);
+
+      let statusSpan = row.cells[COL_STATUS].querySelector("span");
+      statusSpan.textContent = fixed.status.text;
+      for (let name in Status) {
+        let className = Status[name].class;
+        if (statusSpan.classList.contains(className))
+          statusSpan.classList.remove(className);
+      }
+      statusSpan.classList.add(fixed.status.class);
+
+      let checkSubmit = row.cells[COL_SUBMIT].querySelector("input");
+      checkSubmit.checked = fixed.status == Status.OK
+          || fixed.status == Status.NEW_EMAIL;
+    }
+
+    function back() {
+      document.getElementById("raw").style.display = "block";
+      document.getElementById("parsed").style.display = "none";
+      document.getElementById("fetching").style.display = "none";
+      document.getElementById("confirmation").style.display = "none";
+    }
+
+    function register() {
+      let candidates = [];
+      let rows = document.querySelectorAll("table tbody tr");
+      for (let row of rows) {
+        if (row.cells.length > 2) { // weed out parse errors
+          let spanStatus = row.cells[COL_STATUS].querySelector("span");
+          let checkSubmit = row.cells[COL_SUBMIT].querySelector("input");
+          if ((spanStatus.textContent == Status.OK.text ||
+                spanStatus.textContent == Status.NEW_EMAIL.text) &&
+              checkSubmit.checked) {
+            candidates.push({
+                first: row.cells[COL_FIRST].querySelector("input").value,
+                last: row.cells[COL_LAST].querySelector("input").value,
+                email: row.cells[COL_EMAIL].querySelector("input").value,
+                grade: parseInt(row.cells[COL_GRADE].firstChild.value.charAt(0))
+              });
+          }
+        }
+      }
+
+      fetch("../REST/Admin/Coders", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+          body: JSON.stringify(candidates)
+        })
+        .then(checkHTTPStatus.bind(null, 201))
+        .then(response => response.json())
+        .then(results => {
+            document.getElementById("countRegistered").textContent =
+                "" + results.filter(result => result.status == "OK").length;
+            document.getElementById("countUpdated").textContent =
+                "" + results.filter(result => result.status == "NewEMail").length;
+            document.getElementById("confirmation").style.display = "block";
+
+            fetchCoders().then(coders => {
+                for (let rowNum = 1; rowNum <= rows.length; ++rowNum) {
+                  fix(rowNum);
+                }
+              });
+          })
+        .catch(console.log);
+    }
+
+    function assign(ev) {
+        let candidates = [];
+        for (let row of document.querySelectorAll("table tbody tr")) {
+
+          let status = row.cells.length > 2
+            ? row.cells[COL_STATUS].querySelector("span").textContent
+            : Status.ERROR.text;
+          if (status != Status.ERROR.text && status != Status.INVALID_EMAIL.text) {
+            candidates.push(row.cells[COL_FIRST].querySelector("input").value + "," +
+                row.cells[COL_LAST].querySelector("input").value.replace(" ", "%20"));
+          }
+        }
+
+        window.location = "groups.html?coders=" + candidates.join("|");
+    }
+
+    window.onload = function() {
+      selfDiscover(document.querySelector("p.footer"), "..");
+
+      document.getElementById("fetching").style.display = "none";
+
+      document.getElementById("parse").onclick = parse;
+      document.getElementById("back").onclick = back;
+      document.getElementById("submit").onclick = register;
+      document.getElementById("home").onclick = ev => {
+          window.location = "../Staff/coders.html";
+        };
+
+      document.getElementById("assign").onclick = assign;
+
+      fetchCoders();
+
+    }
+  </script>
+
+</div>
+<p class="footer" ></p>
+
+</body>
+
+</html>
+

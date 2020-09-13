@@ -1,0 +1,51 @@
+body
+{
+  font-family: Trebuchet,Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+  font-size: 12pt;
+  margin: 0;
+  background: white;
+}
+
+.main
+{
+  padding: .1in;
+}
+
+h1, h2
+{
+  font-family: Gungsuh,Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+  margin-top: 4px;
+}
+
+p
+{
+  margin-bottom: 0;
+}
+
+table
+{
+  padding: .25em 0 0 1em;
+}
+
+td
+{
+  vertical-align: top;
+  margin: 0;
+  padding: 0 0 0 1em;
+}
+
+.footer
+{
+  position: fixed;
+  bottom: 0;
+}
+
+.code
+{
+  font-family: Courier,"Courier New",monospace;
+  font-size: 11pt;
+  color: grey;
+  white-space: pre;
+}
+
+

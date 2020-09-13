@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Tetris</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/tetris.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>At this level, two new functions are available:</p>
+      <p class="code" >  <strong>drop_and_slide(<em>col</em>)</strong> drops the block and then slides it left.
+  <strong>rotate_and_drop(<em>col</em>)</strong> rotates the block and trops it on its end.</p>
+      <p>Can you use either or both of these to improve your program, so that it survives longer and clears more rows? This level of the activity is free-form: see what you can come up with, and maybe discuss strategies with your coach.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <div id="prelude" style="display: none;" >
+__blocks = [];
+__over = False;
+__block_ready = False
+
+def new_block():
+    global __blocks, __block_ready
+
+    if __over:
+        raise Exception('The game is over.')
+    if __block_ready:
+        raise Exception('You must position the current block.')
+
+    __blocks.append(randint(1,4));
+    __block_ready = True
+
+def block_size():
+    return __blocks[-1];
+
+def position(col):
+    global __position, __block_ready
+
+    if __over:
+        raise Exception('The game is over.')
+    if not __block_ready:
+        raise Exception('You must get a new block.')
+    if col &lt; 1 or col + __blocks[-1] > 11:
+        raise Exception('Out of bounds: ' + str(col))
+
+    __position = col;
+    __block_ready = False
+
+def game_over():
+    return __over
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Game } from "./js/tetris.js";
+    new Game("Level 3", true);
+  </script>
+
+</body>
+
+</html>
+

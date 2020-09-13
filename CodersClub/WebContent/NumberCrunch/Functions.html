@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>So far, our procedures can take input from the caller, but their only output is by printing results. It can be very useful to return a result to the caller ...</p>
+      <p class="language NCL" >A procedure that can return a value is often known as a <strong>function</strong>. NCL has functions, but we still use the keyword <strong>procedure</strong>; the only real difference is that a procedure can use the <strong>return</strong> statement to return a computed value or result.</p>
+      <p class="language Python" >A procedure that can return a value is often known as a <strong>function</strong>. In Python, procedures are just functions that don't return anything; and a function can use the <strong>return</strong> statement to return a computed value or result.</p>
+      <p class="language JavaScript" >A procedure that can return a value is often known as a <strong>function</strong>. In JavaScript, procedures are just functions that don't return anything; and a function can use the <strong>return</strong> statement to return a computed value or result.</p>
+      <p>You can call a function and expect the <strong>call</strong> itself to have a value. So you can set a variable to the results of the function call, and use it in the calling logic.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        procedure combinations(howMany)
+        {
+          number oneLess = howMany - 1;
+          return howMany * oneLess / 2;
+        }
+
+        print line "There are " + call combinations(5) +
+          " different combinations of 5 things.";
+        if 100 > call combinations(8)
+        {
+          print line "TRUE";
+        }
+      </div>
+      <div id="Python" >
+        def combinations(howMany):
+            oneLess = howMany - 1
+            return howMany * oneLess / 2
+
+        print "There are", combinations(5)
+        print "  different combinations of 5 things."
+        if 100 > combinations(8):
+            print "TRUE"
+      </div>
+      <div id="JavaScript" >
+        function combinations(howMany)
+        {
+          let oneLess = howMany - 1;
+          return howMany * oneLess / 2;
+        }
+
+        print("There are " + combinations(5) +
+          " different combinations of 5 things.");
+        if (100 > combinations(8))
+        {
+          print("TRUE");
+        }
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Functions", false);
+  </script>
+
+</body>
+
+</html>
+

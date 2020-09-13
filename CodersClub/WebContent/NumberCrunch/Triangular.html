@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p class="language NCL" >Write a procedure that takes a number as a parameter, and that can determine whether it is a "triangular number." A triangular number is the sum of some series of numbers starting at 1. So 1 is a triangular number; 1 + 2 = 3 so 3 is triangular; 1 + 2 + 3 = 6 so 6 is triangular; etc. Your procedure should either print that the number is triangular, <u>or</u> find the next-highest number that is, and print that.</p>
+      <p class="language NCL" >Then, call your procedure a few times, with triangular and non-triangular numbers -- try 6 (yes), 10 (yes), 20 (no, but 21 is triangular), etc.</p>
+      <p class="language Python JavaScript" >Write a function that takes a number as a parameter, and that can determine whether it is a "triangular number." A triangular number is the sum of some series of numbers starting at 1. So 1 is a triangular number; 1 + 2 = 3 so 3 is triangular; 1 + 2 + 3 = 6 so 6 is triangular; etc. Your procedure should either print that the number is triangular, <u>or</u> find the next-highest number that is, and print that.</p>
+      <p class="language Python JavaScript" >Then, call your function a few times, with triangular and non-triangular numbers -- try 6 (yes), 10 (yes), 20 (no, but 21 is triangular), etc.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #16: Triangular Numbers", true);
+  </script>
+
+</body>
+
+</html>
+

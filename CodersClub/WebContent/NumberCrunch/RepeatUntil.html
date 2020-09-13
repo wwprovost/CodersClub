@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p class="language NCL" >You can also <strong>repeat until</strong> a logical test is true, no matter how long it takes.</p>
+      <p class="language NCL" >Also, with this sort of loop, the code inside the loop may <em>never</em> be run, because the test is checked first, and if it's true to start with, the block is never executed.</p>
+      <p class="language Python JavaScript" >You can also do something <strong>while</strong> a logical test is true, no matter how long it takes.</p>
+      <p class="language Python JavaScript" >Also, with this sort of loop, the code inside the loop may <em>never</em> be run, because the test is checked first, and if it's not true to start with, the block is never executed.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number x = 1;
+        number y = 15;
+        repeat until x >= y
+        {
+            x = x + 1;
+            y = y - 2;
+        }
+        print line "x is " + x;
+        print line "y is " + y;
+
+        repeat until x == 0
+        {
+            x = x - 1;
+            y = y - 1;
+        }
+        print line "x is " + x;
+        print line "y is " + y;
+      </div>
+      <div id="Python" >
+        x = 1
+        y = 15
+        while x < y:
+            x = x + 1
+            y = y - 2
+        print "x is", x
+        print "y is", y
+
+        while x != 0:
+            x = x - 1
+            y = y - 1
+        print "x is", x
+        print "y is", y
+      </div>
+      <div id="JavaScript" >
+        let x = 1;
+        let y = 15;
+        while(x < y)
+        {
+            x = x + 1;
+            y = y - 2;
+        }
+        print("x is " + x);
+        print("y is " + y);
+
+        while(x != 0)
+        {
+            x = x - 1;
+            y = y - 1;
+        }
+        print("x is " + x);
+        print("y is " + y);
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Looping Conditionally", false);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>The volume of a cylinder is just the area of the base multiplied by the height. The surface area is harder: two times the area of the circular base, plus the circumference times the height.</p>
+      <p class="code" >  volume = base area * height
+
+  surface area = base area * 2 + circumference * height</p>
+      <p>Paste in the code for your functions for circumference and area. Then write functions for a cylinder's volume and surface area. Both of these functions will need to take radius and height as parameters. Then, you can call your first two functions from the code for your two new functions.</p>
+      <p>Then call the functions with different values and print their results.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number pi = 3.14159;
+        // Your code here
+      </div>
+      <div id="Python" >
+        pi = 3.14159
+        # Your code here
+      </div>
+      <div id="JavaScript" >
+        let pi = 3.14159;
+        // Your code here
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #18: Cylindrical Geometry", true);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Here is the first of a few programming challenges using Number Crunching Language. Write a program that ...</p>
+      <ul>
+        <li>Creates three variables <strong>a</strong>, <strong>b</strong>, and <strong>c</strong>, giving each one a different numeric value.</li>
+        <li>Prints all three of them.</li>
+        <li>Adds them together and prints the result.</li>
+      </ul>
+      <p>When done, try your program a few times to see the different possible values.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #1: Sum of 3 Numbers", true);
+  </script>
+
+</body>
+
+</html>
+

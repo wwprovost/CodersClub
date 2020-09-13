@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Try applying some new tricks to your sum-of-3 program. First, go back a few pages, and copy the whole program you wrote there. Go forward to this page again, and paste it in the program area here.</p>
+      <p>Now, instead of fixed numeric values, make each of the variables a random number between 1 and 10. When you run your updated program, you should see results anywhere between 3 and 30, with more results in the teens and fewer single-digit and twenty-something numbers.</p>
+      <p class="language NCL" ></p>
+      <p class="language Python" ></p>
+      <p class="language JavaScript" ></p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #2: Sum of 3 Random Numbers", true);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,69 @@
+<html>
+
+<head>
+  <title>Certificates</title>
+  <link rel="stylesheet" type="text/css" href="../css/Certificate.css" />
+</head>
+
+<body>
+<div class="main" >
+</div>
+
+<div style="display: none" >
+  <div id="certificateTemplate" >
+    <p class="pageBreak" style="page-break-after:always;"></p>
+    <div style="height: 1.25in;" >
+      <span style="float: right;" >
+        <img src="../img/Penguin_white.jpg" style="height: 1.2in;" />
+      </span>
+    </div>
+    <h1>Pierce Coders' Club</h1>
+    <h2>Certificate of Achievement</h2>
+    <div class="history" ></div>
+    <p class="congratulations" >Great work, CODERNAME!</p>
+    <div style="padding-left: 4in; margin-top: .8in; width: 2.5in;" >
+      <hr style="margin-bottom: 0;" />
+      <p style="margin-top:0;" >Coach</p>
+    </div>
+  </div>
+</div>
+
+<script type="module" crossorigin="use-credentials" >
+  import { checkFor200 } from "../js/utility.js";
+
+
+  function buildCertificate(certificate, index) {
+    let certDiv = document.getElementById("certificateTemplate").cloneNode(true);
+    certDiv.id = "cert" + index;
+
+    if (index == 0) {
+      certDiv.querySelector(".pageBreak").remove();
+    }
+
+    let img = certDiv.querySelector("img");
+    if (certificate.beltColor)
+      img.src = img.src.replace("white", certificate.beltColor);
+    else
+      img.remove();
+
+    let historyDiv = certDiv.querySelector(".history");
+    historyDiv.innerHTML = certificate.recentActivities;
+
+    let congratulations = certDiv.querySelector(".congratulations");
+    congratulations.textContent = congratulations.textContent.replace
+        ("CODERNAME", certificate.name);
+
+    document.querySelector(".main").appendChild(certDiv);
+  }
+
+  window.onload = function() {
+    fetch("../REST/Staff/Certificates")
+      .then(checkFor200)
+      .then(response => response.json())
+      .then(certificates => certificates.forEach(buildCertificate))
+      .catch(console.log);
+  }
+</script>
+
+</body>
+</html>

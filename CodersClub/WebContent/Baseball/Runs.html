@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Baseball</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/baseball.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Your simulation will rely on a few functions. First, create a <strong>runs_scored()</strong> function that takes a <strong>hits</strong> parameter and a <strong>bases</strong> parameter. The first is a hit (1-4 for single up through home run) and the second is a list of bases occupied (True or False for each of the three bases).</p>
+      <p>The function should determine how many runs score on the given hit. Each base runner will advance a number of bases equal to the hit -- for example a runner on 1st goes to 3rd on a double, and a runner on 2nd would score a run. Return the number of runs scored -- and don't forget the batter! You don't need to change what bases are occupied; we'll do that in another function, later.</p>
+      <p>Un-comment the given code to call your function and see how it handles each situation.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+# This should print "0":
+#print runs_scored(1, [ True, True, False ])
+
+# This should print "1":
+#print runs_scored(1, [ True, False, True ])
+
+# This should print "2":
+#print runs_scored(3, [ True, False, True ])
+
+# This should print "2":
+#print runs_scored(4, [ False, False, True ])
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Simulation } from "./js/baseball.js";
+    new Simulation("Challenge 1: a runs_scored() function", true);
+  </script>
+
+</body>
+
+</html>
+

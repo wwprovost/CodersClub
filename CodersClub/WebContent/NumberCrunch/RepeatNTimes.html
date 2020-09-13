@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>You can make some code run multple times, in a <em>loop</em>. There are a few ways to do this. We'll look first at repeating a fixed number of times.</p>
+      <p class="language NCL" ><strong>repeat <em>N</em> times</strong> is followed by a block of code -- so, again, you must use curly braces -- and will execute that code the number of times you specify.</p>
+      <p class="language Python" ><strong>for <em>var</em> in range(<em>N</em>):</strong> is followed by an indented line or block of lines, and will run that code the number of times you specify.</strong></p>
+      <p class="language JavaScript" ><strong>for (let <em>var</em> = 0; <em>var></em> &lt; <em>N</em>; ++<em>var</em>)</strong> is followed by a block of code -- so, again, you must use curly braces -- and will execute that code the number of times you specify.</p>
+      <p>This can be a powerful tool for repeating math operations. The middle part of the program below calculates the value of doubling the number 1, 10 times -- also known as two to the power of 10.</p>
+      <p class="language NCL" >Or, sometimes it's useful to know which "iteration" of the loop you're in, and so you create a counter.</p>
+      <p class="language Python JavaScript" >You can use the variable itself in the loop, too -- it's known as the <em>index</em> value. Notice that the count starts at <strong>zero</strong>, not one.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        repeat 5 times { print "X "; }
+        new line;
+
+        number x = 1;
+        repeat 10 times { x = x * 2; }
+        print line "2 to the 10th is " + x;
+
+        number count = 0;
+        repeat 3 times
+        {
+          count = count + 1;
+          print line "Iteration " + count;
+        }
+      </div>
+      <div id="Python" >
+        line = ""
+        for count in range(5):
+            line = line + "X "
+        print line
+
+        x = 1
+        for count in range(10):
+            x = x * 2
+        print "2 to the 10th is", x
+
+        for count in range(3):
+            print "Iteration", count
+      </div>
+      <div id="JavaScript" >
+        let line = "";
+        for (let count = 0; count < 5; ++count)
+            { line = line + "X "; }
+        print(line);
+
+        let x = 1;
+        for (let count = 0; count < 10; ++count)
+          { x = x * 2; }
+        print("2 to the 10th is " + x);
+
+        for (let count = 0; count < 3; ++count)
+        {
+          print("Iteration " + count);
+        }
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Loops", false);
+  </script>
+
+</body>
+
+</html>
+

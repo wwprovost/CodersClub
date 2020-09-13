@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Baseball</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/baseball.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Now we're going to put it all together. Paste in all three of your functions, above the starter code. Given the <strong>roster</strong> in the starter code, write a program that simulates one team batting for one inning. Start at the top of the lineup (index 0 in the list), and give each player an at-bat -- until there are three outs.</p>
+      <ul>
+        <li>Use your <strong>at_bat()</strong> function, passing this batter's average. Either add to <strong>outs</strong> or <strong>hits</strong>, and if it's a hit, call your <strong>runs_scored()</strong> and <strong>bases_occupied()</strong> functions.</li>
+        <li>Print the results of each at-bat: "Single", "Double", "Out", etc.</li>
+        <li>Remember to advance the index of the batter, so you get a new batter each time.</li>
+      </ul>
+      <p><strong>Run</strong> or <strong>Animate</strong> your program a few times, and see different innings play out.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+roster = [ 333, 321, 311, 300, 280, 280, 260, 240, 180 ]
+hits = 0
+runs = 0
+on_base = [ False, False, False ]
+
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Simulation } from "./js/baseball.js";
+    new Simulation("Challenge 5: simulate one inning", true);
+  </script>
+
+</body>
+
+</html>
+

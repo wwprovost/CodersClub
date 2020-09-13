@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>The program at right calculates how many seconds there are in one hour. Do you see how it works?</p>
+      <p>Try changing the starting value of the <strong>hours</strong> variable, and you'll see the number of seconds in two hours, or six hours.</p>
+      <p>Now for the challenge: can you expand this program to calculate the number of seconds in a week?</p>
+      <p class="language NCL" ></p>
+      <p class="language Python" ></p>
+      <p class="language JavaScript" ></p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number hours = 1;
+        number minutes = hours * 60;
+        number seconds = minutes * 60;
+        print line "There are " + seconds + " seconds in an hour.";
+      </div>
+      <div id="Python" >
+        hours = 1
+        minutes = hours * 60
+        seconds = minutes * 60
+        print "There are", seconds, "seconds in an hour."
+      </div>
+      <div id="JavaScript" >
+        let hours = 1
+        let minutes = hours * 60
+        let seconds = minutes * 60
+        print("There are " + seconds +
+            " seconds in an hour.")
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #4: Seconds in a Week", true);
+  </script>
+
+</body>
+
+</html>
+

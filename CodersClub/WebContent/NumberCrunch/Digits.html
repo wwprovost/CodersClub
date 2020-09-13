@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p></p>
+      <p>Write a procedure that takes a number, and determines how many digits it has by dividing repeatedly by 10 -- but be sure to stop looping and dividing when the result is less than 1, or you will loop infinitely, which is bad. The procedure can then print the digit count.</p>
+      <p>Call your procedure three times, with different values each time.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        // Write your procedure here
+
+        call countDigits(7);
+        call countDigits(92);
+        call countDigits(316);
+      </div>
+      <div id="Python" >
+        # Write your procedure here
+
+        countDigits(7)
+        countDigits(92)
+        countDigits(316)
+      </div>
+      <div id="JavaScript" >
+        // Write your procedure here
+
+        countDigits(7);
+        countDigits(92);
+        countDigits(316);
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #15: How Many Digits?", true);
+  </script>
+
+</body>
+
+</html>
+

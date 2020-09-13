@@ -1,0 +1,140 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>You can break a complex program into several procedures. Also, bear in mind that one procedure can call another.</p>
+      <p>This program includes a <strong>printSquare</strong> procedure that uses the smaller and simpler <strong>printXs</strong> and <strong>printSpaces</strong> procedures to build up a shape.</p>
+      <p>Try to modify the program so that, instead of an "x" character, it prints the size of the square to make the square itself. So a square of size 4 would be printed like this:</p>
+      <p class="code" >4444
+4  4
+4  4
+4444
+</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        procedure printXs(howMany)
+        {
+          repeat howMany times
+          {
+            print "x";
+          }
+        }
+
+        procedure printSpaces(howMany)
+        {
+          repeat howMany times
+          {
+            print " ";
+          }
+        }
+
+        procedure printSquare(howBig)
+        {
+          call printXs(howBig);
+          new line;
+          number inside = howBig - 2;
+          repeat inside times
+          {
+            print "x";
+            call printSpaces(inside);
+            print "x";
+            new line;
+          }
+          call printXs(howBig);
+          new line;
+        }
+
+        call printSquare(4);
+        new line;
+        call printSquare(7);
+      </div>
+      <div id="Python" >
+        def printXs(howMany):
+            line = ""
+            for x in range(howMany):
+                line = line + "x"
+            print line
+
+        def printSpacedLine(howMany):
+            line = "x"
+            for x in range(howMany):
+                line = line + " "
+            print line + "x"
+
+        def printSquare(howBig):
+            printXs(howBig)
+            inside = howBig - 2
+            for x in range(inside):
+                printSpacedLine(inside)
+            printXs(howBig)
+
+        printSquare(4)
+        print
+        printSquare(7)
+      </div>
+      <div id="JavaScript" >
+        function printXs(howMany)
+        {
+          let line = "";
+          for(let x = 0; x < howMany; ++x)
+          {
+            line = line + "x";
+          }
+          print(line);
+        }
+
+        function printSpacedLine(howMany)
+        {
+          let line = "x";
+          for(let x = 0; x < howMany; ++x)
+          {
+            line = line + " ";
+          }
+          print(line + "x");
+        }
+
+        function printSquare(howBig)
+        {
+          printXs(howBig);
+          let inside = howBig - 2;
+          for(let x = 0; x < inside; ++x)
+          {
+            printSpacedLine(inside);
+          }
+          printXs(howBig);
+        }
+
+        printSquare(4);
+        print("");
+        printSquare(7);
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Reusing Code", false);
+  </script>
+
+</body>
+
+</html>
+

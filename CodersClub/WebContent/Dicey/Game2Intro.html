@@ -1,0 +1,115 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Dicey</title>
+  <link rel="stylesheet" type="text/css" href="css/dicey.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="js/dicey.js" ></script>
+</head>
+
+<body>
+
+  <div id="top" >
+    <span class="top" >Dicey</span>
+    <span></span>
+    <span></span>
+    <span style="float: right; margin-right: 1em; " >
+      <input
+        type="button"
+        class="button"
+        id="start"
+        value="Start"
+      />
+      <input
+        type="button"
+        class="button"
+        id="stop"
+        value="Stop"
+      />
+      &nbsp;
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+        onclick="window.location.href='Game2.html';"
+      />
+    </span>
+  </div>
+
+  <div class="oneTurn" style="display: none;" >
+    <img></img>
+    <img></img>
+    <span style="margin-left: 15px;" ></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div id="left" >
+    <div id="gameView" >
+    </div>
+    <div id="gameController" style="width: 100%;" >
+      <div id="form" >
+        <h3>Game #2</h3>
+        <p>Okay, let's try a couple of changes to the rules:</p>
+        <ul>
+          <li>You can win with a score of <strong>0</strong> or <strong>10</strong>.</li>
+          <li>If you get <strong>13</strong>, you lose.</li>
+        </ul>
+        <p>Try it out interactively, below, and then click <strong>Next</strong> when you're ready to try programming it.</p>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <input type="button" id="roll" value="Roll dice" ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="button" id="add" value="Add" ></input>
+              </td>
+              <td>
+                <input type="text" id="valueToAdd" size="4" ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="button" id="subtract" value="Subtract" ></input>
+              </td>
+              <td>
+                <input type="text" id="valueToSubtract" size="4" ></input>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>How does this change your thinking about what to do on each turn? How will you alter your program to play the game well?</p>
+      </div>
+      <div id="error" >test
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossOrigin="use-credentials" >
+    import { Dicey, GoalGameView } from "./js/dicey-ui.js";
+    $(document).ready(function()
+      {
+        Dicey.init(2, () => new Game2(), new GoalGameView(), true);
+      });
+  </script>
+
+</body>
+
+</html>
+

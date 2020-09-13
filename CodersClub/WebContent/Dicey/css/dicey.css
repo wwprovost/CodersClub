@@ -1,0 +1,129 @@
+html
+{
+  font-family: Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+}
+
+body
+{
+  margin: 0;
+}
+
+#left
+{
+}
+
+#top
+{
+  background-color: #f8f8dd;
+  border-bottom: 1px solid #ea6;
+  padding: 4px 8px;
+}
+
+.top
+{
+  font-size: 24pt;
+}
+
+#gameView
+{
+  float: right;
+  background-color: #f8f8dd;
+  border-left: 1px solid #ea6;
+  width: 254px;
+  padding-left: 1em;
+  overflow: auto;
+}
+
+#gameView p
+{
+  font-family: "Lucida Console", consolas courier;
+  font-size: 20pt;
+  margin: 0;
+  margin-top: 8px;
+  text-align: right;
+  padding-bottom: 1em;
+}
+
+#gameController
+{
+  background: white;
+}
+
+#form
+{
+  padding: .2em 290px .2em 1.5em;
+}
+
+#form input
+{
+  font-size: 14pt;
+  margin: 4px;
+}
+
+#form input[type=button]
+{
+  width: 8em;
+}
+
+#code
+{
+  width: 100%;
+}
+
+.oneTurn
+{
+  margin-bottom: 3px;
+}
+
+.oneTurn img
+{
+  height: 40px;
+  margin-right: 4px;
+}
+
+.oneTurn span
+{
+  font-family: "Lucida Console", consolas courier;
+  font-size: 20pt;
+}
+
+input[type=button]
+{
+  color: #fff;
+  background-color: #69f;
+  font-size: 14pt;
+  font-weight: bold;
+  padding: 2px 4px;
+}
+input[type=button][disabled]
+{
+  color: lightgrey;
+}
+
+.explainer
+{
+  background: white;
+  border: 1px solid #039;
+  border-radius: 8px;
+  position: absolute;
+  top: 4em;
+  left: 4em;
+  right: 300px;
+  padding: .5em 1em;
+  box-shadow: 8px 8px 4px grey;
+  display: none;
+}
+
+#error
+{
+  color: #800;
+  background: #fee;
+  border: 1px solid #800;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 2em;
+  left: 2em;
+  padding: .5em 1em;
+  box-shadow: 4px 4px 4px grey;
+  display: none;
+}

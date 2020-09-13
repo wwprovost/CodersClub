@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Baseball</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/baseball.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Now, modify your function to take a parameter, <strong>batting_average</strong>. Use this as the probability that the batter gets some sort of hit -- instead of getting a hit one time out of three. Just use a three-digit number for the average, and take this to be chances out of 1000.</p>
+      <p>If there is a hit, the distribution of 50/25/10/15 for the different types of hits should still be used.</p>
+      <p>In the main program, make a list of three batters, batting averages of 100, 300, and 500. Call <strong>at_bat()</strong> five times for each batter, and check the results.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Simulation } from "./js/baseball.js";
+    new Simulation("Challenge 4: batting Averages", true);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>When writing programs, it's often useful to be able to make copies of existing code, or to move pieces of the program around into a different order. The best ways to do this are to use the computer's "clipboard" with actions we call "cut," "copy," and "paste."</p>
+      <p>To make copies of code, first copy it and then paste it. Try selecting the last two lines of the program shown here. Then, hold down the "command" button -- labeled <strong>&#8984;</strong> -- and press the <strong>C</strong> to copy those lines to the clipboard.</p>
+      <p>Now position the caret at the bottom of the program, as if you were about to type more code there. Instead of typing, again hold down the <strong>&#8984;</strong> key and this time hit <strong>V</strong> to paste from the clipboard. Hit this key a few times, and you'll see multiple copies appear.</p>
+      <p>If you want to remove a piece of code and paste it elsewhere, that's "cutting," and the magic key sequence there is <strong>&#8984;</strong> and <strong>X</strong></p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number count = 1;
+        print line "At first, count is " + count;
+        count = count + 1;
+        print line "Then, count is " + count;
+      </div>
+      <div id="Python" >
+        count = 1
+        print("At first, count is " + str(count))
+        count = count + 1
+        print("Then, count is " + str(count))
+      </div>
+      <div id="JavaScript" >
+        let count = 1;
+        print("At first, count is " + count);
+        count = count + 1;
+        print("Then, count is " + count);
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Using the Clipboard", false);
+  </script>
+
+</body>
+
+</html>
+

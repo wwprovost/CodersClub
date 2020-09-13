@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>You can make a program do different things based on inputs or random results, with a <em>conditional</em> structure, using the keywords <strong>if</strong> and <strong>else</strong>. Use <strong>if</strong> and a logical test to make a bit of code run only if the test is passed. Logical tests are things like "does A equal 5?" or "is X greater than Y?" Notice that we use <strong>==</strong> to check if one number equals another -- not the single <strong>=</strong>. And use <strong>!=</strong> for "is not equal to."</p>
+      <p class="language NCL JavaScript" >After an <strong>if</strong> and the test, you must use curly braces <strong>{</strong> and <strong>}</strong> around the code you want to run conditionally. The code inside the braces is known as a "block" of code. You can put things all on one line, or on separate lines -- whatever seems right to you.</p>
+      <p class="language Python" >After an <strong>if</strong> and the test, you must include a colon <strong>:</strong>, and the "block" of code you want to run conditionally must go on the following line or lines. That line or all of those lines must be <em>indented</em> -- must start with some spaces or tabs -- in order to be controlled by the <strong>if</strong> statement.</p>
+      <p>After an <strong>if</strong>, test, and the block of code, you may write an <strong>else</strong> and a different block, and this second block will be run only if the test turns out not to be true -- for example when A is 10, meaning that it is <em>not</em> greater than 10.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number A = 1;
+        A = A + 4;
+        if A == 5 { print line "A equals 5."; }
+
+        A = A * 2;
+        if A > 10
+        {
+          print line "A is greater than 10.";
+        }
+        else
+        {
+          print line "A is either 10, or less than 10.";
+        }
+      </div>
+      <div id="Python" >
+        A = 1
+        A = A + 4
+        if A == 5:
+            print "A equals 5."
+
+        A = A * 2
+        if A > 10:
+            print "A is greater than 10."
+        else:
+            print "A is either 10, or less than 10."
+      </div>
+      <div id="JavaScript" >
+        let A = 1;
+        A = A + 4;
+        if (A == 5) { print("A equals 5."); }
+
+        A = A * 2;
+        if (A > 10)
+        {
+          print("A is greater than 10.");
+        }
+        else
+        {
+          print("A is either 10, or less than 10.");
+        }
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Conditionals", false);
+  </script>
+
+</body>
+
+</html>
+

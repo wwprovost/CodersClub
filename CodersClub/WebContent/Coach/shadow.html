@@ -1,0 +1,57 @@
+<html>
+
+<head>
+  <title>Shadowing</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+</head>
+
+<body>
+<div class="main" >
+
+  <img src="../img/Penguin.jpg" style="float: right; height: 1in; margin-left: 2em;" />
+  <h2>
+    Shadowing Coder: <span class="shadowName" >
+  </h2>
+
+  <p>
+    <img id="emailBusy" src="../img/Working.gif" alt="Sending ..." height="20" />
+    waiting for activity ...
+  </p>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        navigateTo,
+        pollAndFollow,
+        requestParams,
+        selfDiscover
+      } from "../js/utility.js";
+
+    let poll = null;
+    window.onload = function() {
+      selfDiscover(document.querySelector(".footer"), "..")
+        .then(user => {
+            let shadowName = sessionStorage.getItem("shadowName");
+            document.querySelectorAll("span.shadowName").forEach(element => {
+                element.textContent = shadowName;
+              });
+
+            let activity = requestParams().activity;
+            if (activity) {
+              navigateTo(activity.replace("%20", " ")
+                  .replace("%3D", "=").replace("%3F", "?"));
+            } else {
+              sessionStorage.setItem("tracking", "true");
+              pollAndFollow();
+            }
+          })
+        .catch(console.log);
+    }
+  </script>
+
+  <p class="footer" ></p>
+
+</div>
+</body>
+
+</html>
+

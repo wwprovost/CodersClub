@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Dicey</title>
+  <link rel="stylesheet" type="text/css" href="css/dicey.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="../blockly/blockly_compressed.js" ></script>
+  <script src="../blockly/blocks_compressed.js" ></script>
+  <script src="../blockly/acorn_interpreter.js" ></script>
+  <script src="../blockly/javascript_compressed.js" ></script>
+  <script src="../blockly/msg/js/en.js" ></script>
+  <script src="./js/dicey.js" ></script>
+</head>
+
+<body>
+
+  <div id="top" >
+    <span class="top" >Dicey</span>
+    <span></span>
+    <span></span>
+    <span style="float: right; margin-right: 1em; " >
+      <input
+        type="button"
+        class="button"
+        id="start"
+        value="Start"
+      />
+      <input
+        type="button"
+        class="button"
+        id="stop"
+        value="Stop"
+      />
+      &nbsp;
+      <input
+        type="button"
+        class="button"
+        id="copy"
+        value="Copy"
+      />
+      <input
+        type="button"
+        class="button"
+        id="paste"
+        value="Paste"
+      />
+      &nbsp;
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+      />
+    </span>
+  </div>
+
+  <div class="oneTurn" style="display: none;" >
+    <img></img>
+    <img></img>
+    <span style="margin-left: 15px;" ></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div id="left" >
+    <div id="gameView" >
+    </div>
+    <div id="gameController" style="width: 100%;" >
+      <div id="code" >
+      </div>
+      <div id="intro" class="explainer" >
+        <p>Now, use the blocks at the left to write a program that plays the game.</p>
+        <p>For the moment, you won't get a random sequence of rolls, the way you did a minute ago. Instead, you can see the sequence of values, already laid out at right.</p>
+        <p>Write your program to roll the dice and add/subtract values. Click <strong>Start</strong> to test it, and you'll see the actual rolls and scoring play out at right.</p>
+        <p>Can you develop one program that wins all three sequences?</p>
+        <p><input style="float: right;" type="button" value="OK" ></input></p>
+      </div>
+      <div id="random" class="explainer" >
+        <p>Now you will get random numbers when you roll the dice. How does your program do? Try playing the game several times, and make sure that the program always wins. It may take a while, depending on the numbers you get, but it should always win eventually.</p>
+        <p><input style="float: right;" type="button" value="OK" ></input></p>
+      </div>
+      <div id="monteCarlo" class="explainer" >
+        <p>Your program wins the random game. Now we'll "stress-test" it, by running a series of 10 random games, automatically. If your program doesn't win any of them, we'll stop, so you can see what happened.</p>
+        <p>Ready? Click <strong>OK</strong> ...</p>
+        <p><input style="float: right;" type="button" value="OK" ></input></p>
+      </div>
+      <div id="success" class="explainer" >
+        <p>Your program won all of the random games -- nice work! You have completed this Dicey activity: <strong>make sure to show your coach</strong>.</p>
+        <p><input style="float: right;" type="button" value="OK" ></input></p>
+      </div>
+      <div id="error" >
+      </div>
+    </div>
+  </div>
+
+  <xml id="toolbox" style="display: none">
+    <block type="dicey_roll"></block>
+    <block type="dicey_add"></block>
+    <block type="dicey_subtract"></block>
+    <block type="dicey_die"></block>
+    <block type="dicey_score"></block>
+    <block type="math_number"></block>
+    <block type="controls_if"></block>
+    <block type="logic_compare"></block>
+    <block type="controls_whileUntil"></block>
+    <block type="dicey_over"></block>
+  </xml>
+
+  <script type="module" crossOrigin="use-credentials" >
+    import { Dicey, GoalGameView } from "./js/dicey-ui.js";
+    $(document).ready(function()
+      {
+        Dicey.init(1, function() { return new Game1() }, new GoalGameView());
+        Dicey.explain("intro");
+      });
+  </script>
+
+</body>
+
+</html>
+

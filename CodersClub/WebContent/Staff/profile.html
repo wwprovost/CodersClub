@@ -1,0 +1,124 @@
+<html>
+
+<head>
+  <title>Your Profile</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+</head>
+
+<body>
+<div class="main" >
+
+  <img src="../img/Penguin.jpg" style="float: right; height: 1in; margin-left: 2em;" />
+  <h2>Your Profile</h2>
+
+  <h3>E-Mail Address</h3>
+
+  <table>
+    <tr>
+      <td>E-Mail address:</td>
+      <td><input type="text" id="eMail" /></td>
+    </tr>
+    <tr>
+      <td colspan="2" ><input type="button" class="button" value="Change e-mail address" onclick="changeEMail();" /></td>
+    </tr>
+  </table>
+
+  <p id="eMailErrorMessage" class="errorMessage" ></p>
+  <p id="eMailSuccessMessage" ></p>
+
+  <h3>Password</h3>
+
+  <table>
+    <tr>
+      <td>Current password:</td>
+      <td><input type="password" id="oldPassword" /></td>
+    </tr>
+    <tr>
+      <td>New password:</td>
+      <td><input type="password" id="newPassword1" /></td>
+    </tr>
+    <tr>
+      <td>New password:</td>
+      <td><input type="password" id="newPassword2" /></td>
+    </tr>
+    <tr>
+      <td colspan="2" ><input type="button" class="button" value="Change password" onclick="changePassword();" /></td>
+    </tr>
+  </table>
+
+  <p id="passwordErrorMessage" class="errorMessage" ></p>
+  <p id="passwordSuccessMessage" ></p>
+
+</div>
+<p class="footer" ></p>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        checkHTTPStatus,
+        selfDiscover
+      } from "../js/utility.js";
+
+    window.changeEMail = function() {
+      let eMail = document.getElementById("eMail").value;
+      let errorPara = document.getElementById("eMailErrorMessage");
+      errorPara.textContent = "";
+
+      if (!/\w+([\.-]?\w+)*@\w+([\.-]?\w+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))/.test(eMail)) {
+        errorPara.textContent = "Not a valid e-mail address.";
+      return;
+      }
+
+      fetch("../REST/Staff/Profile?eMail=" + eMail, {
+          method: "PATCH",
+          credentials: "same-origin"
+        })
+        .then(response => checkHTTPStatus(204, response))
+        .then(response => {
+            document.getElementById("eMailSuccessMessage").textContent =
+              "Your profile has been changed. You can return to the main coaches' page by going back in your browser.";
+          })
+        .catch(console.log);
+    }
+
+    window.changePassword = function() {
+    let oldPassword = document.getElementById("oldPassword").value;
+    let newPassword1 = document.getElementById("newPassword1").value;
+    let newPassword2 = document.getElementById("newPassword2").value;
+    let errorPara = document.getElementById("passwordErrorMessage");
+    errorPara.textContent = "";
+
+    if (newPassword1 != newPassword2) {
+      errorPara.textContent = "New passwords don't match.";
+      return;
+    }
+
+    if (newPassword1.length < 8 || !/.*[a-z].*/.test(newPassword1)
+         || !/.*[A-Z].*/.test(newPassword1) || !/.*[0-9].*/.test(newPassword1)) {
+      errorPara.textContent = "Passwords should be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one digit.";
+      return;
+    }
+
+    fetch("../REST/Staff/Password?oldPassword=" + oldPassword + "&newPassword=" + newPassword1, {
+        method: "PATCH",
+        credentials: "same-origin"
+      })
+      .then(response => checkHTTPStatus(204, response))
+      .then(response => {
+          document.getElementById("passwordSuccessMessage").textContent =
+            "Your password has been changed. You can return to the main coaches' page by going back in your browser.";
+        })
+      .catch(console.log);
+  }
+
+  window.onload = function() {
+    selfDiscover(document.querySelector("p.footer"), "..")
+      .then(user => {
+          document.getElementById("eMail").value = user.email || "";
+        });
+  }
+</script>
+
+</body>
+
+</html>
+

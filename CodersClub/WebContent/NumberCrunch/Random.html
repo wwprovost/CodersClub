@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p class="language NCL" >To make some of our programs more interesting, we'll use a function that returns a random number. <strong>random <em>A</em> to <em>B</em></strong> returns some number that will be whatever you provide as A, whatever you provide as B, or somewhere in-between.</p>
+      <p class="language Python" >To make some of our programs more interesting, we'll use a function that returns a random number. <strong>randint(<em>A</em>,<em>B</em>)</strong> returns some number that will be whatever you provide as A, whatever you provide as B, or somewhere in-between.</p>
+      <p class="language JavaScript" >To make some of our programs more interesting, we'll use a function that returns a random number. <strong>random(<em>A</em>,<em>B</em>)</strong> returns some number that will be whatever you provide as A, whatever you provide as B, or somewhere in-between.</p>
+      <p>This way, you can try out the same program with different starting points or "inputs." Try the program below, and play around with the boundaries 1 to 10. Run the program a few times to see different results.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number x = random 1 to 10;
+        number y = random 1 to 10;
+        print "Multiplying " + x;
+        print " by " + y;
+        print " gives " + x * y;
+        print line ".";
+      </div>
+      <div id="Python" >
+        x = randint(1,10)
+        y = randint(1,10)
+        print "Multiplying", x, "by", y, "gives", x * y
+      </div>
+      <div id="JavaScript" >
+        let x = random(1,10)
+        let y = random(1,10)
+        print("Multiplying " + x + " by " + y +
+          " gives " + (x * y));
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Random Numbers", false);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,1709 @@
+<!--
+Copyright 2014-2017 Will Provost.
+Please direct inquiries to sprout@tiac.net.
+
+This file is part of an educational graphics-programming game entitled Sprout.
+
+Sprout is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Sprout is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Sprout.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="ISO-8859-1">
+    <title>Sprout Text</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/Sprout.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-2.1.1.js" ></script>
+    <script src="../js/bootstrap.min.js" ></script>
+    <script src="../../js/PEG.js" ></script>
+    <script src="../js/Drawing.js" ></script>
+    <script src="../js/Instructions.js" ></script>
+    <script src="../js/Challenge.js" ></script>
+    <script src="js/ApplicationUI.js" ></script>
+  </head>
+
+  <body onload="init();" >
+
+    <div style="position: relative;" >
+
+      <table style="margin-bottom: 0px;" >
+        <tr>
+          <td rowspan="2" >
+            <div style="position: relative; height: 240px" >
+              <canvas id="canvas" class="drawing shadow" ></canvas>
+              <canvas id="glass" class="drawing transparent" ></canvas>
+            </div>
+          </td>
+          <td rowspan="2" style="vertical-align: bottom; width: 1%; padding-left: 16px; padding-right: 16px;" >
+            <div>
+              <canvas id="bearing" class="shadow" width="60" height="60" ></canvas>
+              <canvas id="weight" class="shadow" width="60" height="30" ></canvas>
+              <canvas id="color" class="shadow" width="60" height="30" ></canvas>
+            </div>
+          </td>
+          <td style="width: 1%; " >
+            <h4 id="title" class="right top" >Sprout Text</h4>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 1%;" >
+            <div>
+              <button
+                id="runButton"
+                class="btn btn-primary"
+                style="width: 10em; height: 30px;"
+                data-toggle="tooltip"
+                title="Run your program"
+              ><strong><em>Run program</em></strong></button>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <hr style="margin: 6px 0px;" />
+
+      <table>
+        <tr>
+          <td class="tableLeft" >
+            <div id="programArea" > <!-- style="overflow-y: auto;" -->
+              <textarea id="program" >
+</textarea>
+              <textarea id="errorMessage" >
+</textarea>
+            </div>
+          </td>
+          <td class="tableRight" >
+            <div id="tutorialSection" class="inset" >
+              <p>
+                <span class="right" >
+                  <button
+                    id="assistant"
+                    class="btn tutorialButton"
+                  >Assistant</button>
+                </span>
+                <button
+                  id="tutorial"
+                  class="btn btn-default tutorialButton"
+                >Tutorial</button>
+                <button
+                  id="tutorial.next"
+                  class="btn btn-default tutorialButton"
+                  style="display: none;"
+                >Next</button>
+                <button
+                  id="tutorial.quit"
+                  style="display: none;"
+                  class="btn btn-default tutorialButton"
+                >Quit</button>
+              </p>
+            </div>
+            <div class="inset" >
+              <p>
+                <span>
+                  <button
+                    id="challenge"
+                    class="btn"
+                    style="margin-right: 1.5em;"
+                    data-toggle="tooltip"
+                    title="Try to match an existing drawing exactly by creating the right program"
+                  >Take challenge</button>
+                  <button
+                    id="gallery"
+                    class="btn"
+                  >Gallery</button>
+                </span>
+              </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+    <!-- Dialogs -->
+
+      <div id="galleryDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header" >
+              <h3 class="modal-title" >Select a drawing</h3>
+            </div>
+            <div class="modal-body" >
+              <select id="gallery.name" class="form-control" multiple style="height: 15em; width: 20em;" ></select>
+            </div>
+            <div class="modal-footer" >
+              <label id="gallery.message" ></label>
+              <button
+                class="btn btn-default"
+                id="gallery.select"
+                data-dismiss="modal"
+              >Select</button>
+              <button
+                class="btn btn-default"
+                id="gallery.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="challengeDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header" >
+              <h3 class="modal-title" >Select a challenge</h3>
+            </div>
+            <div class="modal-body" >
+              <select id="challenge.name" class="form-control" multiple style="height: 15em; width: 20em;" ></select>
+            </div>
+            <div class="modal-footer" >
+              <button
+                class="btn btn-default"
+                id="challenge.select"
+                data-dismiss="modal"
+              >Select</button>
+              <button
+                class="btn btn-default"
+                id="challenge.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="OKCancelDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <h3 id="OKCancel.title" class="modal-title" ></h3>
+            </div>
+            <div class="modal-body" >
+              <p id="OKCancel.message" ></p>
+            </div>
+            <div class="modal-footer" >
+              <button
+                class="btn btn-default"
+                id="OKCancel.OK"
+                data-dismiss="modal"
+              >OK</button>
+              <button
+                class="btn btn-default"
+                id="OKCancel.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="cheatSheet" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <h3 class="modal-title" >Common Sprout phrases</h3>
+            </div>
+            <div class="modal-body" >
+              <p>Double-click or select with arrow keys and hit ENTER to insert code into your program.</p>
+              <p>You can also bring up this "code assisant" by pressing <strong>Ctrl-Space</strong> when typing your code.</p>
+              <select id="reminders" size="9" style="width: 100%;" ></select>
+            </div>
+            <div class="modal-footer" >
+              <button
+                class="btn btn-default"
+                id="cheatSheet.close"
+                data-dismiss="modal"
+              >Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Parser grammar -->
+
+    <div id="grammar" style="display: none;" >
+Program = _ statements:StatementOrProcedure* _
+  {
+    var variables = new Object();
+
+    variables._red = 0;
+    variables._green = 0;
+    variables._blue = 0;
+    variables._alpha = 0;
+    variables._width = 1;
+
+    var context =
+      {
+        scopes: [ variables ], // global scope at bottom of the stack
+        addScope: function()
+          {
+            var newScope = [];
+            this.scopes.push(newScope);
+            return newScope;
+          },
+        removeScope: function()
+          {
+            return this.scopes.pop();
+          },
+        declare: function(name, value)
+          {
+            var topScope = this.scopes[this.scopes.length - 1];
+            if (("_" + name) in topScope)
+              throw name + " already declared.";
+
+            topScope["_" + name] = value;
+          },
+        assign: function(name, value)
+          {
+            for (var i = this.scopes.length; i > 0; )
+              if (("_" + name) in this.scopes[--i])
+              {
+                this.scopes[i]["_" + name] = value;
+                return;
+              }
+
+            throw "No such symbol: " + name;
+          },
+        assignElement: function(name, index, value)
+          {
+            for (var i = this.scopes.length; i > 0; )
+              if (("_" + name) in this.scopes[--i])
+              {
+                if (!(this.scopes[i]["_" + name] instanceof Array))
+                  throw name + " is not an array.";
+
+                if (index < 1)
+                  throw "Out of bounds: " + index + " < 1";
+
+                if (index > this.scopes[i]["_" + name].length)
+                  throw "Out of bounds: " + index + " > " +
+                    index > this.scopes[i]["_" + name].length;
+
+                this.scopes[i]["_" + name][index] = value;
+                return;
+              }
+
+            throw "No such symbol: " + name;
+          },
+        resolve: function(name)
+          {
+            for (var i = this.scopes.length; i > 0; )
+              if (("_" + name) in this.scopes[--i])
+                return this.scopes[i]["_" + name];
+
+            throw "No such symbol: " + name;
+          },
+        resolveElement: function(name, index)
+          {
+            for (var i = this.scopes.length; i > 0; )
+              if (("_" + name) in this.scopes[--i])
+              {
+                if (!(this.scopes[i]["_" + name] instanceof Array))
+                  throw name + " is not an array.";
+
+                if (index < 1)
+                  throw "Out of bounds: " + index + " < 1";
+
+                if (index > this.scopes[i]["_" + name].length)
+                  throw "Out of bounds: " + index + " > " +
+                    index > this.scopes[i]["_" + name].length;
+
+                return this.scopes[i]["_" + name][index];
+              }
+
+            throw "No such symbol: " + name;
+          }
+      };
+
+    var program = new Block();
+    try
+    {
+      statements.forEach(function(item)
+        {
+          var instruction = item.execute(context);
+          if (instruction != null)
+            program.instructions.push(instruction);
+        });
+    }
+    catch (ex)
+    {
+      runtimeException = ex;
+    }
+
+    return program;
+  }
+
+StatementOrProcedure = Statement / ProcedureTwoArgs / ProcedureOneArg / ProcedureNoArgs
+
+Move = "MOVE"i w _ distance:NumberExpression _ ";"
+  {
+    var result = new Object();
+    result.type = "Move";
+    result.distance = distance;
+    result.execute = function(context)
+      {
+        return new Move(distance.execute(context));
+      }
+      return result;
+  }
+
+Skip = "SKIP"i w _ distance:NumberExpression _ ";"
+  {
+    var result = new Object();
+    result.type = "Skip";
+    result.distance = distance;
+    result.execute = function(context)
+      {
+        return new Skip(distance.execute(context));
+      }
+      return result;
+  }
+
+Turn = "TURN"i w _ angle:NumberExpression _ ";"
+  {
+    var result = new Object();
+    result.type = "Turn";
+    result.angle = angle;
+    result.execute = function(context)
+      {
+        return new Turn(angle.execute(context));
+      }
+      return result;
+  }
+
+Repeat = "REPEAT"i w _ count:NumberExpression w _ "TIMES"i _ statements:Block
+  {
+    var result = new Object();
+    result.type = "Repeat";
+    result.count = count;
+
+    result.execute = function(context)
+      {
+        var program = new Block();
+        for (var i = 0; i < count.execute(context); ++i)
+        {
+          context.addScope();
+          statements.forEach(function(item)
+            {
+              var instruction = item.execute(context);
+              if (instruction != null)
+                program.instructions.push(instruction);
+            });
+          context.removeScope();
+        }
+
+        return program;
+      };
+
+    return result;
+  }
+
+RepeatUntil = "REPEAT UNTIL"i w _ test:Test _ statements:Block
+  {
+    var result = new Object();
+    result.type = "RepeatUntil";
+    result.test = test;
+
+    result.execute = function(context)
+      {
+        var program = new Block();
+        while (!test.execute(context))
+        {
+          context.addScope();
+          statements.forEach(function(item)
+            {
+              var instruction = item.execute(context);
+              if (instruction != null)
+                program.instructions.push(instruction);
+            });
+          context.removeScope();
+        }
+
+        return program;
+      };
+
+    return result;
+  }
+
+For = "FOR"i w _ iterator:Identifier _ "=" _ start:NumberExpression w _ "TO"i w + end:NumberExpression _ statements:Block
+  {
+    var result = new Object();
+    result.type = "For";
+    result.iterator = iterator;
+    result.start = start;
+    result.end = end;
+    result.statements = statements;
+
+    result.execute = function(context)
+      {
+        var program = new Block();
+
+        var startValue = start.execute(context);
+        var endValue = end.execute(context);
+        if (startValue < endValue)
+        {
+          for (var i = startValue; i <= endValue; ++i)
+          {
+            context.addScope();
+            context.declare(iterator.identifier, i);
+            statements.forEach(function(item)
+              {
+                var instruction = item.execute(context);
+                if (instruction != null)
+                  program.instructions.push(instruction);
+              });
+            context.removeScope();
+          }
+        }
+        else
+        {
+          for (var i = startValue; i >= endValue; --i)
+          {
+            context.addScope();
+            context.declare(iterator.identifier, i);
+            statements.forEach(function(item)
+              {
+                var instruction = item.execute(context);
+                if (instruction != null)
+                  program.instructions.push(instruction);
+              });
+            context.removeScope();
+          }
+        }
+
+        return program;
+      };
+
+    return result;
+  }
+
+If = "IF"i w _ test:Test _ doIfTrue:Block _ doIfFalse:Else?
+  {
+    var result = new Object();
+    result.type = "If";
+    result.test = test;
+    result.doIfTrue = doIfTrue;
+    result.doIfFalse = doIfFalse;
+    result.execute = function(context)
+      {
+        var program = new Block();
+
+        context.addScope();
+        if (test.execute(context))
+        {
+          doIfTrue.forEach(function(item)
+            {
+              var instruction = item.execute(context);
+              if (instruction != null)
+                program.instructions.push(instruction);
+            });
+        }
+        else if (doIfFalse != null)
+        {
+          doIfFalse.forEach(function(item)
+            {
+              var instruction = item.execute(context);
+              if (instruction != null)
+                program.instructions.push(instruction);
+            });
+        }
+        context.removeScope();
+
+        return program;
+      };
+    return result;
+  }
+
+Else = "ELSE"i w _ ifOrBlock:IfOrBlock
+  {
+    return ifOrBlock;
+  }
+
+IfOrBlock = ifOrBlock:(If / Block)
+  {
+    return ifOrBlock;
+  }
+
+Block = "{" _ statements:Statement* "}"
+  {
+    return statements;
+  }
+
+ShowMe = "SHOW ME"i w _ expr:NumberExpression _ ";"
+  {
+    var result = new Object();
+    result.type = "ShowMe";
+    result.expr = expr;
+    result.execute = function(context)
+      {
+        alert(expr.execute(context));
+      };
+    return result;
+  }
+
+Comment = "//" [A-Za-z0-9 \t.,?!:;'"\-()]* [\r\n]
+  {
+    var result = new Object();
+    result.type = "Comment";
+    result.execute = function(context)
+      {
+      };
+    return result;
+  }
+
+CallNoArgs = "CALL"i  w _ name:Identifier _ "()" _ ";"
+  {
+    var result = new Object();
+    result.type = "Call";
+    result.name = name;
+
+    result.execute = function(context)
+      {
+        var program = new Block();
+        context.addScope();
+        context.resolve(name.identifier).body.forEach(function(item)
+          {
+            var instruction = item.execute(context);
+            if (instruction != null)
+              program.instructions.push(instruction);
+          });
+
+        context.removeScope();
+        return program;
+      };
+    return result;
+  }
+
+CallOneArg = "CALL"i  w _ name:Identifier _ "(" _ arg:NumberExpression _ ")" _ ";"
+  {
+    var result = new Object();
+    result.type = "Call";
+    result.name = name;
+    result.arg = arg;
+
+    result.execute = function(context)
+      {
+        context.addScope();
+        context.declare(context.resolve(name.identifier).parameter,
+          arg.execute(context));
+
+        var program = new Block();
+        context.resolve(name.identifier).body.forEach(function(item)
+          {
+            var instruction = item.execute(context);
+            if (instruction != null)
+              program.instructions.push(instruction);
+          });
+
+        context.removeScope();
+        return program;
+      };
+    return result;
+  }
+
+CallTwoArgs = "CALL"i  w _ name:Identifier _ "(" _ arg1:NumberExpression _ "," _ arg2:NumberExpression _ ")" _ ";"
+  {
+    var result = new Object();
+    result.type = "Call";
+    result.name = name;
+    result.arg1 = arg1;
+    result.arg2 = arg2;
+
+    result.execute = function(context)
+      {
+        context.addScope();
+        context.declare(context.resolve(name.identifier).parameter1,
+          arg1.execute(context));
+        context.declare(context.resolve(name.identifier).parameter2,
+          arg2.execute(context));
+
+        var program = new Block();
+        context.resolve(name.identifier).body.forEach(function(item)
+          {
+            var instruction = item.execute(context);
+            if (instruction != null)
+              program.instructions.push(instruction);
+          });
+
+        context.removeScope();
+        return program;
+      };
+    return result;
+  }
+
+Statement = statement:(Declaration / Assignment / CallTwoArgs / CallOneArg / CallNoArgs / Move / Skip / Turn / RepeatUntil / Repeat / For / If / ShowMe / Comment) _
+  { return statement; }
+
+ProcedureNoArgs = "PROCEDURE"i w _ name:Identifier _ "()" _ statements:Block _
+  {
+    var result = new Object();
+    result.type = "Procedure";
+    result.name = name;
+
+    result.execute = function(context)
+      {
+        context.declare(name.identifier,
+          {
+            body: statements
+          });
+      };
+
+    return result;
+  }
+
+ProcedureOneArg = "PROCEDURE"i w _ name:Identifier _ "(" _ param:Identifier _ ")" _ statements:Block _
+  {
+    var result = new Object();
+    result.type = "Procedure";
+    result.name = name;
+    result.param = param;
+
+    result.execute = function(context)
+      {
+        context.declare(name.identifier,
+          {
+            body: statements,
+            parameter: param.identifier
+          });
+      };
+
+    return result;
+  }
+
+ProcedureTwoArgs = "PROCEDURE"i w _ name:Identifier _ "(" _ param1:Identifier _ "," _ param2:Identifier _ ")" _ statements:Block _
+  {
+    var result = new Object();
+    result.type = "Procedure";
+    result.name = name;
+    result.param1 = param1;
+    result.param2 = param2;
+
+    result.execute = function(context)
+      {
+        context.declare(name.identifier,
+          {
+            body: statements,
+            parameter1: param1.identifier,
+            parameter2: param2.identifier
+          });
+      };
+
+    return result;
+  }
+
+Declaration = NumberDeclaration / NumberArrayDeclaration
+NumberDeclaration = "NUMBER"i w _ variable:Identifier _ "=" _ expr:NumberExpression _ ";"
+  {
+    var result = new Object();
+    result.type = "NumberDeclaration";
+    result.variable = variable;
+    result.expr = expr;
+    result.execute = function(context)
+      {
+        context.declare(variable.identifier, expr.execute(context));
+      };
+    return result;
+  }
+
+NumberArrayDeclaration = "NUMBER["i dim:NumberExpression "]" w _ variable:Identifier _ ";"
+  {
+    var result = new Object();
+    result.type = "NumberArrayDeclaration";
+    result.variable = variable;
+    result.dim = dim;
+    result.execute = function(context)
+      {
+        var newArray = [];
+        for (var i = 0; i <= dim.execute(context); ++i)
+          newArray.push(0);
+
+        context.declare(variable.identifier, newArray);
+      };
+    return result;
+  }
+
+Assignment = NumberArrayElementAssignment / NumberAssignment
+
+NumberAssignment = variable:Identifier _ "=" _ expr:NumberExpression _ ";"
+  {
+    var result = new Object();
+    result.type = "NumberAssignment";
+    result.variable = variable;
+    result.expr = expr;
+    result.execute = function(context)
+      {
+        var varName = variable.identifier;
+        //TODO if var not already defined, error
+        context.assign(varName, expr.execute(context));
+
+        if (varName == "red" || varName == "green" ||
+            varName == "blue" || varName == "alpha")
+        {
+          return new SetStyleProperty("color",
+            buildColor(context.resolve("red"), context.resolve("green"),
+              context.resolve("blue")));
+        }
+        else if (varName == "width")
+        {
+          return new SetStyleProperty("weight", context.resolve(varName));
+        }
+      };
+    return result;
+  }
+
+NumberArrayElementAssignment = variable:Identifier "[" index:NumberExpression "]" _ "=" _ expr:NumberExpression _ ";"
+  {
+    var result = new Object();
+    result.type = "NumberAssignment";
+    result.variable = variable;
+    result.index = index;
+    result.expr = expr;
+    result.execute = function(context)
+      {
+        var varName = variable.identifier;
+        //TODO if var not already defined, error
+        context.assignElement(varName,
+          index.execute(context), expr.execute(context));
+      };
+    return result;
+  }
+
+Test = LogicalExpression / Comparison
+LogicalExpression = op1:Comparison w _ op:LogicalOperator w _ op2:Comparison
+  {
+    var result = new Object();
+    result.type = "LogicalExpression";
+    result.op1 = op1;
+    result.op = op.toLowerCase();
+    result.op2 = op2;
+    result.execute = function(context)
+      {
+        var value1 = op1.execute(context);
+        var value2 = op2.execute(context);
+        if (op == "and") return value1 && value2;
+        if (op == "or") return value1 || value2;
+      };
+
+    return result;
+  }
+LogicalOperator = "AND"i / "OR"i
+
+Comparison = NumberComparison
+NumberComparison = op1:NumberAtom w _ op:NumberComparisonOperator w _ op2:NumberAtom
+  {
+    var result = new Object();
+    result.type = "NumberComparison";
+    result.op1 = op1;
+    result.op = op;
+    result.op2 = op2;
+    result.execute = function(context)
+      {
+        var value1 = op1.execute(context);
+        var value2 = op2.execute(context);
+        if (op == "==") return value1 == value2;
+        if (op == "!=") return value1 != value2;
+        if (op == ">") return value1 > value2;
+        if (op == ">=") return value1 >= value2;
+        if (op == "<") return value1 < value2;
+        if (op == "<=") return value1 <= value2;
+      };
+
+    return result;
+  }
+NumberComparisonOperator = "==" / "!=" / ">=" / ">" / "<=" / "<"
+
+NumberExpression = RandomNumber / NumberArrayElement / NumberBinaryExpression / NumberAtom
+
+RandomNumber = "RANDOM"i w _ min:NumberAtom w _ "TO"i w _ max:NumberAtom
+  {
+    var result = new Object();
+    result.type = "RandomNumber";
+    result.min = min;
+    result.max = max;
+    result.execute = function(context)
+      {
+        var minValue = min.execute(context);
+        var maxValue = max.execute(context);
+        var range = maxValue - minValue + 1;
+        return Math.floor(Math.random() * range + minValue);
+      };
+    return result;
+  }
+
+NumberBinaryExpression = op1:NumberAtom _ op:NumberOperator _ op2:NumberExpression
+  {
+    var result = new Object();
+    result.type = "NumberBinaryExpression";
+    result.op1 = op1;
+    result.op = op;
+    result.op2 = op2;
+    result.execute = function(context)
+      {
+        var value1 = op1.execute(context);
+        var value2 = op2.execute(context);
+        if (op == "+") return value1 + value2;
+        if (op == "-") return value1 - value2;
+        if (op == "*") return value1 * value2;
+        if (op == "/") return value1 / value2;
+        if (op == "%") return value1 % value2;
+      };
+    return result;
+  }
+
+NumberArrayElement = name:Identifier "[" index:NumberExpression "]"
+  {
+    var result = new Object();
+    result.type = "NumberArrayElement";
+    result.name = name;
+    result.index = index;
+    result.execute = function(context)
+      {
+        return context.resolveElement
+          (name.identifier, index.execute(context));
+      };
+    return result;
+  }
+
+NumberAtom = Identifier / NumberValue
+
+NumberOperator = "+" / "-" / "*" / "/" / "%"
+
+Identifier = identifier:Token
+  {
+    var result = new Object();
+    result.type = "Identifier";
+    result.identifier = identifier;
+    result.execute = function(context)
+      {
+        return context.resolve(identifier);
+      };
+    return result;
+  }
+Token = ([A-Za-z_][A-Za-z0-9_]*) { return text(); }
+
+Value = NumberValue
+NumberValue = "-"?[0-9.]+
+  {
+    var result = new Object();
+    result.type = "NumberValue";
+    result.value = parseFloat(text(), 10);
+    result.execute = function(context)
+      {
+        return result.value;
+      };
+    return result;
+  }
+
+w = [ \t\r\n]
+_ = [ \t\r\n]*
+    </div>
+
+    <!-- Tutorial -->
+
+    <div id="tutorialPrograms" style="display: none;" >
+<textarea>// Remember Sprout, where you'd click to choose
+// instructions like Move, Turn, Skip, and Repeat?
+// In this version, you type your instructions ...
+move 40;
+turn 90;
+move 20;
+skip 10;
+move 20;
+turn 90;
+move 40;
+
+// Click Run Program to see this one work;
+// then, click Next at the right to see the next example.
+</textarea>
+<textarea>// This line is a comment, because it starts with two slashes.
+// Comments are not active parts of the program;
+// but they're good places for explanations and notes.
+
+// Statements have to end with semicolons,
+// except for some statements that define blocks of other
+// statements ... such as the repeat. The other statements
+// to be executed in the repeat must be inside curly braces:
+
+repeat 8 times
+{
+    move 40;
+    turn 45;
+}
+// Our old friend, the octagon!
+// You can change these programs as you're going, too,
+// or just erase and make your own. Try changing the
+// angle of the turn above from 45 to, say 135 ...
+</textarea>
+<textarea>// We have features Sprout Text that aren't in normal Sprout,
+// too. One of the biggest is that we can define number
+// variables, and control them during the program.
+
+// This program makes steps, but they keep getting bigger!
+
+// Define a variable called "length" with a value of 20:
+number length = 20;
+repeat 4 times
+{
+  // Move whatever is the current value of the variable:
+  move length;
+  turn 90;
+  move length;
+  turn -90;
+
+  // Change the value to be 20 pixels longer than before:
+  length = length + 20;
+}
+</textarea>
+<textarea>// You can control color with pre-defined variables
+// called "red", "green", and "blue" -- each can be 0 to 255.
+red = 255;
+move 40;
+turn 90;
+
+red = 0;
+blue = 255;
+move 40;
+
+// Line width is a pre-defined variable "width":
+skip 20;
+width = 5;
+move 40;
+</textarea>
+<textarea>// If you get confused about how a program is or is not working,
+// there is one "diagnostic" statement that you can use to check
+// the value of a variable:
+number angle = 10;
+repeat 20 times
+{
+  move 30;
+  turn angle;
+  angle = angle + 3;
+}
+
+// What's the value of angle by the time we're done?
+show me angle;
+
+// Be careful of using this inside a repeat, though:
+// you will have to close the message box over and over ...
+</textarea>
+<textarea>// We can also use random numbers, which can be fun
+// for length, turning angles, color, and width.
+
+// This program draws a different polygon each time.
+// Notice too how we can calculate one number from another:
+
+number sides = random 3 to 8;
+number angle = 360 / sides;
+repeat sides times
+{
+  move 40;
+  turn angle;
+}
+</textarea>
+<textarea>
+// You can define a "procedure" to run a piece
+// of code, and then call the procedure any time.
+
+// This procedure has a "parameter" called size,
+// which is like a variable that's set by
+// the code that calls the procedure.
+procedure square(size)
+{
+  number half = size / 2;
+  skip half;
+  turn 90;
+  skip half;
+  repeat 4 times
+  {
+    turn 90;
+    move size;
+  }
+  turn 90;
+  skip half;
+  turn 90;
+  skip half;
+  turn 90;
+}
+
+// Now call the procedure three times,
+// to make squares of three different sizes:
+call square(50);
+call square(100);
+call square(150);
+</textarea>
+<textarea>
+// This program re-uses two procedures:
+
+// This one draws five sharp teeth:
+procedure drawSawtooth(teeth, size)
+{
+  repeat teeth times
+  {
+    move size;
+    turn 120;
+    move size;
+    turn -120;
+  }
+}
+
+// This one draws an equilateral triangle,
+// which can be eyes or nose:
+procedure drawTriangle(size)
+{
+  repeat 3 times
+  {
+    move size;
+    turn 120;
+  }
+}
+
+// Here begins the actual program.
+// First, turn a bit and draw the upper teeth:
+turn 30;
+call drawSawtooth(5, 20);
+
+// Draw the sides of the mouth, get into position,
+// and draw the lower teeth:
+turn 150;
+move 15;
+turn 90;
+skip 100;
+turn 90;
+move 15;
+skip -15;
+turn 30;
+call drawSawtooth(5, 20);
+
+// Now move upwards and draw the left eye ...
+turn -30;
+skip 70;
+turn -90;
+skip 80;
+turn 60;
+call drawTriangle(40);
+
+// ... the nose ...
+turn 120;
+skip 30;
+turn 60;
+call drawTriangle(30);
+
+// ... and the right eye:
+turn -60;
+skip 30;
+turn -120;
+call drawTriangle(40);
+</textarea>
+<textarea>
+// A procedure can call itself, which is known as
+// "recursion."
+procedure tunnel(size)
+{
+  repeat 4 times
+  {
+    move size;
+    turn 90;
+  }
+  number nudge = size * .1093;
+  skip nudge;
+  turn 7;
+
+  // You have to be careful not to recurse
+  // forever! so always have some condition
+  // that you check before calling again.
+  if size > 20
+  {
+    // Then, "call yourself," but with a new value:
+    call tunnel(size * .8973);
+  }
+}
+
+call tunnel(200);
+</textarea>
+    </div>
+
+    <!-- Gallery -->
+
+    <div id="galleryPrograms" style="display: none;" >
+      <textarea id="Square-spiral" >number length = 20;
+repeat 20 times
+{
+  move length;
+  turn 90;
+  length = length + 8;
+}
+// ... and, try chaning the angle,
+// for example from 90 to 60, or 84, or 120 ...
+</textarea>
+      <textarea id="Smooth spiral" >number length = 1;
+repeat 200 times
+{
+  move length;
+  turn 10;
+  length = length + .1; // Aha, decimals!
+}
+</textarea>
+      <textarea id="Scroll" >red = 200;
+blue = 100;
+turn -60;
+
+// The negative angle means turn to the left.
+// Over the course of the loop, we'll straighten out,
+// and then gradually start turnging right, instead.
+number angle = -30;
+repeat 81 times
+{
+  move 12;
+  turn angle;
+  angle = angle + .75;
+}
+</textarea>
+      <textarea id="Basket" >number length = 30;
+turn 90;
+repeat 20 times
+{
+  // Go right, U-turn, make the horizontal line longer:
+  move length;
+  turn -90;
+  move 4;
+  turn -90;
+  length = length + 2;
+
+  // Go left, U-turn, make the line longer again:
+  move length;
+  turn 90;
+  move 4;
+  turn 90;
+  length = length + 2;
+}
+</textarea>
+      <textarea id="Colored basket" >number length = 30;
+turn 90;
+red = 200;
+repeat 20 times
+{
+  // Go right, U-turn, make the horizontal line longer:
+  move length;
+  turn -90;
+  move 4;
+  turn -90;
+  length = length + 2;
+
+  // Go left, U-turn, make the line longer again:
+  move length;
+  turn 90;
+  move 4;
+  turn 90;
+  length = length + 2;
+
+  red = red - 10;
+  green = green + 10;
+}
+</textarea>
+      <textarea id="Will's spiral" >width = 100;
+turn 90;
+number thinning = 9985 / 10000;
+repeat 255 times
+{
+  move 1;
+  turn 1;
+  red = red + 1;
+  width = width * thinning;
+}
+repeat 255 times
+{
+  move 1;
+  turn 1;
+  green = green + 1;
+  width = width * thinning;
+}
+repeat 255 times
+{
+  move 1;
+  turn 1;
+  red = red - 1;
+  width = width * thinning;
+}
+repeat 255 times
+{
+  move 1;
+  turn 1;
+  blue = blue + 1;
+  width = width * thinning;
+}
+repeat 255 times
+{
+  move 1;
+  turn 1;
+  green = green - 1;
+  width = width * thinning;
+}
+repeat 255 times
+{
+  move 1;
+  turn 1;
+  blue = blue - 1;
+  width = width * thinning;
+}
+</textarea>
+      <textarea id="Sonia's spiral" >width = 100;
+width = 100;
+red = 100;
+green = 255;
+blue = 100;
+
+repeat 60 times
+{
+  move 65;
+  turn 80;
+  move 64;
+  skip 45;
+  turn 99;
+  skip 46;
+
+  // Try different color increments:
+  red = red + 1;
+  green = green - 4;
+  blue = blue + 3;
+
+  // Try subtracting smaller numbers:
+  width  = width - 12;
+}
+</textarea>
+<!--
+      <textarea id="Parabola?" >
+</textarea>
+-->
+    </div>
+
+    <!-- Challenges -->
+
+    <div id="challengePrograms" style="display: none;" >
+      <div id="Fork" >
+        <p>// Move, turn, and skip to trace the shape
+// You can experiment with the distances
+// to get the tracing just right.
+// Something new in Sprout Text, too, is that
+// you can move or skip a negative number:
+// this is a simple way to go backwards.
+</p>
+        <p>move 50;
+turn 45;
+move 25;
+turn 180;
+skip 25;
+turn 90;
+move 25;
+</p>
+      </div>
+      <div id="Arrowhead" >
+        <p>// The angles are all multiples of 15.
+// When you want to turn left,
+// use a negative number for the angle.
+</p>
+        <p>turn 15;
+move 60;
+turn 150;
+move 60;
+turn 135;
+move 18;
+turn -60;
+move 18;
+</p>
+      </div>
+      <div id="Hexagon" >
+        <p>// You must solve this with a loop.
+</p>
+        <p>repeat 6 times
+{
+  move 40;
+  turn 60;
+}
+</p>
+      </div>
+      <div id="Two circles" >
+        <p>// There is no Sprout statement
+// to draw a circle or an arc;
+// but you can get curves by repeating
+// a move-and-turn sequence.
+// Move just a little, turn just a little ...
+</p>
+        <p>repeat 360 times
+{
+  move 1;
+  turn 1;
+}
+repeat 360 times
+{
+  move 1;
+  turn -1;
+}
+</p>
+      </div>
+      <div id="Bars" >
+        <p>// The line width you want is 8 pixels.
+// The heights are all multiples of 20.
+
+// You must solve this with a loop --
+// not a long program that draws out
+// each line!
+</p>
+        <p>width = 8;
+number height = 20;
+repeat 5 times
+{
+  move height;
+  turn 180;
+  skip height;
+  turn -90;
+  skip 20;
+  turn -90;
+
+  height = height + 20;
+}
+</p>
+      </div>
+      <div id="Three triangles" >
+        <p>// The angles are all multiples of 30.
+// You will need a nested loop.
+// For this one we start you off with one statement:
+skip 100;
+</p>
+        <p>skip 100;
+turn 150;
+number size = 50;
+repeat 3 times
+{
+  repeat 3 times
+  {
+    move size;
+    turn 120;
+  }
+  size = size + 50;
+}
+</p>
+      </div>
+      <div id="Wave" >
+        <p>// This wave is constructed of eight semi-circles.
+// The magic numbers are:
+//   segment length of 12
+//   turn 10 degrees at a time
+</p>
+        <p>width = 5;
+repeat 4 times
+{
+  repeat 18 times
+  {
+    move 12;
+    turn 10;
+  }
+  repeat 18 times
+  {
+    move 12;
+    turn -10;
+  }
+}
+</p>
+      </div>
+      <div id="Nautilus" >
+        <p>// In a loop, turn, move, move backwards, and increase
+// the length of your line each time around.
+// Experiment to find the right turning angle, starting length, and increment.
+
+// Once you've got this one, quit the challenge and try
+// other numbers, especially turning by angles that aren't
+// factors of 360. A favorite is 144 times, turning 7 degrees.
+
+// Varying the line color as you spiral out can be fun, too.
+</p>
+        <p>number length = 30;
+repeat 24 times
+{
+  turn 15;
+  move length;
+  skip 0-length;
+  length = length + 2;
+}
+</p>
+      </div>
+      <div id="Concentric squares" >
+        <p>// Again, a nested loop is the right
+// way to organize your algorithm.
+// You'll need to manage variables
+// for the side length of the square,
+// and increase it after each square.
+</p>
+        <p>// Number of segments:
+number size = 1;
+
+// Length of a segment in pixels:
+number segment = 40;
+
+// Outer loop adjusts the starting position and size:
+repeat 5 times
+{
+  // Position for the next square:
+  turn -90;
+  skip segment / 2;
+  turn -90;
+  skip segment / 2;
+  turn 180;
+
+  // Inner loop draws one square:
+  repeat 4 times
+  {
+    move segment * size;
+    turn 90;
+  }
+
+  // Increase the size:
+  size = size + 1;
+}
+</p>
+      </div>
+
+      <div id="Pyramid" >
+        <p>// To solve this, you need a nested loop
+// in which the inner loop repeats
+// a different number of times each time
+// it is run.
+</p>
+        <p>width = 20;
+for size = 8 to 1
+{
+  repeat size times
+  {
+    move 20;
+    skip -20;
+    turn 90;
+    skip 24;
+    turn -90;
+  }
+
+  turn -90;
+  skip size * 24;
+  turn 90;
+
+  skip 20;
+  turn 90;
+  skip 12;
+  turn -90;
+}
+</p>
+      </div>
+
+      <div id="Tree" >
+        <p>// This calls for a recursive procedure.
+// The procedure can take a length parameter,
+// and will move by that length, and then
+// move again at 45-degree angles left and
+// right, as well as straight ahead. Skip back so
+// that the shuttle is right where it started.
+// When you call this procedure and pass length of 81,
+// you should see the trunk and the start of
+// each main branch, and the shuttle should be
+// back where it started, at the base of the tree.
+
+// Now give the procedure a second parameter called depth.
+// Put the whole body of the procedure in an 'if',
+// so you only do anything when depth is greater than
+// zero. Change the drawing code for the branches --
+// not for the trunk -- to call recursively,
+// instead moving and skipping back. Make the recursive
+// call with half the given length, and with one less
+// than the depth you were given.
+
+// If you now call your procedure with a depth of 1,
+// You'll just see the trunk, and no branches.
+// Try increasing the inital depth, and you'll see
+// the tree taking shape, with branches growing branches
+// of their own. A depth of 5 will do it, and then
+// there's one last number to tweak, which you can find
+// by trial-and-error.
+</p>
+        <p>procedure branchOut(length, depth)
+{
+  if depth != 0
+  {
+    number angle = 45;
+
+    move length;
+    turn 0-angle;
+    call branchOut(length / 2, depth - 1);
+    turn angle;
+    call branchOut(length * .8, depth - 1);
+    turn angle;
+    call branchOut(length / 2, depth - 1);
+    turn 0-angle;
+    skip 0-length;
+  }
+}
+
+call branchOut(81, 5);
+</p>
+      </div>
+
+      <div id="Snowflake" >
+        <p>// This is quite a complex shape, and it will
+// take some work, but once you get it your
+// program will only be about 15 lines long.
+
+// This starter program clearly isn't getting it,
+// but it shows the "skeleton" of the fractal.
+turn 90;
+repeat 3 times
+{
+  move 243;
+  turn 120;
+}
+
+// Create a procedure that takes length and depth
+// parameters, and that initially just moves
+// one third of the given length, turns 60 degrees
+// left, moves, turns 120 degrees right, moves,
+// turns 60 degrees left, and moves again.
+// Now, in the above loop, call this procedure
+// instead of moving, passing 243 and 0.
+// You should now have a six-pointed star.
+
+// Now you can make the procedure recursive.
+// In place of each of your four move statements,
+// check the depth parameter: if it's zero,
+// then do the move as you do already; if it's
+// greater, then call the procedure recursivesly,
+// with a third of the length and one less than
+// the depth.
+
+// Run and you'll see the same star.
+// But increase the depth and you'll see
+// a progressively more complex shape,
+// and with the right depth setting you'll
+// trace the challenge shape exactly.
+</p>
+        <p>procedure moveOrRecurse(length, depth)
+{
+  if depth == 0 { move length; }
+  else { call leg(length, depth-1); }
+}
+
+procedure leg(length, depth)
+{
+  call moveOrRecurse(length / 3, depth);
+  turn -60;
+  call moveOrRecurse(length / 3, depth);
+  turn 120;
+  call moveOrRecurse(length / 3, depth);
+  turn -60;
+  call moveOrRecurse(length / 3, depth);
+}
+
+turn 90;
+repeat 3 times
+{
+  call leg(243, 3);
+  turn 120;
+}
+</p>
+      </div>
+
+      <div id="Dice chart" >
+        <p>// Your program must first roll two dice -- that is, generate two
+// random numbers between 1 and 6 -- and add their values
+// to get a number between 2 and 12. Do this 1000 times,
+// and count up how many times each value comes up.
+// Then, make a bar chart, like the one above.
+// Because the heights of the bars depend on random numbers,
+// yours may not look exactly like this one, but it should have
+// the same horizontal dimensions and in most cases your bar
+// heights will be similar to what's shown.
+
+turn 180;
+skip 100;
+turn 90;
+skip 240;
+turn 180;
+move 480;
+turn 180;
+skip 440;
+turn 90;
+width = 30;
+</p>
+        <p>
+number[12] values;
+
+// Roll dice 100 times and add up the occurrences:
+repeat 1000 times
+{
+  number die1 = random 1 to 6;
+  number die2 = random 1 to 6;
+  number oldCount = values[die1 + die2];
+  values[die1 + die2] = oldCount + 1;
+}
+
+// Graph the results
+turn 180;
+skip 100;
+turn 90;
+skip 240;
+turn 180;
+move 480;
+turn 180;
+skip 440;
+turn 90;
+width = 30;
+
+number roll = 2;
+repeat 11 times
+{
+  number length = values[roll];
+  move length;
+  skip 0-length;
+  turn 90;
+  skip 40;
+  turn 270;
+
+  roll = roll + 1;
+}
+</p>
+      </div>
+
+    </div>
+<!--
+      <div id="" >
+        <p>// Hints here
+</p>
+        <p>// Answer here
+</p>
+      </div>
+-->
+</body>
+
+<script type="module" crossorigin="use-credentials" >
+  import { AutoSaver, defaultInterval } from "../../js/save.js";
+  import {
+      getShadowingStatement,
+      pollAndFollow,
+      requestParams
+    } from "../../js/utility.js";
+
+  window.AutoSaver = AutoSaver;
+  window.defaultInterval = defaultInterval;
+  window.getShadowingStatement = getShadowingStatement;
+  window.pollAndFollow = pollAndFollow;
+  window.requestParams = requestParams;
+</script>
+
+</html>

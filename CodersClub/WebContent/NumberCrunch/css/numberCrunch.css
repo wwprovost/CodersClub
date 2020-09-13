@@ -1,0 +1,20 @@
+html
+{
+  background-color: #fee;
+  font-family: Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+}
+
+input.CCButton
+{
+  color: black;
+  background-color: #ea4;
+  padding: 3px 8px;
+}
+
+input.CCButton:disabled
+{
+  color: #888;
+  background-color: #fc8;
+  padding: 3px 8px;
+}
+

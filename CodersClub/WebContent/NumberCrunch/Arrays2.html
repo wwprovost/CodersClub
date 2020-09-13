@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>You can also get or set the values in an array as you go. Use the square brackets with an index inside, either to get one value from the list or to change it.</p>
+      <p class="language Python" >You can also add things to lists, and change data in them as you go. Use the square brackets with an index inside, either to get one value from the list or to change it. You can also <strong>append</strong> a value to the end of a list.</p>
+      <p class="language JavaScript" >You can also add things to arrays, and change data in them as you go. Use the square brackets with an index inside, either to get one value from the list or to change it. You can also <strong>push</strong> a value onto the end of a list.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number[3] rolls;
+        for x = 1 to 3
+        {
+          rolls[x] = random 1 to 6;
+        }
+
+        number sum = rolls[1] + rolls[2] + rolls[3];
+        print line "Sum of the rolls was " + sum;
+        new line;
+
+        print line "Player 1 has " + rolls[1];
+        rolls[1] = rolls[1] + random 1 to 6;
+        print line "Player 1 rolled again, now has " + rolls[1];
+      </div>
+      <div id="Python" >
+        rolls = [];
+        for x in range(3):
+            rolls.append(randint(1,6))
+
+        sum = rolls[0] + rolls[1] + rolls[2]
+        print "Sum of the rolls was", sum
+        print
+
+        print "Player 1 has", rolls[0]
+        rolls[0] = rolls[0] + randint(1,6)
+        print "Player 1 rolled again, now has", rolls[0]
+      </div>
+      <div id="JavaScript" >
+        let rolls = [];
+        for (let x = 0; x < 3; ++x)
+        {
+          rolls.push(random(1,6));
+        }
+
+        let sum = rolls[0] + rolls[1] + rolls[2];
+        print("Sum of the rolls was " + sum);
+        print("");
+
+        print("Player 1 has " + rolls[0]);
+        rolls[0] = rolls[0] + random(1,6);
+        print("Player 1 rolled again, now has " + rolls[0]);
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Dynamic Arrays and Lists", false);
+  </script>
+
+</body>
+
+</html>
+

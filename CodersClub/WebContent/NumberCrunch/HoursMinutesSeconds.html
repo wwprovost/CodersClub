@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>This program chooses a random number of seconds, and breaks it down into hours, minutes, and seconds:</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number totalseconds = random 1000 to 10000;
+        number seconds = totalseconds % 60;
+
+        number totalminutesinseconds = totalseconds - seconds;
+        number totalminutes = totalminutesinseconds / 60;
+        number minutes = totalminutes % 60;
+
+        number totalhoursinmninutes = totalminutes - minutes;
+        number hours = totalhoursinmninutes / 60;
+
+        print line "Total seconds: " + totalseconds;
+        print line "Hours:   " + hours;
+        print line "Minutes: " + minutes;
+        print line "Seconds: " + seconds;
+      </div>
+      <div id="Python" >
+        totalseconds = randint(1000,10000)
+        seconds = totalseconds % 60
+
+        totalminutes = totalseconds / 60
+        minutes = totalminutes % 60
+
+        hours = totalminutes / 60
+
+        print "Total seconds:", totalseconds
+        print "Hours:  ", hours
+        print "Minutes:", minutes
+        print "Seconds:", seconds
+      </div>
+      <div id="JavaScript" >
+        let totalseconds = random(1000,10000);
+        let seconds = totalseconds % 60;
+
+        let totalminutesinseconds = totalseconds - seconds;
+        let totalminutes = totalminutesinseconds / 60;
+        let minutes = totalminutes % 60;
+
+        let totalhoursinmninutes = totalminutes - minutes;
+        let hours = totalhoursinmninutes / 60;
+
+        print("Total seconds: " + totalseconds);
+        print("Hours:   " + hours);
+        print("Minutes: " + minutes);
+        print("Seconds: " + seconds);
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Hours, Minutes, and Seconds", false);
+  </script>
+
+</body>
+
+</html>
+

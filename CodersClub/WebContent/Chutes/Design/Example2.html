@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Chutes &amp; Ladders</title>
+  <link rel="stylesheet" type="text/css" href="css/chutes.css" />
+  <script src="../../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <h2 style="text-align: center;" >
+    <span>Chutes &amp; Ladders Puzzle Designer</span>
+    <span style="float: left; width: 240px;" >
+      <input type="button" id="run" value="Run" />
+      <input type="button" id="cancel" value="Cancel" />
+      <input type="button" id="reset" value="Reset" />
+    </span>
+    <span style="float: right; width: 240px; text-align: right;" >
+      <input type="button" id="build" value="Build" style="margin-right: 20px;" />
+      <input type="button" id="back" value="Back" />
+      <input type="button" id="next" value="Next" />
+    </span>
+  </h2>
+
+  <div id="program" class="program" >
+    <div id="code" class="codeplace" ></div>
+    <div class="error balloon" >error</div>
+    <div class="status balloon" >status</div>
+  </div>
+
+  <div id="designArea" class="program" >
+    <div id="design" class="codeplace" ></div>
+    <div class="error balloon" >error</div>
+    <div class="status balloon" >status</div>
+  </div>
+
+  <div id="puzzle" >
+    <div id="title" ></div>
+    <div id="limit" ></div>
+    <div id="programHelp" >
+go
+go until [thing]
+turn
+jump up
+jump down
+repeat [N] times
+repeat until [thing]</div>
+    <div id="designHelp" >
+platform [x y length]
+chute [x y depth]
+ladder [x y height]
+goal [x y]
+start [x y]
+limit [N]</div>
+    <div id="pieces" ></div>
+  </div>
+
+</body>
+
+<script type="module" crossorigin="use-credentials" >
+  window.sampleDesign = "# You can set limits\n# on the number of\n# intructions in \n# the player's\n# program, too.\n# Here's Puzzle #8:\n\nplatform 1 1 1\nplatform 1 2 1\nplatform 1 3 1\nplatform 1 4 1\nchute 2 2 1\nchute 1 3 1\nchute 2 4 1\ngoal 1 1\nstart 1 4\nlimit 5\n";
+  window.sampleProgram = "go\njump down\nturn\ngo\njump down\nturn\n# Whoops! Too many.\n";
+
+  import { Page } from "./js/chutes.js";
+  new Page();
+</script>
+
+</html>
+

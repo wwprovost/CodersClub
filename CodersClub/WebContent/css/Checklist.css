@@ -1,0 +1,58 @@
+body
+{
+  font-family: Helvetica,Geneva,Arial,SunSans-Regular,sans-serif;
+  font-size: 14pt;
+  margin: 0;
+  background: white;
+}
+
+.main
+{
+  padding: .1in;
+}
+
+td
+{
+  vertical-align: top;
+}
+
+td:not(:last-child)
+{
+  padding-right: 5em;
+}
+
+h2
+{
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+h3
+{
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+
+h4
+{
+  margin-top: .4em;
+  margin-bottom: .2em;
+  font-style: italic;
+}
+
+p.activity
+{
+  margin: 0;
+}
+
+span.checkbox
+{
+  font-size: small;
+  font-weight: bold;
+  font-family: 'Lucida Console', consolas courier;
+  border: 1px solid black;
+  box-shadow: .1em .1em .1em grey;
+  padding: .15em .4em 0;
+  margin-right: .3em;"
+}
+

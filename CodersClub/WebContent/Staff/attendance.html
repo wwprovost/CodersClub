@@ -1,0 +1,307 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <title>Attendance</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+  <link rel="stylesheet" type="text/css" href="../css/admin.css" />
+<style>
+#weeks {
+  width: 40px;
+}
+
+.options table {
+  margin-bottom: 12px;
+  width: 180px;
+}
+
+p {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+#codersTable {
+  margin-left: 240px;
+}
+</style>
+</head>
+
+<body>
+<div class="main" >
+
+  <div id="navigation" class="nav" >
+    <h2>Attendance</h2>
+    <p>Going back <input type="number" id="weeks" value="12" /> weeks</p>
+    <p><input type="button" id="sorting" value="Sorting by name only" /></p>
+    <p><input type="button" id="filtering" value="Showing all dates" /></p>
+    <table id="groupsTable" style="display: none;" >
+      <tbody>
+      </tbody>
+    </table>
+    <p><input type="button" id="email" value="Showing e-mail addresses" /></p>
+  </div>
+
+  <table id="codersTable" >
+    <thead>
+      <tr>
+        <th colspan="2" >Name</th>
+        <th id="emailHeader" style="display: none;" >Parent E-Mail</th>
+        <th id="dates" >Dates attended</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        AdminPage,
+        checkFor200,
+        colorTable
+      } from "../js/utility.js";
+
+    let coders = [];
+    let groups = [];
+    let selectedGroup = null;
+    let colors = new Map();
+
+    let sortByAttendance = false;
+    let showAllDates = true;
+    let showEMail = false;
+
+    window.toggleSorting = function(ev) {
+      sortByAttendance = !sortByAttendance;
+      ev.target.value = sortByAttendance
+        ? "Sorting by attendance"
+        : "Sorting by name only";
+      refreshTable();
+    }
+
+    window.toggleAllDates = function(ev) {
+      showAllDates = !showAllDates;
+      ev.target.value = showAllDates
+        ? "Showing all dates"
+        : "Showing common dates";
+      document.getElementById("groupsTable").style.display =
+        showAllDates ? "none" : "table";
+
+      refreshTable();
+    }
+
+    window.toggleEMail = function(ev) {
+      showEMail = !showEMail;
+      ev.target.value = showEMail
+        ? "Showing e-mail addresses"
+        : "Hiding e-mail addresses";
+      document.getElementById("emailHeader").style.display =
+        showEMail ? "table-cell" : "none";
+      refreshTable();
+    }
+
+    window.listGroups = function() {
+      let groupsTable = document.querySelector("#groupsTable tbody");
+      groupsTable.innerHTML = "";
+
+      groups.forEach((group, index) => {
+          let row = groupsTable.insertRow();
+
+          let radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = "group";
+          radio.value = group;
+          radio.checked = index == 0;
+          radio.style.width="24px";
+          radio.onclick = selectGroup;
+
+          let name = document.createElement("span");
+          name.textContent = group;
+
+          let cell = row.insertCell();
+          cell.appendChild(radio);
+          cell.appendChild(name);
+          row.style.backgroundColor = colors.get(group);
+        });
+    }
+
+    window.selectGroup = function(ev) {
+      selectedGroup = ev.target.value;
+      refreshTable();
+    }
+
+    window.buildRows = function(tbody, coders, commonDates) {
+      for (let coder of coders) {
+        let row = tbody.insertRow();
+        row.id = "coder" + coder.id;
+        row.insertCell().textContent = coder.first;
+        row.insertCell().textContent = coder.last;
+
+        if (showEMail) {
+          row.insertCell().textContent = coder.parentEMail;
+        }
+
+        if (showAllDates) {
+          row.insertCell().textContent = coder.attendance.join(", ");
+        } else {
+          for (let date of commonDates) {
+            let cell = row.insertCell();
+            if (coder.attendance.filter(attended => attended == date).length != 0) {
+              cell.textContent = "X";
+              cell.style.textAlign = "center";
+            }
+          }
+        }
+
+        row.style.backgroundColor = colors.get(coder.group);
+      }
+    }
+
+    window.dateToDigits = function(date) {
+      let parts = date.split("/");
+      if (parts[0].length == 1) {
+        parts[0] = "0" + parts[0];
+      }
+      if (parts[1].length == 1) {
+        parts[1] = "0" + parts[1];
+      }
+      return parts[2] + parts[0] + parts[1];
+    }
+
+    window.dateComparator = function(left, right) {
+      let leftDigits = dateToDigits(left);
+      let rightDigits = dateToDigits(right);
+
+      return leftDigits < rightDigits
+        ? -1
+        : (leftDigits > rightDigits
+          ? 1
+          : 0);
+    }
+
+    window.refreshTable = function() {
+
+      const MAX_DATES = 10;
+
+      let commonDates= [];
+      let someCoders = showAllDates
+        ? coders
+        : coders.filter(coder => coder.group == selectedGroup);
+
+      let tHeaders = document.querySelector("#codersTable thead tr");
+      document.getElementById("dates").style.display =
+        showAllDates ? "table-cell" : "none";
+      document.querySelectorAll("th.commonDate").forEach
+        (header  => header.remove());
+      if (!showAllDates) {
+        let dates = new Map();
+        for (let coder of someCoders) {
+          for (let attendance of coder.attendance) {
+            if (!dates.has(attendance)) {
+              dates.set(attendance, 0);
+            }
+            dates.set(attendance, dates.get(attendance) + 1);
+          }
+        }
+
+        for (let i = 0; i < MAX_DATES; ++i) {
+          let mostAttended = null;
+          let mostAttendance = 0;
+          for (let [key, value] of dates.entries()) {
+            if (value > mostAttendance && value > 3) {
+              mostAttendance = value;
+              mostAttended = key;
+            }
+          }
+
+          if (mostAttended) {
+            commonDates.push(mostAttended);
+            dates.delete(mostAttended);
+          } else {
+            break;
+          }
+        }
+
+        commonDates.sort(dateComparator);
+        for (let date of commonDates) {
+          let header = document.createElement("th");
+          header.textContent = date;
+          header.classList.add("commonDate");
+          tHeaders.appendChild(header);
+        }
+
+      }
+
+      let tbody = document.querySelector("#codersTable tbody");
+      tbody.innerHTML = "";
+
+      if (sortByAttendance) {
+        let max = Math.max(...someCoders.map(coder => coder.attendance.length));
+        for (let count = 0; count <= max; ++count) {
+          buildRows(tbody,
+            someCoders.filter(coder => coder.attendance.length == count),
+            commonDates);
+        }
+      } else {
+        buildRows(tbody, someCoders, commonDates);
+      }
+    }
+
+    window.checkNumber = function(ev) {
+      if (ev.keyCode == 13) {
+        fetchAndRefresh();
+      }
+    }
+
+    window.fetchAndRefresh = function() {
+      const MSEC_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
+
+      let now = new Date().getTime();
+      let before = now - parseInt(document.getElementById("weeks").value) * MSEC_PER_WEEK;
+      let from = new Date(before).toISOString().split('T')[0];
+
+      fetch("../REST/Staff/Attendance?from=" + from)
+        .then(checkFor200)
+        .then(response => response.json())
+        .then(records => {
+            coders = records;
+
+            for (let coder of coders) {
+              if (coder.group && !groups.includes(coder.group)) {
+                groups.push(coder.group)
+              }
+            }
+            groups.sort();
+            if (groups.length) {
+              selectedGroup = groups[0];
+            }
+
+            for (let index in groups) {
+              colors.set(groups[index],
+                index < colorTable.length ? colorTable[index] : "white");
+            }
+            colors.set(null, "white");
+
+            listGroups();
+            refreshTable();
+          })
+        .catch(console.log);
+    }
+
+    window.onload = function() {
+      new AdminPage("navigation", document.querySelector("p.footer"), "..");
+
+      document.getElementById("sorting").onclick = toggleSorting;
+      document.getElementById("filtering").onclick = toggleAllDates;
+      document.getElementById("email").onclick = toggleEMail;
+
+      document.getElementById("weeks").onkeyup = checkNumber;
+
+      fetchAndRefresh();
+    }
+  </script>
+
+</div>
+<p class="footer" ></p>
+
+</body>
+
+</html>
+

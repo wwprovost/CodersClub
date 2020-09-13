@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Tetris</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/tetris.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p><img src="img/All5.png" style="float: right;" height="130" />In this coding activity, you will write a program that can act as the player in a game of Tetris. Well, okay, not exactly Tetris: in this game there are 5 possible pieces, each of which is a rod of a certain length. Blocks fall from the sky, one at a time, and you need to place them such that they fall next to each other in full rows of 10. When a row is full, it disappears. The game is driven by a set of function calls:</p>
+      <p class="code" >  <strong>new_block()</strong> triggers the next block.
+  <strong>block_size()</strong> tells you the size of the block.
+  <strong>position(<em>col</em>)</strong> sets the horizontal position of the block, from 1 to 10.
+  <strong>game_over()</strong> is True if you've run out of space.</p>
+      <p>The example below will place a couple of blocks, and then quit. Run it by clicking <strong>Fast</strong>, <strong>Slow</strong>, or <strong>Step</strong>.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+new_block()
+size = block_size()
+print size
+position(1)
+new_block()
+print block_size()
+position(size + 1)
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <div id="prelude" style="display: none;" >
+__blocks = [];
+__over = False;
+__block_ready = False
+
+def new_block():
+    global __blocks, __block_ready
+
+    if __over:
+        raise Exception('The game is over.')
+    if __block_ready:
+        raise Exception('You must position the current block.')
+
+    __blocks.append(randint(1,4));
+    __block_ready = True
+
+def block_size():
+    return __blocks[-1];
+
+def position(col):
+    global __position, __block_ready
+
+    if __over:
+        raise Exception('The game is over.')
+    if not __block_ready:
+        raise Exception('You must get a new block.')
+    if col &lt; 1 or col + __blocks[-1] > 11:
+        raise Exception('Out of bounds: ' + str(col))
+
+    __position = col;
+    __block_ready = False
+
+def game_over():
+    return __over
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Game } from "./js/tetris.js";
+    new Game("", false);
+  </script>
+
+</body>
+
+</html>
+

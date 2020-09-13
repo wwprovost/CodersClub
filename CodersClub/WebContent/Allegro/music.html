@@ -1,0 +1,464 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Allegro</title>
+  <link rel="stylesheet" type="text/css" href="css/allegro.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="../blockly/blockly_compressed.js" ></script>
+  <script src="../blockly/blocks_compressed.js" ></script>
+  <script src="../blockly/acorn_interpreter.js" ></script>
+  <script src="../blockly/javascript_compressed.js" ></script>
+  <script src="../blockly/msg/js/en.js" ></script>
+</head>
+
+<body>
+
+  <div id="controls" >
+    <div style="margin-top: 8px;" >
+      <span style="float: right;" >
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+        onclick="window.location.href=previousPage();"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+        onclick="window.location.href=nextPage();"
+      />
+      </span>
+    </div>
+    <div class="inset" >
+      <div id="allegro" ><em>allegro</em></div>
+      <p style="margin-bottom: 0;" >Today's musical selection:</p>
+      <p style="margin-top: 0; padding-left: 1em;" ><strong id="title" ></strong></p>
+      <p>
+        <input
+          type="button"
+          class="button"
+          style="width: 100%";
+          id="sample"
+          value="Play sample"
+        />
+      </p>
+    </div>
+    <div>
+      <input
+        type="range"
+        id="volume"
+        min="0"
+        max="100"
+        value="75"
+      />
+    </div>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="start"
+        value="Run program"
+      />
+    </p>
+    <p>
+      <input
+        type="button"
+        class="button"
+        style="width: 100%";
+        id="stop"
+        value="Stop"
+      />
+    </p>
+    <div class="explainer" >
+      <p></p>
+    </div>
+  </div>
+
+  <div id="code" >
+  </div>
+  <div id="error" >
+  </div>
+
+  <div id="toolboxBase" style="display: none">
+    <xml>
+      <block type="allegro_play"></block>
+      <block type="allegro_rest"></block>
+      <block type="allegro_up"></block>
+      <block type="allegro_down"></block>
+      <block type="controls_repeat"></block>
+      <block type="procedures_defnoreturn"></block>
+      <more_blocks></more_blocks>
+    </xml>
+  </div>
+
+  <div id="callBlockTemplate" style="display: none">
+    <block type="procedures_callnoreturn">
+      <mutation name="PROCEDURE_NAME"></mutation>
+    </block>
+  </div>
+
+  <div id="sampleBlocks" style="display: none" >
+    <xml><variables></variables><block type="allegro_up" id="cj~hjtg#w/6b2#Xh0_Qa" x="20" y="24"><field name="steps">2</field><next><block type="allegro_play" id="bgA($:S0sSH=)EgZeibg"><field name="value">0.25</field><next><block type="allegro_down" id="Ji=7SATSJLe~~dJ8_?zd"><field name="steps">1</field><next><block type="allegro_play" id="1K7R,[-^%?M*Ye[Wm2N3"><field name="value">0.25</field><next><block type="allegro_down" id="D)duV5xd2it?}?fYQcv#"><field name="steps">1</field><next><block type="allegro_play" id="=xrwL*a)SP^of5PoXX-="><field name="value">0.25</field><next><block type="allegro_up" id="G)mgR1Dguej#P3XfU?sw"><field name="steps">1</field><next><block type="allegro_play" id="$@Y]*2OK3:8zcJLgo$3F"><field name="value">0.25</field><next><block type="allegro_up" id="1Va=vN4?GD-5EtFXYaja"><field name="steps">1</field><next><block type="allegro_play" id="U*w|X1p^s7th|ZOefk@6"><field name="value">0.25</field><next><block type="allegro_play" id="6vODf;rOuP2#4ag]BBs["><field name="value">0.25</field><next><block type="allegro_play" id="RDw,h:UvhyR[@K@#2n.2"><field name="value">0.25</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>
+  </div>
+
+  <div id="sampleHCB" style="display: none" >
+    <xml><variables></variables><block type="allegro_up" id="bNLG40}CX@o2P9|[MP.s" x="19" y="19"><field name="steps">2</field><next><block type="procedures_callnoreturn" id="wH~K^m_fn4;g_|F{.*A7"><mutation name="hot cross buns"></mutation><next><block type="allegro_up" id="TF`eD2w:(8jbhPgOPveH"><field name="steps">2</field><next><block type="procedures_callnoreturn" id=";RQ{{PeBu.[duua4^9C#"><mutation name="hot cross buns"></mutation><next><block type="controls_repeat" id="!?8xn1Jz?-+YmrDf#KBz"><field name="TIMES">2</field><statement name="DO"><block type="allegro_play" id="S%Y3$xpRK:M2..wrtEik"><field name="value">0.125</field><next><block type="allegro_play" id=",m5|XGv7O9TRpN}.0H[5"><field name="value">0.125</field><next><block type="allegro_play" id="pWrziQh0lW%?+m:|;.hz"><field name="value">0.125</field><next><block type="allegro_play" id="]acMX1*(rHy2t28e:^H)"><field name="value">0.125</field><next><block type="allegro_up" id="1rBac3|_Q}|/X9|i#Y,N"><field name="steps">1</field></block></next></block></next></block></next></block></next></block></statement><next><block type="procedures_callnoreturn" id="$ig0[?MS.TEQk(0]xTXg"><mutation name="hot cross buns"></mutation></block></next></block></next></block></next></block></next></block></next></block><block type="procedures_defnoreturn" id="OT^9?x9;bbxvfH+V1$YC" x="239" y="16"><field name="NAME">hot cross buns</field><statement name="STACK"><block type="allegro_play" id="0]:]A14bva9Y_czl?1EB"><field name="value">0.25</field><next><block type="allegro_down" id="EZQj1cds+@/eShsata}]"><field name="steps">1</field><next><block type="allegro_play" id="+P88auETaf:O#)8{R!^r"><field name="value">0.25</field><next><block type="allegro_down" id="+,F-{+To-4E2ylJ.BvcR"><field name="steps">1</field><next><block type="allegro_play" id="Q|*TWtuc}o#lZnM^y:=:"><field name="value">0.25</field><next><block type="allegro_rest" id="QQh6d0)zpLW$J8bi1O!."><field name="value">0.25</field></block></next></block></next></block></next></block></next></block></next></block></statement></block></xml>
+  </div>
+
+  <div id="samplePatterns" style="display: none" >
+    <xml><variables></variables><block type="controls_repeat" id="629;E]{}R^yS2Ttr*0?[" x="26" y="13"><field name="TIMES">2</field><statement name="DO"><block type="controls_repeat" id="44MvBwGyq{kC}MLhH:+|"><field name="TIMES">3</field><statement name="DO"><block type="allegro_play" id="bgA($:S0sSH=)EgZeibg"><field name="value">0.0625</field><next><block type="allegro_up" id="G)mgR1Dguej#P3XfU?sw"><field name="steps">1</field><next><block type="allegro_play" id="d!BR^+b$idRy+[I4c:}v"><field name="value">0.0625</field><next><block type="allegro_up" id="H(#ggh$P9iuoKdlEW865"><field name="steps">1</field><next><block type="allegro_play" id="//54R6^-%0@JAXZMM`ds"><field name="value">0.0625</field><next><block type="allegro_down" id="Ji=7SATSJLe~~dJ8_?zd"><field name="steps">1</field><next><block type="allegro_play" id="YQn/h2(liDv]Z1]X+FV]"><field name="value">0.0625</field><next><block type="allegro_down" id="NZ*je0vB/*3Mdp-ejCg("><field name="steps">1</field><next><block type="allegro_play" id="M1/Rh.Y{O,}{}Z{HRS!b"><field name="value">0.25</field><next><block type="allegro_up" id="8c14an;!@AR-FIF[Q+)X"><field name="steps">1</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></statement><next><block type="allegro_play" id="B67O=Yp5ledwQ2c0fg|:"><field name="value">0.25</field><next><block type="allegro_down" id="eoQ6NoldO!#MMUhD@m-;"><field name="steps">1</field><next><block type="allegro_play" id=".)IeYe2Qz-2cJRJ~$W9y"><field name="value">0.125</field><next><block type="allegro_down" id="uyTL/]}6HY`%GX:`0wb}"><field name="steps">1</field><next><block type="allegro_play" id="iI4Ax-g):%MD9I],U_o!"><field name="value">0.125</field><next><block type="allegro_down" id="ZbxN#r}t$,kF8_P]e{]k"><field name="steps">1</field></block></next></block></next></block></next></block></next></block></next></block></next></block></statement><next><block type="allegro_play" id="l8n3ar}9c_A6)~/bkZ#E"><field name="value">1</field></block></next></block></xml>
+  </div>
+
+  <div id="doReMi" style="display: none;" >
+
+    play(.25);
+    rest(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.25);
+    rest(.125);
+    down(2);
+    play(.125);
+
+    up(2);
+    play(.25);
+    down(2);
+    play(.25);
+    up(2);
+    play(.25);
+    rest(.25);
+
+    down(1);
+    play(.25);
+    rest(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+    play(.125);
+    up(2);
+    play(.75);
+    rest(.25);
+    down(1);
+
+    play(.25);
+    rest(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.25);
+    rest(.125);
+    down(2);
+    play(.125);
+
+    up(2);
+    play(.25);
+    down(2);
+    play(.25);
+    up(2);
+    play(.25);
+    rest(.25);
+
+    down(1);
+    play(.25);
+    rest(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+    play(.125);
+    up(2);
+    play(.75);
+    rest(.25);
+    down(1);
+
+    play(.25);
+    rest(.125);
+    down(4);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.75);
+    rest(.25);
+
+    play(.25);
+    rest(.125);
+    down(4);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.75);
+    rest(.25);
+
+    play(.25);
+    rest(.125);
+    down(4);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.125);
+    up(1);
+    play(.75);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+
+    play(.25);
+    down(2);
+    play(.25);
+    up(3);
+    play(.25);
+    down(2);
+    play(.25);
+    up(3);
+
+    play(.125);
+
+  </div>
+
+  <div id="frereJacques" style="display: none;" >
+
+    play(.25);
+    up(1);
+    play(.25);
+    up(1);
+    play(.25);
+    down(2);
+    play(.25);
+
+    play(.25);
+    up(1);
+    play(.25);
+    up(1);
+    play(.25);
+    down(2);
+    play(.25);
+
+    up(2);
+
+    play(.25);
+    up(1);
+    play(.25);
+    up(1);
+    play(.25);
+    rest(.25);
+
+    down(2);
+
+    play(.25);
+    up(1);
+    play(.25);
+    up(1);
+    play(.25);
+    rest(.25);
+
+    play(.125);
+    up(1);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+    play(.25);
+    down(2);
+    play(.25);
+    up(4);
+
+    play(.125);
+    up(1);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+    play(.125);
+    down(1);
+    play(.25);
+    down(2);
+    play(.25);
+
+    play(.25);
+    down(3);
+    play(.25);
+    up(3);
+    play(.25);
+    rest(.25);
+
+    play(.25);
+    down(3);
+    play(.25);
+    up(3);
+    play(.25);
+    rest(.25);
+
+  </div>
+
+  <div id="twinkle" style="display: none;" >
+
+    play(.25);
+    play(.25);
+    up(4);
+    play(.25);
+    play(.25);
+    up(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    up(4);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    up(3);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    down(1);
+
+    play(.25);
+    play(.25);
+    up(4);
+    play(.25);
+    play(.25);
+    up(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.25);
+    play(.25);
+    down(1);
+    play(.5);
+
+  </div>
+
+  <div id="hotCrossBuns" style="display: none;" >
+
+    up(2);
+    play(.25);
+    down(1);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    up(2);
+    play(.25);
+    down(1);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+    play(.125);
+    play(.125);
+    play(.125);
+    play(.125);
+    up(1);
+    play(.125);
+    play(.125);
+    play(.125);
+    play(.125);
+    up(1);
+    play(.25);
+    down(1);
+    play(.25);
+    down(1);
+    play(.25);
+    rest(.25);
+
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Allegro } from "./js/allegro.js";
+
+    $(document).ready(function()
+      {
+        new Allegro("Hot Cross Buns", true);
+      });
+  </script>
+
+</body>
+
+</html>
+

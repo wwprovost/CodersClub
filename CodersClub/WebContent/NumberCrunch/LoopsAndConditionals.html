@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>You also nest loops and conditional statements: only go into a loop if something is true, or only do something in specific iterations of a loop ... etc.</p>
+      <p class="language NCL" >You can also combine logical tests into more complex tests with <strong>and</strong> and <strong>or</strong>.</p>
+      <p class="language Python" >You can also combine logical tests into more complex tests with <strong>and</strong> and <strong>or</strong>.</p>
+      <p class="language JavaScript" >You can also combine logical tests into more complex tests with <strong>&&</strong> (and) and <strong>||</strong> (or).</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number count = 0;
+        repeat 9 times
+        {
+          count = count + 1;
+          if count < 4 or count > 6
+            { print count; }
+          else
+            { print "X"; }
+        }
+        new line;
+
+        number x = random 1 to 10;
+        if x > 3 and x != 8
+            { print "" + x + " is between 4 and 10," +
+                "but it is not 8."; }
+        else
+            { print "" + x + " is either less than 4," +
+                "or it is exactly 8."; }
+      </div>
+      <div id="Python" >
+        line = "";
+        for count in range(1,10):
+            if count < 4 or count > 6:
+                line = line + "-"
+            else:
+                line = line + "X"
+
+        print line
+
+        x = randint(1,10);
+        if x > 3 and x != 8:
+            print x, "is between 4 and 10, but it's not 8."
+        else:
+            print x, "is either less than 4, or it's exactly 8."
+      </div>
+      <div id="JavaScript" >
+        let line = "";
+        for (let count = 1; count < 10; ++count)
+        {
+            if(count < 4 || count > 6)
+                { line = line + count; }
+            else
+                { line = line + "X"; }
+        }
+        print(line);
+
+        let x = random(1,10);
+        if (x > 3 && x != 8)
+            { print("" + x + " is between 4 and 10," +
+                "but it's not 8."); }
+        else
+            { print("" + x + " is eit;her less than 4," +
+                "or it's exactly 8.") }
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Combining Loops and Conditionals", false);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta
+    http-equiv="content-type"
+    content="text/html; charset=utf-8"
+  />
+  <title>Dicey</title>
+  <link rel="stylesheet" type="text/css" href="css/dicey.css" />
+  <script src="../jquery/jquery.js" ></script>
+  <script src="../jquery/jquery-ui.min.js" ></script>
+  <script src="js/dicey.js" ></script>
+</head>
+
+<body>
+
+  <div id="top" >
+    <span class="top" >Dicey</span>
+    <span></span>
+    <span></span>
+    <span style="float: right; margin-right: 1em; " >
+      <input
+        type="button"
+        class="button"
+        id="start"
+        value="Start"
+      />
+      <input
+        type="button"
+        class="button"
+        id="stop"
+        value="Stop"
+      />
+      &nbsp;
+      <input
+        id="back"
+        type="button"
+        class="button"
+        value="Back"
+      />
+      <input
+        id="next"
+        type="button"
+        class="button"
+        value="Next"
+        onclick="window.location.href='Game5.html';"
+      />
+    </span>
+  </div>
+
+  <div class="oneTurn" style="display: none;" >
+    <img></img>
+    <img></img>
+    <span style="margin-left: 15px;" ></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div id="left" >
+    <div id="gameView" >
+    </div>
+    <div id="gameController" style="width: 100%;" >
+      <div id="form" >
+        <h3>Game #5</h3>
+        <p>In this game, you roll two dice, and again you can either add the sum of their values or subtract the (positive) difference between them. But, new rules:</p>
+        <ul>
+          <li>You win by getting a score of <strong>21 or higher</strong>.</li>
+          <li>You lose if you get a score between <strong>13 and 20</strong>. So, you have to look to get 9, 10, 11, or 12, and then get a big roll.</li>
+          <li>If you roll <strong>doubles</strong>, the 13-20 rule is suspended, and you can freely add up until you get to 21. But, if you roll doubles again, and your score is above 12, you go back to 0.</li>
+        </ul>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <input type="button" id="roll" value="Roll dice" ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="button" id="add" value="Add" ></input>
+              </td>
+              <td>
+                <input type="text" id="valueToAdd" size="4" ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="button" id="subtract" value="Subtract" ></input>
+              </td>
+              <td>
+                <input type="text" id="valueToSubtract" size="4" ></input>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="error" >test
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossOrigin="use-credentials" >
+    import { Dicey, IndicatorView } from "./js/dicey-ui.js";
+    $(document).ready(function()
+      {
+        Dicey.init(5, () => new Game5(), new IndicatorView(), true);
+      });
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p class="language NCL" >Now we add a new kind of loop to the language, known as a <strong>for</strong> loop. This lets you define a variable, make that variable start at one value, and then either climb or descend to another value. For the starting value, each value in-between, and the end value, the loop block will be executed.</p>
+      <p class="language Python" >It will be useful for upcoming challenges to be able to run a loop with an index from one value to another. Python makes this easy, as you can define the <strong>range</strong> in your loop with a starting and ending value. The only strange bit is, the loop will execute from the starting value to <em>one less than</em> the ending value.</p>
+      <p class="language JavaScript" >It will be useful for upcoming challenges to be able to run a loop with an index from one value to another. You can define both the starting and ending values in your <strong>for</strong> loop. You also control, using either the <strong>&lt;=</strong> or the <strong>&lt;</strong>, whether the ending value is included in the loop, or not.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        for x = 1 to 5
+        {
+          print "" + x + " ";
+        }
+        new line;
+      </div>
+      <div id="Python" >
+        line = ""
+        for x in range(1,5):
+            print x
+      </div>
+      <div id="JavaScript" >
+        let line = "";
+        for(let x = 1; x <= 5; ++x)
+        {
+          line = line + x + " ";
+        }
+        print(line);
+        print("");
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("For Loops", false);
+  </script>
+
+</body>
+
+</html>
+

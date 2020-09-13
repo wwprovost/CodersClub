@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Write two functions, one that returns the circumference of a circle of a given radius (which is 2 times pi times the radius), and one that returns the area (which is the radius times the radius times pi).</p>
+      <p class="code" >  circumference = 2 * radius * pi
+
+  area = radius * radius * pi</p>
+      <p>Call your functions with different input values, and print the results.</p>
+      <p>When you're done, copy your two functions to the clipboard: you'll be able to use them for the next challenge.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number pi = 3.14159;
+        // Your code here
+      </div>
+      <div id="Python" >
+        pi = 3.14159
+        # Your code here
+      </div>
+      <div id="JavaScript" >
+        let pi = 3.14159;
+        // Your code here
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Challenge #17: Circle Geometry", true);
+  </script>
+
+</body>
+
+</html>
+

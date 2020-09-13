@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>Another big, new idea: an <strong>array</strong> or <strong>list</strong> can hold multiple values, each of which has a numerical index. Then you can work with all of the values, one at a time in a loop.</p>
+      <p>The example below creates an array of 7 numbers, and then sets each one of them to the high temperature for each day in a week. Then it loops over the data, and calculates the average temperature.</p>
+      <p class="language NCL" >Note that, while NCL has arrays, they are clumsy to use. This might be a good time to switch over to using Python or JavaScript: as you'll see, they make arrays a lot easier.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        number[7] temps;
+        temps[1] = 50;
+        temps[2] = 52;
+        temps[3] = 61;
+        temps[4] = 65;
+        temps[5] = 55;
+        temps[6] = 54;
+        temps[7] = 61;
+
+        number sum = 0;
+        for day = 1 to 7
+        {
+          sum = sum + temps[day];
+        }
+
+        number average = sum / 7;
+        print line "The average high temperature this week was " + average;
+      </div>
+      <div id="Python" >
+        temps = [ 50, 52, 61, 65, 55, 54, 61]
+
+        sum = 0
+        for temp in temps:
+            sum = sum + temp
+
+        average = sum / 7
+        print "The average high temperature this week was", average;
+      </div>
+      <div id="JavaScript" >
+        let temps = [ 50, 52, 61, 65, 55, 54, 61];
+
+        let sum = 0;
+        for (let temp of temps)
+        {
+          sum = sum + temp;
+        }
+
+        let average = sum / 7;
+        print("The average high temperature this week was " + average);
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Arrays and Lists", false);
+  </script>
+
+</body>
+
+</html>
+

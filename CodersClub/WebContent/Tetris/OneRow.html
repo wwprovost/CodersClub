@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Tetris</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/tetris.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>For starters, write a program that will complete one row as random blocks fall. The starter code will just position every new block to the left, which is guaranteed to end in 9 blocks as they will all stack up and run out of space.</p>
+      <p>Can you improve on this? Keep a variable <strong>row_length</strong> that starts at zero. For each new block, see if the length plus the block size would still fit in ten columns. If it would, then position the block at the end of the row, and add the block size to row_length. If it won't fit, place the block on the left -- too bad. But eventually you should get blocks that complete a row of 10.</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+      </div>
+      <div id="Python" >
+while not game_over():
+    new_block()
+    position(1)
+      </div>
+      <div id="JavaScript" >
+      </div>
+    </div>
+  </div>
+
+  <div id="prelude" style="display: none;" >
+__blocks = [];
+__over = False;
+__block_ready = False
+
+def new_block():
+    global __blocks, __block_ready
+
+    if __over:
+        raise Exception('The game is over.')
+    if __block_ready:
+        raise Exception('You must position the current block.')
+
+    __blocks.append(randint(1,4));
+    __block_ready = True
+
+def block_size():
+    return __blocks[-1];
+
+def position(col):
+    global __position, __block_ready
+
+    if __over:
+        raise Exception('The game is over.')
+    if not __block_ready:
+        raise Exception('You must get a new block.')
+    if col &lt; 1 or col + __blocks[-1] > 11:
+        raise Exception('Out of bounds: ' + str(col))
+
+    __position = col;
+    __block_ready = False
+
+def game_over():
+    return __over
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Game } from "./js/tetris.js";
+    new Game("A Single Row", true);
+  </script>
+
+</body>
+
+</html>
+

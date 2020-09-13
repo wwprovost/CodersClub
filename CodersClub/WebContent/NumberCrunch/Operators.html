@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Number Crunch</title>
+  <link rel="stylesheet" type="text/css" href="../css/coding.css" />
+  <link rel="stylesheet" type="text/css" href="css/numberCrunch.css" />
+  <script src="../js/skulpt.min.js" ></script>
+  <script src="../js/skulpt-stdlib.js" ></script>
+  <script src="../js/debugger.js" ></script>
+  <script src="../js/ace/ace.js" ></script>
+</head>
+
+<body>
+
+  <div>
+    <div id="talking" >
+      <p>You can combine numbers with <em>operators</em> to do arithmetic. See how this program adds two variables to set the value of a new variable.</p>
+      <p>Try other arithmetic expressions: you can add, subtract, multiply, and divide. Try adding the following:</p>
+      <p class="code language NCL" >number halfOfTen = ten / 5;
+print line "Half of ten is " + halfOfTen;</p>
+      <p class="code language Python" >halfOfTen = ten / 5
+print "Half of ten is", halfOfTen</p>
+      <p class="code language JavaScript" >let halfOfTen = ten / 5;
+print("Half of ten is " + halfOfTen);</p>
+    </div>
+    <div id="doing" >
+      <div id="code" ></div>
+    </div>
+    <div style="display: none;" >
+      <div id="NCL" >
+        print line "Two plus five: " + 2 + 5;
+        print line "Five minus two: " + 5 - 2;
+        print line "Three times seven: " + 3 * 7;
+        print line "Nine divided by three: " + 9 / 3;
+
+        number one = 1;
+        number nine = 9;
+        number ten = one + nine;
+        print line "One plus nine: " + ten;
+      </div>
+      <div id="Python" >
+        print "Two plus five", 2 + 5
+        print "Five minus two:", 5 - 2
+        print "Three times seven:", 3 * 7
+        print "Nine divided by three:", 9 / 3
+
+        one = 1
+        nine = 9
+        ten = one + nine
+        print "One plus nine:", ten
+      </div>
+      <div id="JavaScript" >
+        print("Two plus five: " + (2 + 5));
+        print("Five minus two: " + (5 - 2));
+        print("Three times seven: " + (3 * 7));
+        print("Nine divided by three: " + (9 / 3));
+
+        let one = 1;
+        let nine = 9;
+        let ten = one + nine;
+        print("One plus nine: " + ten)
+      </div>
+    </div>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Page } from "./js/numberCrunch.js";
+    new Page("Operators", false);
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,566 @@
+<!--
+Copyright 2014-2017 Will Provost.
+Please direct inquiries to sprout@tiac.net.
+
+This file is part of an educational graphics-programming game entitled Sprout.
+
+Sprout is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Sprout is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Sprout.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="ISO-8859-1">
+    <title>Sprout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../css/Sprout.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery-2.1.1.js" ></script>
+    <script src="../js/bootstrap.min.js" ></script>
+    <script src="../js/Drawing.js" ></script>
+    <script src="../js/Instructions.js" ></script>
+    <script src="../js/InstructionUI.js" ></script>
+    <script src="../js/Gallery.js" ></script>
+    <script src="js/Challenge.js" ></script>
+    <script src="js/ApplicationUI.js" ></script>
+    <style>
+      #controls { padding-left: 4px; }
+
+      #controls button { width: 140px; height: 30px; }
+
+      #teamUp {
+        display: none;
+        margin-top: 8px;
+        border: 2px ridge #363;
+        padding: 12px;
+        background: white;
+      }
+
+      .teammate {
+        border: 1px solid #696;
+        background: #f8f8e0;
+      }
+
+      .tooMany
+      {
+        color: #000;
+        background: #ee0;
+        border: 1px solid #440;
+        border-radius: 4px;
+        padding: 2px;
+        margin-left: 24px;
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div style="position: relative;" >
+
+      <table style="margin-bottom: 0px;" >
+        <tr>
+          <td rowspan="2" >
+            <div style="height: 240px" >
+              <canvas id="canvas" ></canvas>
+              <canvas id="glass" ></canvas>
+            </div>
+          </td>
+          <td style="width: 1%; " >
+            <h4 id="title" class="right top" >Sprout</h4>
+          </td>
+        </tr>
+        <tr>
+          <td id="controls" style="vertical-align: bottom;" >
+            <div>
+              <label
+                class="checkbox-inline"
+                data-toggle="tooltip"
+                title="Check to run your program again, every time you make a change"
+              >
+                <input id="auto" type="checkbox" checked="checked" >Run automatically
+              </label>
+            </div>
+            <div>
+              <label
+                class="checkbox-inline"
+                data-toggle="tooltip"
+                title="Check to see animation of your program when you run it. Use the slider that appears below to control the animation speed."
+              >
+                <input id="animate" type="checkbox" >Animate
+                <span>-- speed:</span>
+              </label>
+            </div>
+            <div>
+              <input
+                id="interval"
+                type="range"
+                min="2"
+                max="5"
+                step="0.05"
+                value="4"
+                data-toggle="tooltip"
+                title="Slide left to slow down, or right to speed up"
+              />
+            </div>
+            <div>
+              <button
+                id="runButton"
+                class="btn btn-primary"
+                data-toggle="tooltip"
+                title="Run your program"
+              ><strong><em>Run program</em></strong></button>
+            </div>
+            <!--
+            <div>
+              <button
+                id="challenge.toggle"
+                class="btn"
+                style="margin-top: 12px; margin-bottom: 4px;"
+                data-toggle="tooltip"
+                title="Try to match an existing drawing exactly by creating the right program"
+              >Take new challenge</button>
+            </div>
+            -->
+          </td>
+        </tr>
+      </table>
+
+      <hr style="margin: 6px 0px;" />
+
+      <table width="98%" style="border-collapse: separate; border-spacing: 6px 0;" >
+        <tr>
+          <td>
+            <strong id="heading1" >Program 1:</strong>
+            <span id="tooMany1" class="tooMany" >Too many instructions.</span>
+          </td>
+          <td>
+            <strong id="heading2" >Program 2:</strong>
+            <span id="tooMany2" class="tooMany" >Too many instructions.</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 50%;" >
+            <div id="programArea1" style="overflow-y: auto;" >
+              <div id="program1" ></div>
+            </div>
+          </td>
+          <td style="width: 50%;" >
+            <div id="teamUp" >
+              <p>You'll need a partner for this team-coding activity. If you don't have a team code, yet, click this button to ...</p>
+              <input id="createTeam" type="button" class="btn" value="Create your team" ></input>
+              <p id="teamCreated" ></p>
+              <br/>
+              <p>If your teammate has generated a team code, enter it here, and click to ...</p>
+              <input id="teamToJoin" type="text" ></input>
+              <input id="joinTeam" type="button" class="btn" value="Join team" ></input>
+            </div>
+            <div id="programArea2" style="overflow-y: auto;" >
+              <div id="program2" ></div>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <div id="templates" hidden="hidden" >
+        <div id="instruction" class="instruction" >
+          <p
+            class="insertBar"
+            data-toggle="tooltip"
+            title="Click to insert an instruction here"
+          ></p>
+          <p
+            class="instruction"
+            draggable="true"
+            data-toggle="tooltip"
+            title="Click and drag to move this instruction before another instruction"
+          >
+            <select
+              id="selector"
+              class="instruction"
+              data-toggle="tooltip"
+              title="Select your instruction. Once you've selected an instruction, select (Remove) to delete the instruction from the program."
+            ></select>
+            <span id="holder" ></span>
+            <span
+              id="remover"
+              class="right glyphicon glyphicon-remove"
+              style="color: #ccc; cursor: pointer;"
+              data-toggle="tooltip"
+              title="Click to remove this instruction"
+            ></span>
+          </p>
+        </div>
+        <span id="move1" >in this direction.</span>
+        <span id="move" >
+          a
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="It's usually best to keep your lines to under 100 pixels"
+          />
+          -pixel line in this direction.
+        </span>
+        <span id="skip1" >in this direction, without drawing.</span>
+        <span id="skip" >
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="It's usually best to keep your lines to under 100 pixels"
+          />
+          pixels (without drawing).
+        </span>
+        <span id="turnLeft" ></span>
+        <span id="turnRight" ></span>
+        <span id="turn8" >
+          <select
+            data-toggle="tooltip"
+            title="Be sure to pick a direction, or you'll 'turn' zero degrees, which means you won't turn at all."
+          >
+            <option value="0" >(Choose)</option>
+            <option value="-1" >Left</option>
+            <option value="1" >Right</option>
+            <option value="180" >Reverse</option>
+          </select>
+          <select
+            r
+            data-toggle="tooltip"
+            title="How little or how much do you want to turn?"
+          >
+            <option value="45" >A little (45 degrees)</option>
+            <option value="90" selected="selected" >Normal (90 degrees)</option>
+            <option value="135" >A lot (135 degrees)</option>
+          </select>
+          <span class="glyphicon glyphicon-arrow-left" ></span>
+          <span>Be sure to pick a direction!</span>
+        </span>
+        <span id="turn16" >
+          <select
+            data-toggle="tooltip"
+            title="Be sure to pick a direction, or you'll 'turn' zero degrees, which means you won't turn at all."
+          >
+            <option value="0" >(Choose)</option>
+            <option value="-1" >Left</option>
+            <option value="1" >Right</option>
+            <option value="180" >Reverse</option>
+          </select>
+          <select
+            display="none"
+            data-toggle="tooltip"
+            title="How little or how much do you want to turn?"
+          >
+          </select>
+          <span class="glyphicon glyphicon-arrow-left" ></span>
+          <select
+            display="none"
+            data-toggle="tooltip"
+            title="Choose how many possible directions your lines can go: for example 5 is good for a star; 6 for triangles and hexagons; etc."
+          >
+            <option value="72" >Give me 5 choices</option>
+            <option value="60" >Give me 6 choices</option>
+            <option value="45" >Give me 8 choices</option>
+            <option value="30" >Give me 12 choices</option>
+            <option value="22.5" selected="selected" >Give me 16 choices</option>
+          </select>
+          <span>Be sure to pick a direction!</span>
+        </span>
+        <span id="turn36" >
+          <select
+            data-toggle="tooltip"
+            title="Be sure to pick a direction, or you'll 'turn' zero degrees, which means you won't turn at all."
+          >
+            <option value="0" >(Choose)</option>
+            <option value="-1" >Left</option>
+            <option value="1" >Right</option>
+            <option value="180" >Reverse</option>
+          </select>
+          <select
+            display="none"
+            data-toggle="tooltip"
+            title="How little or how much do you want to turn?"
+          >
+          </select>
+          <span class="glyphicon glyphicon-arrow-left" ></span>
+          <select
+            display="none"
+            data-toggle="tooltip"
+            title="Choose how many possible directions your lines can go: for example 5 is good for a star; 6 for triangles and hexagons; etc."
+          >
+            <option value="72" >Give me 5 choices</option>
+            <option value="60" >Give me 6 choices</option>
+            <option value="45" >Give me 8 choices</option>
+            <option value="30" >Give me 12 choices</option>
+            <option value="22.5" >Give me 16 choices</option>
+            <option value="15" >Give me 24 choices</option>
+            <option value="10" selected="selected" >Give me 36 choices</option>
+          </select>
+          <span>Be sure to pick a direction!</span>
+        </span>
+        <span id="setColorSelect" >
+          <!-- color panel and chooser -->
+          <select
+            data-toggle="tooltip"
+            title="Choose the color of line that you draw from this point forward in the program"
+          >
+            <option value="#000000" >Black</option>
+            <option value="#a00000" >Red</option>
+            <option value="#ff9900" >Orange</option>
+            <option value="#ffff00" >Yellow</option>
+            <option value="#00c000" >Green</option>
+            <option value="#0000ff" >Blue</option>
+            <option value="#cc00cc" >Purple</option>
+            <option value="#ffffff" >White</option>
+          </select>
+        </span>
+        <span id="setWidth" >
+          <select
+            data-toggle="tooltip"
+            title="Choose the width of line that you draw from this point forward in the program"
+          >
+            <option value="1" >1 pixel</option>
+            <option value="2" >2 pixels</option>
+            <option value="3" >3 pixels</option>
+            <option value="4" >4 pixels</option>
+            <option value="5" >5 pixels</option>
+            <option value="6" >6 pixels</option>
+            <option value="5" >7 pixels</option>
+            <option value="6" >8 pixels</option>
+          </select>
+          <input style="margin-left: 1em; width: 4em; height: 1px; border: 0px; border-top: 1px solid black;" ></span>
+        </span>
+        <span id="setColorRGB" >
+          to ... red
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of red to mix into your color -- must be between 0 and 255"
+          />
+          -- green
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of green to mix into your color -- must be between 0 and 255"
+          />
+          -- blue
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of blue to mix into your color -- must be between 0 and 255"
+          />
+          <input
+            type="text"
+            style="width: 3em;"
+            disabled="disabled"
+            style="margin-left: 1em;"
+            data-toggle="tooltip"
+            title="This is the color you've mixed."
+          />
+        </span>
+        <span id="adjustWidth" >
+          by
+          <input
+            type="text"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount to add to the width -- usually a very small number, and can be a decimal, and can be negative"
+          />
+          pixels
+        </span>
+        <span id="adjustColor" >
+          by ... red
+          <input
+            type="text"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of red to add to your color -- usually a very small number, and can be a decimal, and can be negative"
+          />
+          -- green
+          <input
+            type="text"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of green to add to your color -- usually a very small number, and can be a decimal, and can be negative"
+          />
+          -- blue
+          <input
+            type="text"
+            style="width: 3em; text-align: right;"
+            data-toggle="tooltip"
+            title="The amount of blue to add to your color -- usually a very small number, and can be a decimal, and can be negative"
+          />
+        </span>
+        <span id="loop" >
+          the following instructions
+          <input
+            type="text"
+            maxlength="3"
+            style="width: 2.5em; text-align: right;"
+            data-toggle="tooltip"
+            title="All the instructions shown below and indented between the repeat symbols will run this many times"
+          />
+          times:
+        </span>
+        <span id="sprout" >-- mark where we are, run these instructions ...</span>
+        <table id="loopBlock" class="block" >
+          <tr>
+            <td class="loopBlockTop" >||:</td>
+            <td rowspan="2" ></td>
+          </tr>
+          <tr>
+            <td class="loopBlockBottom" >:||</td>
+          </tr>
+        </table>
+        <table id="sproutBlock" class="block" >
+          <tr>
+            <td class="sproutBlockTop" ><span class="glyphicon glyphicon-arrow-right" ></span></td>
+            <td rowspan="2" ></td>
+          </tr>
+          <tr>
+            <td class="sproutBlockBottom" ></td>
+          </tr>
+        </table>
+        <div id="reset" class="instruction" >
+          <p class="instruction" ><span class="glyphicon glyphicon-arrow-left" style="color: #696;" ></span> ... and then return to where we started.</p>
+        </div>
+      </div>
+
+      <div id="splash" >
+        <div id="splash-main" class="main opacityZero" style="width: 500px; padding: 14px 0;" >
+          <table>
+            <tr>
+              <td style="padding: 8px 12px 0px;" >
+                <canvas id="web" class="transparent" width="120" height="120" />
+              </td>
+              <td>
+                <div style="margin: 0">
+                  <canvas id="border1" class="transparent" width="180" height="12" style="margin: 0"/>
+                </div>
+                <h2 style="margin-top: 0;" >Sprout</h2>
+                <h3 >Team activities</h3>
+                <div style="margin: 0">
+                  <canvas id="border2" class="transparent" width="180" height="12"  style="margin: 0"/>
+                </div>
+              </td>
+              <td class="right" style="padding: 8px 12px 0px;" >
+                <canvas id="squares" class="transparent opacityZero" width="120" height="120" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" >
+                <canvas id="vine" class="transparent opacityZero" width="480" height="40" />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+    <!-- Dialogs -->
+
+      <div id="loadChallengeDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header" >
+              <h3 class="modal-title" >Select a challenge</h3>
+            </div>
+            <div class="modal-body" >
+              <table>
+                <tr>
+                  <td>
+                    <select id="loadChallenge.level" class="form-control" multiple style="height: 15em; width: 10em;" ></select>
+                  </td>
+                  <td style="padding-left: 12px;" >
+                    <select id="loadChallenge.name" class="form-control" multiple style="height: 15em; width: 20em;" ></select>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer" >
+              <label id="loadChallenge.message" ></label>
+              <button
+                class="btn btn-default"
+                id="loadChallenge.select"
+                data-dismiss="modal"
+              >Select</button>
+              <button
+                class="btn btn-default"
+                id="loadChallenge.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="OKCancelDialog" class="modal fade" data-keyboard="true" >
+        <div class="modal-dialog" >
+          <div class="modal-content" >
+            <div class="modal-header">
+              <h3 id="OKCancel.title" class="modal-title" ></h3>
+            </div>
+            <div class="modal-body" >
+              <p id="OKCancel.message" ></p>
+            </div>
+            <div class="modal-footer" >
+              <button
+                class="btn btn-default"
+                id="OKCancel.OK"
+                data-dismiss="modal"
+              >OK</button>
+              <button
+                class="btn btn-default"
+                id="OKCancel.cancel"
+                data-dismiss="modal"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+
+  <script type="module" crossorigin="use-credentials" >
+    import { Storage, AutoSaver } from "../../js/save.js";
+    import { TeamerUpper } from "../../js/team.js";
+    import {
+
+        getShadowingStatement,
+        pollAndFollow,
+        requestParams
+      } from "../../js/utility.js";
+
+    window.Storage = Storage;
+    window.AutoSaver = AutoSaver;
+    window.TeamerUpper = TeamerUpper;
+    window.getShadowingStatement = getShadowingStatement;
+    window.pollAndFollow = pollAndFollow;
+    window.requestParams = requestParams;
+  </script>
+
+  <script>
+    window.onload = init;
+  </script>
+</html>

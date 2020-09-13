@@ -1,0 +1,324 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+
+<head>
+  <title>Register Coaches</title>
+  <link rel="stylesheet" type="text/css" href="../css/CodersClub.css" />
+  <link rel="stylesheet" type="text/css" href="../css/admin.css" />
+</head>
+
+<body>
+<div class="main" >
+
+  <h2>Register Coaches</h2>
+
+  <div id="raw" >
+    <p>Type or paste in information for new coaches below. Each line of text must include first name, last name, and e-mail for one coach. Values can be separated by spaces or, if a first name has multiple tokens, use commas. Please don't include e-mail appositives: e.g. don't enter "Doe, John <jdoe@me.com>" for an e-mail address, but instead just "jdoe@me.com".</p>
+    <textarea>John Smith jsmith@gmail.com
+Maria de la Cruz maria@mail.com
+Wei Jin,Cai,wjc@school.edu</textarea>
+    <p>
+      <input id="parse" type="button" value="Check names" />
+    </p>
+  </div>
+  <div id="fetching" >
+    <p>Checking names ...</p>
+  </div>
+
+  <div id="parsed" >
+    <p>Please confirm the data below, and click <strong>Register</strong> when ready. Unless adjusted, rows not marked <strong>Good</strong> will be ignored, while remaining rows will be registered immediately.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>First</th>
+          <th>Last</th>
+          <th>E-Mail</th>
+          <th>Password</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <p>
+      <input id="register" type="button" value="Register" />
+      <input id="back" type="button" value="Back to raw text" />
+      <input id="home" type="button" value="Back to main page" />
+    </p>
+  </div>
+  <div id="confirmation" >
+    <p><span id="count" ></span> coaches have ben registered.</p>
+    <p><strtong>Important:</strong> Be sure to copy the generated password(s) shown in the table above, and pass along to the coach(es) privately. Coaches can change their passwords at any time, but this starter password will be required at first login.</p>
+  </div>
+
+  <script type="module" crossorigin="use-credentials" >
+    import {
+        checkFor200,
+        checkHTTPStatus,
+        selfDiscover
+      } from "../js/utility.js";
+
+    const Status = {
+        OK: { text: "Good", class: "OK" },
+        CONFLICT: { text: "Existing coach", class: "Conflict" },
+        INVALID_EMAIL: { text: "Invalid e-mail", class: "Error" },
+        ERROR: { text: "Parsing error", class: "Error" }
+      };
+
+    let coaches = [];
+
+    function checkForErrors(candidate) {
+      candidate.status = Status.OK;
+
+      if (candidate.email && !candidate.email.match(/\w+([\.-]?\w+)*@\w+([\.-]?\w+)*\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))/)) {
+        candidate.status = Status.INVALID_EMAIL;
+      }
+
+      for (let coach of coaches) {
+        if (candidate.first == coach.firstName &&
+            candidate.last == coach.lastName) {
+          candidate.status = Status.CONFLICT;
+          break;
+        }
+      }
+    }
+
+    function fetchCoaches() {
+      document.getElementById("parse").disabled = true;
+      fetch("../REST/Admin/Staff?coach")
+        .then(checkFor200)
+        .then(response => response.json())
+        .then(fetchedCoaches => {
+            coaches = fetchedCoaches;
+            document.getElementById("parse").disabled = false;
+          })
+      .catch(console.log);
+    }
+
+    function addStatusCell(row, status) {
+      let tdStatus = row.insertCell();
+      let span = document.createElement("span");
+      span.textContent = status.text;
+      span.classList.add(status.class);
+      tdStatus.appendChild(span);
+
+      return tdStatus;
+    }
+
+    function buildTable(candidates) {
+      let table = document.querySelector("table");
+      let columns = table.querySelectorAll("th").length
+      let tbody = table.querySelector("tbody");
+
+      tbody.innerHTML = "";
+
+      let rowNum = 0;
+      for (let candidate of candidates) {
+        ++rowNum;
+        let row = tbody.insertRow();
+
+        if (!("error" in candidate)) {
+          let tdFirst = row.insertCell();
+          let tdLast = row.insertCell();
+          let tdEMail = row.insertCell();
+          let tdPassword = row.insertCell();
+
+          if (candidate.status == Status.OK) {
+            tdFirst.textContent = candidate.first;
+            tdLast.textContent = candidate.last;
+            tdEMail.textContent = candidate.email;
+          } else {
+            let inputFirst = document.createElement("input");
+            inputFirst.type = "text";
+            inputFirst.value = candidate.first;
+            tdFirst.append(inputFirst);
+
+            let inputLast = document.createElement("input");
+            inputLast.type = "text";
+            inputLast.value = candidate.last;
+            tdLast.append(inputLast);
+
+            let inputEMail = document.createElement("input");
+            inputEMail.type = "text";
+            inputEMail.value = candidate.email;
+            tdEMail.append(inputEMail);
+          }
+
+          tdPassword.textContent = candidate.password || "TBA";
+
+          let tdStatus = addStatusCell(row, candidate.status);
+
+          if (candidate.status != Status.OK) {
+            let bnFix = document.createElement("input");
+            bnFix.type = "button";
+            bnFix.value = "Fix";
+            bnFix.style.marginLeft = "8px";
+            bnFix.onclick = fix.bind(null, rowNum);
+            tdStatus.appendChild(bnFix);
+          }
+        } else {
+          let td = row.insertCell();
+          td.colSpan = columns - 1;
+          td.classList.add("Error");
+          td.textContent = candidate.error;
+
+          addStatusCell(row, Status.ERROR);
+        }
+      }
+
+      document.getElementById("raw").style.display = "none";
+      document.getElementById("fetching").style.display = "none";
+      document.getElementById("parsed").style.display = "block";
+    }
+
+    function parse() {
+      let rows = document.querySelector("textarea").value
+          .trim().split("\n").map(s => s.trim());
+      let error = false;
+      let candidates = [];
+      for (let row of rows) {
+        let byCommas = row.split(",").map(s => s.trim());
+        if (row.length != 0) {
+          if (byCommas.length == 3) {
+            let [ first, last, email ] = byCommas;
+            candidates.push({ first: first, last: last, email: email });
+          } else if (byCommas.length == 1) {
+            let byWhitespace = row.split(/[ \t]+/).map(s => s.trim());
+            if (byWhitespace.length > 2) {
+              let first = byWhitespace.shift();
+              let email = byWhitespace.pop();
+              let last = byWhitespace.join(" ");
+              candidates.push({ first: first, last: last, email: email });
+            } else {
+              candidates.push({
+                  error: "For '" + row + "' ... if separating with whitespace, there must be at least three fields."
+                });
+              error = true;
+            }
+          } else {
+            candidates.push({
+                error: "For '" + row + "' ... if separating with commas, there should be exactly three fields."
+              });
+            error = true;
+          }
+        }
+      }
+
+      document.getElementById("fetching").style.display = "block";
+      document.getElementById("register").disabled = error;
+      if (!error) {
+        candidates.forEach(checkForErrors);
+      }
+
+      buildTable(candidates);
+    }
+
+    function fix(rowNum, ev) {
+      let row = document.querySelector
+          ("table tbody tr:nth-of-type(" + rowNum + ")");
+      let fixed = {
+          first: row.cells[0].firstChild.value,
+          last: row.cells[1].firstChild.value,
+          email: row.cells[2].firstChild.value
+        };
+      checkForErrors(fixed);
+
+      let firstNameCell = row.cells[0];
+      let lastNameCell = row.cells[1];
+      let emailCell = row.cells[2];
+      let statusSpan = row.cells[4].querySelector("span");
+      let fixButton = row.cells[4].querySelector("input");
+
+      if (fixed.status == Status.OK) {
+        firstNameCell.firstChild.remove();
+        lastNameCell.firstChild.remove();
+        emailCell.firstChild.remove();
+
+        firstNameCell.textContent = fixed.first;
+        lastNameCell.textContent = fixed.last;
+        emailCell.textContent = fixed.email;
+
+        fixButton.remove();
+      }
+
+      statusSpan.textContent = fixed.status.text;
+
+      for (let name in Status) {
+        let className = Status[name].class;
+        if (statusSpan.classList.contains(className))
+          statusSpan.classList.remove(className);
+      }
+      statusSpan.classList.add(fixed.status.class);
+    }
+
+    function back() {
+      document.getElementById("raw").style.display = "block";
+      document.getElementById("parsed").style.display = "none";
+      document.getElementById("fetching").style.display = "none";
+      document.getElementById("confirmation").style.display = "none";
+
+      document.getElementById("register").disabled = false;
+    }
+
+    function register() {
+      let candidates = [];
+      for (let row of document.querySelectorAll("table tr")) {
+        if (row.cells.length != 0 &&
+            row.cells[row.cells.length - 1].textContent == Status.OK.text) {
+          candidates.push({
+              first: row.cells[0].textContent,
+              last: row.cells[1].textContent,
+              email: row.cells[2].textContent
+            });
+        }
+      }
+
+      fetch("../REST/Admin/Staff?coach", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+          body: JSON.stringify(candidates)
+        })
+        .then(checkHTTPStatus.bind(null, 201))
+        .then(response => response.json())
+        .then(results => {
+            buildTable(results);
+
+            let count = results
+                .filter(result => result.status == "OK")
+                .length;
+
+            document.getElementById("count").textContent = "" + count;
+            document.getElementById("confirmation").style.display = "block";
+
+            document.getElementById("register").disabled = true;
+            fetchCoaches();
+          })
+        .catch(console.log);
+    }
+
+    window.onload = function() {
+      selfDiscover(document.querySelector("p.footer"), "..");
+
+      document.getElementById("fetching").style.display = "none";
+
+      document.getElementById("parse").onclick = parse;
+      document.getElementById("back").onclick = back;
+      document.getElementById("register").onclick = register;
+      document.getElementById("home").onclick = ev => {
+          window.location = "../Staff/coders.html";
+        }
+
+      fetchCoaches();
+    }
+  </script>
+
+</div>
+<p class="footer" ></p>
+
+</body>
+
+</html>
+
